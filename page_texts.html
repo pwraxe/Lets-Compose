@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Text in Compose</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+	<header>
+	    <h1 class="header-heading">Jetpack Compose</h1>
+	    <div>
+	        <a class="menu selected" href="index.html" id="composeLink">Compose</a>
+	        <a class="menu" href="profile.html" id="profileLink">Profile</a>
+	    </div>
+	</header>
+	<script>
+		const profileLink = document.getElementById("profileLink");
+		const composeLink = document.getElementById("composeLink");
+		const headerHeading = document.querySelector(".header-heading");
+
+		profileLink.addEventListener("click", () => {
+		    profileLink.classList.add("selected");
+		    composeLink.classList.remove("selected");
+		    headerHeading.textContent = "Akshay's Profile";
+		});
+
+		composeLink.addEventListener("click", () => {
+		    composeLink.classList.add("selected");
+		    profileLink.classList.remove("selected");
+		    headerHeading.textContent = "Jetpack Compose";
+		});
+	</script>
+
+	 <div class="grid-container">
+		<div class="grid-item" onclick="showDialog('image1.jpg', 'Text for Image 1')">
+		    <img src="https://raw.githubusercontent.com/pwraxe/compose/main/images/sameple.png" alt="Image 1">
+		    <p>Text for Image 1</p>
+		</div>
+		<div class="grid-item" onclick="showDialog('image1.jpg', 'Text for Image 2')">
+		    <img src="https://raw.githubusercontent.com/pwraxe/compose/main/images/sameple.png" alt="Image 2">
+		    <p>Text for Image 2</p>
+		</div>
+		<div class="grid-item" onclick="showDialog('image1.jpg', 'Text for Image 3')">
+		    <img src="https://raw.githubusercontent.com/pwraxe/compose/main/images/sameple.png" alt="Image 3">
+		    <p>Text for Image 3</p>
+		</div>
+		<div class="grid-item" onclick="showDialog('image1.jpg', 'Text for Image 4')">
+		    <img src="https://raw.githubusercontent.com/pwraxe/compose/main/images/sameple.png" alt="Image 3">
+		    <p>Text for Image 3</p>
+		</div>
+	</div>
+
+</body>
+
+</html>
