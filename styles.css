@@ -1,7 +1,10 @@
+
 body {
     font-family:Noto Sans,Noto Sans JP,Noto Sans KR,Noto Naskh Arabic,Noto Sans Thai,Noto Sans Hebrew,Noto Sans Bengali,sans-serif;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    height: auto;
 }
 
 header {
@@ -65,27 +68,81 @@ header {
     text-decoration: none;
     color: #333;
 }
- 
-.grid-container {
-    display: flex;
-    gap: 20px; /* Add some spacing between columns */
+
+
+::-webkit-scrollbar {
+  width: 5px;
 }
 
-.grid-item {
+::-webkit-scrollbar-thumb {
+  background-color: #000;
+  border-radius: 5px;
+}
+ ::-webkit-scrollbar-track:hover {
+  background-color: #000;
+}
+
+/*** Page Style ***/
+
+ .page {
+    display: flex;
+    background-color: transparent;
+    height: 86vh;
+    margin: 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+ }
+
+ .list {
+    background-color: transparent;
+    width: 30%;
+    overflow: auto;
+ }
+ .code-container {
+    background-color: transparent;
+    width: 70%;
+    display: flex;
+    border-radius: 20px;
+ }
+
+
+.page-card {
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    border: 2px solid #000;
     transition: transform 0.5s;
     cursor: pointer;
     margin: 10px;
 }
 
-.grid-item:hover {
-    transform: scale(1.05);
+.output-image {
+    width: 40%;
+    background-color: transparent;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
+    justify-self: center;
 }
-img {
-    max-width: 100%;
-    height: auto;
+
+.output-code {
+    width: 80%;
+    background-color: white;
+}
+
+
+pre {
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
+    margin: 10px;
+    padding: 0px 0px 0px 20px;
+    overflow: auto;
+ }
+
+.selected-card {
+    border: 2px solid #000;
 }
