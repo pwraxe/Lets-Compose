@@ -130,6 +130,7 @@ header {
 .output-code {
     width: 80%;
     background-color: white;
+    overflow: auto;
 }
 
 
