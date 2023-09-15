@@ -37,6 +37,10 @@
 		            <h2>Text - 4</h2>
 		            <p>Color, FontSize, MODIFIER</p>
 		        </div>
+				<div class="page-card" card-id="5">
+					<h2>Text - 5</h2>
+					<p>shadow Text, SpanStyle Text, AnnotatedString</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -246,10 +250,77 @@ fun LearnCompose() {
 }
  
 `
+		},
+
+		{ id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/images/output-5.png', description:
+`
+
+@Preview(showSystemUi = true)
+@Composable
+fun LearnCompose() {
+
+    Column {
+
+        Text(
+            text = AnnotatedString(
+                text ="Blue Shadow Text",
+                spanStyle = SpanStyle(
+                    fontSize = 24.sp,
+                    shadow = Shadow(Color.Blue, offset = Offset.Zero, blurRadius = 8f)
+                )
+            )
+        )
+
+        Text(
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.Red)) {
+                    append("RedText 24Size 400Wt")
+                }
+                append(" and ")
+                withStyle(style = SpanStyle(
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.W900,
+                    color = Color.Blue)) {
+                    append("BlueText,10Size,900Wt")
+                }
+            }
+        )
+
+        Text(text = buildAnnotatedString {
+
+            withStyle(style = SpanStyle(
+                color = Color(0xFFFF0000),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium)) {
+                append("RED")
+            }
+
+            append(" ")
+            withStyle(style = SpanStyle(
+                color = Color(0xFF00FF00),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium)
+            ) {
+                append("GREEN")
+            }
+
+            append(" ")
+            withStyle(style = SpanStyle(
+                color = Color(0xFF0000FF),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                background = Color.Yellow)) {
+                append(" BLUE")
+            }
+        })
+    }
+}
+`
 		}
-
-
-
     ];
 
     return data.find(item => item.id === parseInt(cardId));
