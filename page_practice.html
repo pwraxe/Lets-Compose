@@ -31,10 +31,14 @@
                 <p>Show Task Completed UI to user</p>
             </div>
 
-
             <div class="page-card def-selected" card-id="3">
                 <h2>Compose quadrant</h2>
                 <p>Make 4 Block Equal in size, 50% rows, 50% cols, set title and description at center vertically and horizontally</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>Business Card</h2>
+                <p>Based on Codelab learnings, Build Business card, Using Box, Column, Row Layout</p>
             </div>
 
         </div>
@@ -155,10 +159,8 @@ fun Exercise() {
         )
     }
 }
-                `
+`
             },
-
-
 
 
             {
@@ -268,6 +270,90 @@ fun Exercise() {
                         text = "A layout composable that places its children in a vertical sequence.",
                         textAlign = TextAlign.Justify
                     )
+                }
+            }
+        }
+    }
+}
+                `
+            },
+
+
+             {
+                id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/images/practice-output-4.png',
+                description:
+                `
+@Preview(showSystemUi = true)
+@Composable
+fun Exercise() {
+    Box (
+        modifier = Modifier
+            .background(color = Color(0xFF91FDC1))
+            .fillMaxSize()
+    ){
+        Column(modifier = Modifier.align(alignment = Alignment.Center)) {
+
+            Image(
+                painter = painterResource(id = R.drawable.android_logo),
+                contentDescription = "Android Logo",
+
+                modifier = Modifier
+                    .width(140.dp)
+                    .height(140.dp)
+                    .align(alignment = Alignment.CenterHorizontally),
+            )
+
+            Text(
+                text = "Akshay Pawar",
+                fontWeight = FontWeight.Bold,
+                fontSize = 40.sp,
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+            )
+
+            Text(
+                text = "Sr. Android Developer",
+                fontSize = 20.sp,
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+            )
+
+        }
+
+        Box(modifier = Modifier.align(alignment = Alignment.BottomCenter)) {
+
+            Column (modifier = Modifier.align(alignment = Alignment.Center)){
+
+                Row {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_phone),
+                        contentDescription = "Icon Phone")
+
+                    Text(
+                        text = "+91 9657513***",
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(start = 16.dp))
+                }
+
+
+                Row (modifier = Modifier.padding(top = 16.dp)){
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_share),
+                        contentDescription = "Icon Share")
+
+                    Text(
+                        text = "git@pwraxe",
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(start = 16.dp))
+                }
+
+                Row (modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)){
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_email),
+                        contentDescription = "Icon email")
+
+                    Text(
+                        text = "pawarakshay13@gmail.com",
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(start = 16.dp))
                 }
             }
         }
