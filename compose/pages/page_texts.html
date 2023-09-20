@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Text in Compose</title>
+	<link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+	<header>
+	    <h1 class="header-heading">Jetpack Compose / Text</h1>
+	    <div>
+	        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+	        <a class="menu" href="profile.html" id="profileLink">Profile</a>
+	    </div>
+	</header>
+
+	<div class="page">
+		<div class="code-container"></div>
+		<div class="list">
+			<div class="item-container">
+        		<div class="page-card def-selected" card-id="1">
+		             <h2>Text - 1</h2>
+		             <p>TextView in Jetpack Compose</p>
+      		  	</div>
+		        <div class="page-card" card-id="2">
+		            <h2>Text - 2</h2>
+		            <p>Color, FontSize, FontStyle, FontWeight, FontFamily, More Fonts</p>
+		        </div>
+		        <div class="page-card" card-id="3">
+		            <h2>Text - 3</h2>
+		            <p>Color, FontSize, LetterSpacing, TextDecoration, MaxLines, Overflow, SoftWrap</p>
+		        </div>
+		        <div class="page-card" card-id="4">
+		            <h2>Text - 4</h2>
+		            <p>Color, FontSize, MODIFIER</p>
+		        </div>
+				<div class="page-card" card-id="5">
+					<h2>Text - 5</h2>
+					<p>shadow Text, SpanStyle Text, AnnotatedString</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+<script type="text/javascript">
+
+const profileLink = document.getElementById("profileLink");
+const composeLink = document.getElementById("composeLink");
+const headerHeading = document.querySelector(".header-heading");
+
+profileLink.addEventListener("click", () => {
+    profileLink.classList.add("selected");
+    composeLink.classList.remove("selected");
+    headerHeading.textContent = "Akshay's Profile";
+});
+
+composeLink.addEventListener("click", () => {
+    composeLink.classList.add("selected");
+    profileLink.classList.remove("selected");
+    headerHeading.textContent = "Jetpack Compose";
+});
+
+//---------------------------------------------------------------
+const cards = document.querySelectorAll('.page-card');
+const dataContainer = document.querySelector('.code-container');
+cards.forEach(pcard => {
+	pcard.addEventListener('click', () => { 
+		cards.forEach(otherCard => {
+    		otherCard.classList.remove('selected-card');
+		});
+		pcard.classList.add('selected-card');
+		// const cardId = pcard.getAttribute('card-id');
+		// const data = fetchDataById(cardId);
+		// displayData(data);
+	});
+});
+
+const defaultSelectedCard = document.querySelector('.def-selected');
+if (defaultSelectedCard) {
+    defaultSelectedCard.classList.add('selected-card');
+    const cardId = defaultSelectedCard.getAttribute('card-id');
+    const data = fetchDataById(cardId);
+    displayData(data);
+}
+
+cards.forEach(card => {
+    card.addEventListener('click', () => {
+        const cardId = card.getAttribute('card-id');           
+        const data = fetchDataById(cardId);
+        displayData(data);
+    });
+});
+
+function fetchDataById(cardId) {
+	console.log(`Fetching data for card ID: ${cardId}`);
+
+    const data = [
+        { id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/images/output-1.png', description: `
+
+class MainActivity : ComponentActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContent {
+        JetpackComposeTheme {}
+    }
+}
+}
+
+@Preview
+@Composable
+fun LearnCompose() {
+Text(text = "Hello there")
+}
+`
+		},
+
+        { id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/images/output-2.png', description: 
+`
+val customFonts = FontFamily(
+    Font(R.font.dm_serif_display_regular, FontWeight.Light),
+    Font(R.font.dm_serif_display_regular, FontWeight.Normal),
+    Font(R.font.dm_serif_display_regular, FontWeight.Medium),
+    Font(R.font.dm_serif_display_regular, FontWeight.Bold),
+    Font(R.font.dm_serif_display_regular, FontWeight.ExtraBold),
+)
+
+@Preview(showSystemUi = true)
+@Composable
+fun LearnCompose() {
+    Text(
+        text = "Hello there, How Are you?",
+        color = Color.Blue,
+
+        //fontSize = 50.sp,
+        //fontSize = TextUnit.Unspecified,
+        fontSize = TextUnit(50.0f, TextUnitType.Sp),
+
+        //FontStyle.Normal, FontStyle.Italic
+        fontStyle = FontStyle.Italic,
+
+        //Boldness of font by FontWeight from 100 to 900
+        //fontWeight = FontWeight(900),
+        //fontWeight = FontWeight.W900,
+
+        //fontFamily = FontFamily.Cursive,
+        //fontFamily = FontFamily(Typeface.MONOSPACE)
+
+        //ForMore Fonts, download dependency
+       //implementation("androidx.compose.ui:ui-text-google-fonts:1.4.3")
+        fontFamily = customFonts,
+        fontWeight = FontWeight.Bold
+
+    )
+}
+`
+
+    },
+
+{ id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/images/output-3.png', description: 
+`
+
+val textDecorations = listOf(
+    TextDecoration.Underline,
+    TextDecoration.LineThrough,
+)
+
+@Preview(showSystemUi = true)
+@Composable
+fun LearnCompose() {
+    Text(
+        text = "Hello there, How Are you today?",
+        color = colorResource(id = R.color.green), //#19FF00
+        fontSize = 36.sp,
+
+        letterSpacing = TextUnit(10.0f, TextUnitType.Sp),
+
+        //textDecoration = TextDecoration.Underline,
+        //textDecoration = TextDecoration.LineThrough,
+        textDecoration = TextDecoration.combine(textDecorations),
+
+
+        maxLines = 2,
+        /**Note: Because of MaxLine = 2 text is showing ellipsis at end**/
+        //overflow = TextOverflow.Ellipsis,
+
+        /****/
+        overflow = TextOverflow.Visible,
+
+        /**text is showing those words which completly fit to that 2 lines**/
+        //overflow = TextOverflow.Clip,
+
+        //Its like, android:singleLine="true" || android:maxLine="1"
+        softWrap = false,
+    )
+}
+ 
+`
+},
+
+{ id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/images/output-4.png', description: 
+`
+ 
+val colors = listOf(
+    Color.Yellow,
+    Color.Blue,
+    Color.Red,
+    Color.DarkGray
+)
+@Preview(showSystemUi = true)
+@Composable
+fun LearnCompose() {
+    Text(
+        text = "Hello there, How Are you today?",
+        fontSize = 36.sp,
+        modifier = Modifier
+
+            //.padding(all = 20.dp)
+            //.padding(PaddingValues(20.dp))
+            //.padding(horizontal = 20.dp, vertical = 40.dp)
+            //.padding(start = 10.dp, top = 20.dp,end = 30.dp, bottom = 10.dp)
+
+            //CompleteTransparent = 0, completeVisible = 1 (0.0 --> 1.0)
+            .alpha(0.5f)
+
+            //Move Item to specific position, move x = 50 dp to right and 20 from top
+            //Its like, marginStart and marginTop
+            .absoluteOffset(x = 50.dp,y = 20.dp)
+            .background(color = Color.Yellow, shape = RectangleShape)
+            .blur(20.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+            .border(
+                width = 30.dp,
+                brush = Brush.horizontalGradient(colors, startX = 90.0f, endX = Float.POSITIVE_INFINITY,
+                tileMode = TileMode.Repeated),
+                //shape = CutCornerShape(size = 20.dp)
+                //shape = RectangleShape
+                //shape = CircleShape
+                //shape = AbsoluteCutCornerShape(20.dp)
+                //shape = AbsoluteRoundedCornerShape(size = 20.dp)
+                //shape = RoundedCornerShape(size = 20.dp)
+                shape = RoundedCornerShape(percent = 30)
+            )
+
+    )
+}
+ 
+`
+		},
+
+		{ id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/images/output-5.png', description:
+`
+
+@Preview(showSystemUi = true)
+@Composable
+fun LearnCompose() {
+
+    Column {
+
+        Text(
+            text = AnnotatedString(
+                text ="Blue Shadow Text",
+                spanStyle = SpanStyle(
+                    fontSize = 24.sp,
+                    shadow = Shadow(Color.Blue, offset = Offset.Zero, blurRadius = 8f)
+                )
+            )
+        )
+
+        Text(
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.Red)) {
+                    append("RedText 24Size 400Wt")
+                }
+                append(" and ")
+                withStyle(style = SpanStyle(
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.W900,
+                    color = Color.Blue)) {
+                    append("BlueText,10Size,900Wt")
+                }
+            }
+        )
+
+        Text(text = buildAnnotatedString {
+
+            withStyle(style = SpanStyle(
+                color = Color(0xFFFF0000),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium)) {
+                append("RED")
+            }
+
+            append(" ")
+            withStyle(style = SpanStyle(
+                color = Color(0xFF00FF00),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium)
+            ) {
+                append("GREEN")
+            }
+
+            append(" ")
+            withStyle(style = SpanStyle(
+                color = Color(0xFF0000FF),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                background = Color.Yellow)) {
+                append(" BLUE")
+            }
+        })
+    }
+}
+`
+		}
+    ];
+
+    return data.find(item => item.id === parseInt(cardId));
+}
+
+function displayData(data) {
+	console.log(`Displaying data: ${data}`);
+    if (data) {
+        dataContainer.innerHTML = `
+
+			 	<div class="output-image">
+				<img src="${data.src}" alt="Output 1" width="100%" height="100%">
+			</div>
+
+			<div class="output-code">
+				
+				<pre>
+					<code class="language-kotlin">${data.description}</code>
+				</pre>
+			</div>
+        `;
+    } else {
+        dataContainer.innerHTML = 'Data not found';
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+.loves_music{
+    display:inline-block;
+    padding: 40px;
+    margin: 30px;
+}
+
+.loves_coding{
+    display: inline-block;
+    padding: 40px;
+    margin: 5px;
+}
+
+.loves_driving{
+    display: inline-block;
+    padding: 40px;
+    margin: 5px;
+}
+
+.loves_gaming{
+    display: inline-block;
+    padding: 40px;
+    margin: 5px;
+}
+
+.loves_traveling{
+    display: inline-block;
+    padding: 40px;
+    margin: 5px;
+}
+
+.loves_shopping{
+    display: inline-block;
+    padding: 40px;
+    margin: 5px;
+}
+
+.loves_music:hover{
+    background-image: url("assets/img/back_interest1.gif");
+    Background-repeat: no-repeat;
+    Background-size: cover;
+    position: relative;
+}
+
+.loves_coding:hover{
+    background-image: url("assets/img/back_interest2.gif");
+    Background-repeat: no-repeat;
+    Background-size: cover;
+    position: relative;
+}
+
+.loves_driving:hover{
+    background-image: url("assets/img/back_interest3.gif");
+    Background-repeat: no-repeat;
+    Background-size: cover;
+    position: relative;
+}
+
+.loves_gaming:hover{
+    Background-repeat: no-repeat;
+    Background-size: cover;
+    position: relative;
+    background-image: url("assets/img/back_interest4.gif");
+}
+
+.loves_traveling:hover{
+    background-image: url("assets/img/back_interest5.gif");
+    Background-repeat: no-repeat;
+    Background-size: cover;
+    position: relative;
+}
+
+.loves_shopping:hover{
+    background-image: url("assets/img/back_interest6.gif");
+    Background-repeat: no-repeat;
+    Background-size: cover;
+    position: relative;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #000;
+  border-radius: 5px;
+}
+ ::-webkit-scrollbar-track:hover {
+  background-color: #000;
+}

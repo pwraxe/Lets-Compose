@@ -1,0 +1,148 @@
+body {
+    font-family:Noto Sans,Noto Sans JP,Noto Sans KR,Noto Naskh Arabic,Noto Sans Thai,Noto Sans Hebrew,Noto Sans Bengali,sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: auto;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: right;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.header-heading {
+    font-size: 24px;  
+    margin: 0;
+}
+
+.menu {
+    display: inline-block;
+    margin-right: 20px;
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 25px;
+    transition: background-color 0.3s, color 0.3s;
+}
+.menu:hover {
+    background-color: #fff;
+    color: #333;
+}
+
+.menu.selected {
+    background-color: #fff;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border: 2px solid #000;
+    transition: transform 0.5s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card a {
+    text-decoration: none;
+    color: #333;
+}
+
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #000;
+  border-radius: 5px;
+}
+ ::-webkit-scrollbar-track:hover {
+  background-color: #000;
+}
+
+/*** Page Style ***/
+
+ .page {
+    display: flex;
+    background-color: transparent;
+    height: 86vh;
+    margin: 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+ }
+
+ .list {
+    background-color: transparent;
+    width: 30%;
+    overflow: auto;
+ }
+ .code-container {
+    background-color: transparent;
+    width: 70%;
+    display: flex;
+    border-radius: 20px;
+ }
+
+
+.page-card {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.5s;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.output-image {
+    width: 40%;
+    background-color: transparent;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
+    justify-self: center;
+}
+
+.output-code {
+    width: 80%;
+    background-color: white;
+    overflow: auto;
+}
+
+
+pre {
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
+    margin: 10px;
+    padding: 0px 0px 0px 20px;
+    overflow: auto;
+ }
+
+.selected-card {
+    border: 2px solid #000;
+}

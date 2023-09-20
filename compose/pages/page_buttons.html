@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Layouts in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / Layout</h1>
+    <div>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="profile.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+    <div class="list">
+        <div class="item-container">
+            <div class="page-card def-selected" card-id="1">
+                <h2>All Buttons - 1</h2>
+                <p>List of Possible button in compose</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+            { id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/images/output-buttons.png',
+            description: `
+@Preview(showSystemUi = true)
+@Composable
+fun Buttons() {
+
+    Column {
+        Button(onClick = { /*TODO*/ }) {
+            Text(text = "Button")
+        }
+
+        ElevatedButton(onClick = { /*TODO*/ }) {
+            Text(text = "Elevated Button")
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            FilledIconButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Filled.CheckCircle,contentDescription = null)
+            }
+            Text(text = "<--- Fill Icon Button")
+        }
+
+        Row {
+            FloatingActionButton(onClick = { /*TODO*/ },) {
+                Text(text = "Floating Action Button",
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp))
+            }
+
+            LargeFloatingActionButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Filled.AddCircle,contentDescription = "FAB")
+            }
+
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                //Icon(painter = painterResource(id = R.drawable.ic_share),
+                // contentDescription = null)
+                Icon(Icons.Filled.AddCircle,contentDescription = "FAB")
+            }
+        }
+
+        ExtendedFloatingActionButton(onClick = { /*TODO*/ }) {
+            Text(text = "Extended Floating Action Button")
+        }
+
+        ExtendedFloatingActionButton(
+            text = { Text(text = "Extended Floating Action Button") },
+            icon = { Icon(painter = painterResource(id = R.drawable.ic_share),
+                contentDescription = null) },
+            onClick = { /*TODO*/ })
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            FilledIconToggleButton(checked = true, onCheckedChange = {}) {
+                Text(text = "OK")
+            }
+
+            FilledIconToggleButton(
+                checked = false,
+                onCheckedChange = {},
+                shape = IconButtonDefaults.outlinedShape) {
+                Text(text = "!OK")
+            }
+
+            Text(text = "<--- Fill Icon Toggle Button")
+        }
+
+        FilledTonalButton(onClick = { /*TODO*/ }) {
+            Text(text = "Filled Tonal Button")
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            FilledTonalIconToggleButton(
+                checked = true, onCheckedChange = {}) {
+                Text(text = "S")
+            }
+
+            FilledTonalIconToggleButton(
+                checked = false, onCheckedChange = {}) {
+                Text(text = "!S")
+            }
+
+            Text(text = "<--- Filled Tonal Icon Toggle Button")
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            IconToggleButton(checked = true, onCheckedChange = {}) {
+                Icon(Icons.Filled.AddCircle,contentDescription = "FAB")
+            }
+            Text(text = "<---Icon Toggle Button")
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Filled.Check,contentDescription = "FAB")
+            }
+            Text(text = "<--- Icon Button")
+        }
+
+        OutlinedButton(onClick = { /*TODO*/ }) {
+            Text(text = "Outline Button")
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            OutlinedIconButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Filled.Favorite,contentDescription = "FAB")
+            }
+            Text(text = "<--- Outlined Icon Button")
+        }
+    }
+}
+
+            `
+
+            }
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>
