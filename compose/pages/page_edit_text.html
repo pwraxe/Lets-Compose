@@ -71,6 +71,11 @@
                 <p>Edittext for uri, link, web-address</p>
             </div>
 
+            <div class="page-card def-selected" card-id="11">
+                <h2>EditText - ImeActions</h2>
+                <p>Different ImeActions on Keyboard</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -761,10 +766,66 @@ fun EditTexts() {
         }
     }
 }
+`
+            },
+
+            {
+             id: 11, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-ime-actions.png',
+             description:`
 
 
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
 
-            `
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter Name") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Text,
+
+//                imeAction = ImeAction.None,
+//                imeAction = ImeAction.Default,
+//                imeAction = ImeAction.Go,
+//                imeAction = ImeAction.Search,
+//                imeAction = ImeAction.Send,
+//                imeAction = ImeAction.Previous,
+//                imeAction = ImeAction.Next,
+                imeAction = ImeAction.Done,
+
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+
+        Text(
+            text = "ImeAction.Done",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.W400,
+            fontFamily = FontFamily.Monospace,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth())
+    }
+}
+
+             `
             }
         ];
 
