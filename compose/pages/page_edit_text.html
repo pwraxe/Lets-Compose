@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Layouts in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / EditText</h1>
+    <div>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+    <div class="list">
+        <div class="item-container">
+            <div class="page-card def-selected" card-id="1">
+                <h2>EditText - 1</h2>
+                <p>FillEditText, OutlineEditText</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>EditText - Number</h2>
+                <p>Its Like, android:inputType="number"</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="3">
+                <h2>EditText - Phone</h2>
+                <p>Its Like, android:inputType="phone"</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>EditText - Text</h2>
+                <p>Default input type, alphabetical keyboard</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="5">
+                <h2>EditText - Email</h2>
+                <p>Its Like, android:inputType="emailAddress"</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="6">
+                <h2>EditText - Password</h2>
+                <p>Its Like, android:inputType="password"</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="7">
+                <h2>EditText - NumberPassword</h2>
+                <p>Keyboard for number password</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="8">
+                <h2>EditText - Decimal</h2>
+                <p>Keyboard for number with decimal support</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="9">
+                <h2>EditText - Ascii</h2>
+                <p>Edittext for ASCII Characters</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="10">
+                <h2>EditText - Uri</h2>
+                <p>Edittext for uri, link, web-address</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+            {
+            id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-1.png',
+            description:
+            `
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var edit1Input by remember { mutableStateOf("") }
+    var edit2Input by remember { mutableStateOf("") }
+
+    val keyboardOptions = KeyboardOptions(
+        capitalization = KeyboardCapitalization.Characters,
+        autoCorrect = true,
+        keyboardType = KeyboardType.Text,
+//        keyboardType = KeyboardType.Email,
+//        keyboardType = KeyboardType.Ascii,
+//        keyboardType = KeyboardType.Number,
+//        keyboardType = KeyboardType.Decimal,
+//        keyboardType = KeyboardType.NumberPassword,
+//        keyboardType = KeyboardType.Password,
+//        keyboardType = KeyboardType.Phone,
+//        keyboardType = KeyboardType.Uri,
+
+        imeAction = ImeAction.Default
+//        imeAction = ImeAction.Done,
+//        imeAction = ImeAction.Next,
+//        imeAction = ImeAction.Previous,
+//        imeAction = ImeAction.Search,
+//        imeAction = ImeAction.Send,
+//        imeAction = ImeAction.Go,
+//        imeAction = ImeAction.None,
+        )
+
+    //When User Press this option, on Keyboard, you can do your task
+    /**
+    Official Doc {
+        The KeyboardActions class allows developers to specify actions that
+        will be triggered in response to users
+        triggering IME action on the software keyboard.
+    }
+    **/
+    val keyboardAction  = KeyboardActions(
+        onDone = {},
+        onGo = {},
+        onNext = {},
+        onPrevious = {},
+        onSearch = {},
+        onSend = {})
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        TextField (
+            value = edit1Input,
+            onValueChange = { edit1Input = it },
+            label = { Text(text = "Label Edit") },
+            placeholder = { Text(text = "Placeholder") },
+            trailingIcon = {
+                Icon(imageVector = Icons.Rounded.Email,
+                contentDescription = "email")
+            },
+            leadingIcon = {
+                Icon(imageVector = Icons.Rounded.Home,
+                contentDescription = "home")
+            },
+            supportingText = { Text(text = "Supporting Text") },
+            isError = true,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardAction,
+            singleLine = true,
+            maxLines = 1,
+            shape = TextFieldDefaults.outlinedShape,
+            textStyle = TextStyle(
+                color = Color.LightGray,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Normal,
+                fontSynthesis = FontSynthesis.Weight
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        )
+
+        OutlinedTextField(
+            value = edit2Input,
+            onValueChange = { edit2Input = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            enabled = true,
+            readOnly = false,
+            textStyle = TextStyle(
+                color = Color.Blue,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Normal,
+                fontSynthesis = FontSynthesis.Weight,
+                fontFamily = FontFamily.Serif,
+                fontFeatureSettings = "FF Setting",
+                letterSpacing = TextUnit(10f, TextUnitType.Sp),
+                baselineShift = BaselineShift.Subscript,
+                textGeometricTransform = TextGeometricTransform(1.5f,0.5f),
+                background = Color.Yellow,
+                textDecoration = TextDecoration.Underline,
+                shadow = Shadow(Color.Blue, offset = Offset.Zero, blurRadius = 1.5f),
+                textAlign = TextAlign.Start),
+
+            label = { Text(text = "Outline Label")},
+            placeholder = { Text(text = "Placeholder")},
+            leadingIcon = {
+                Icon(imageVector = Icons.Rounded.Email,
+                contentDescription = "email")
+            },
+            trailingIcon = {
+                Icon(imageVector = Icons.Rounded.Add,
+                contentDescription = "add")
+            },
+            supportingText = { Text(text = "Supporting Text") },
+            isError = false,
+            keyboardActions = keyboardAction,
+            keyboardOptions = keyboardOptions,
+            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color(0xff0000ff),
+                unfocusedLabelColor = Color.Blue,
+                unfocusedLeadingIconColor = Color.Blue,
+                unfocusedSupportingTextColor = Color.Blue,
+                unfocusedTrailingIconColor = Color.Blue,
+
+                focusedBorderColor =  Color(0xff00ff00),
+                focusedLabelColor = Color.Green,
+                focusedLeadingIconColor = Color.Green,
+                focusedSupportingTextColor = Color.Green,
+                focusedTrailingIconColor = Color.Green,
+
+                cursorColor = Color.Red,
+                disabledLabelColor = Color.Red,
+                errorBorderColor = Color.Red,
+                disabledBorderColor = Color.Gray,
+                placeholderColor = Color.LightGray,
+            )
+        )
+    }
+}
+ `
+            },
+
+
+            {
+            id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-number.png',
+            description:
+            `
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter Number") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+        if(editInput.isNotEmpty()) {
+            Text(
+                text = "You Entered: $editInput",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+ `
+            },
+
+            {
+            id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-phone.png',
+            description:
+            `
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter Phone Number") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Phone,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+        if(editInput.isNotEmpty()) {
+            Text(
+                text = "You Entered: $editInput",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+
+            `
+            },
+
+            {
+            id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-text.png',
+            description:
+            `
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter Text") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+        if(editInput.isNotEmpty()) {
+            Text(
+                text = "You Entered: $editInput",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+
+            `
+            },
+
+            {
+            id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-email.png',
+            description:
+            `
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter Email Id") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+        if(editInput.isNotEmpty()) {
+            Text(
+                text = "You Entered: $editInput",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+            `
+            },
+
+            {
+            id: 6, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-password.png',
+            description:
+            `
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+    val passwordVisible by remember { mutableStateOf(false) }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter Text Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            visualTransformation = PasswordVisualTransformation(),
+//            visualTransformation = if(passwordVisible) {
+//                VisualTransformation.None
+//            } else PasswordVisualTransformation(),
+
+
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+
+        if(editInput.isNotEmpty()) {
+            Text(
+                text = "You Entered: $editInput",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+            `
+            },
+
+            {
+            id: 7, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-password-number.png',
+            description:
+            `
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+    val passwordVisible by remember { mutableStateOf(false) }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter Number Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            visualTransformation = PasswordVisualTransformation(),
+//            visualTransformation = if(passwordVisible) {
+//                VisualTransformation.None
+//            } else PasswordVisualTransformation(),
+
+
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.NumberPassword,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+
+        if(editInput.isNotEmpty()) {
+            Text(
+                text = "You Entered: $editInput",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+
+            `
+            },
+
+            {id: 8, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-decimal.png',
+            description:
+            `
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+    val passwordVisible by remember { mutableStateOf(false) }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter Decimal Number") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+
+        if(editInput.isNotEmpty()) {
+            Text(
+                text = "You Entered: $editInput",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+
+            `
+            },
+
+            {id: 9, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-ascii.png',
+            description:
+            `
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+    val passwordVisible by remember { mutableStateOf(false) }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter ASCII") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Ascii,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+
+        if(editInput.isNotEmpty()) {
+            Text(
+                text = "You Entered: $editInput",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+
+            `
+            },
+
+            {
+            id: 10, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-edittext-uri.png',
+            description:
+            `
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EditTexts()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+fun EditTexts() {
+
+    var editInput by remember { mutableStateOf("") }
+    val passwordVisible by remember { mutableStateOf(false) }
+
+    Column {
+        OutlinedTextField(
+            value = editInput,
+            onValueChange = { editInput = it},
+            label = { Text(text = "Enter Uri") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Uri,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None),
+            keyboardActions = KeyboardActions(onDone = {})
+        )
+
+
+        if(editInput.isNotEmpty()) {
+            Text(
+                text = "You Entered: $editInput",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+
+
+
+            `
+            }
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>
