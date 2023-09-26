@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Layouts in Compose</title>
+    <title>Switch in Compose</title>
     <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 
@@ -26,6 +26,21 @@
                 <p>Default switch widget, No Extra makeup, ON-OFF</p>
             </div>
         </div>
+
+        <div class="item-container">
+            <div class="page-card def-selected" card-id="2">
+                <h2>Switch / Thumb Icons</h2>
+                <p>Switch with custom thumb icons</p>
+            </div>
+        </div>
+
+        <div class="item-container">
+            <div class="page-card def-selected" card-id="3">
+                <h2>Switch / Colors</h2>
+                <p>Custom Switch Color, thumb, track, icon, border etc.</p>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -84,7 +99,6 @@
         const data = [
             { id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-switch-1.png', description:
 `
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +123,115 @@ fun SwitchCase() {
 }
 
 `
+            },
+
+            { id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-switch-2.png', description:
+`
+
+@Preview(showSystemUi = true)
+@Composable
+fun SwitchCase() {
+
+    var checked by remember { mutableStateOf(false) }
+    Column {
+        Switch(
+            checked = checked,
+            onCheckedChange = { checked = it },
+            thumbContent = {
+                if(checked) {
+                    Icon(
+                        imageVector = Icons.Outlined.Check,
+                        contentDescription = "switch on")
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.Clear,
+                        contentDescription ="switch off")
+                }
+            })
+
+        Switch(
+            checked = !checked,
+            onCheckedChange = { checked = it },
+            thumbContent = {
+                if(checked) {
+                    Icon(
+                        imageVector = Icons.Outlined.Clear,
+                        contentDescription ="switch off")
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.Check,
+                        contentDescription = "switch on")
+                }
+            })
+    }
+}
+`
+            },
+
+            { id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-switch-3.png', description:
+`
+
+@Preview(showSystemUi = true)
+@Composable
+fun SwitchCase() {
+
+    var checked by remember { mutableStateOf(false) }
+    Column {
+        Switch(
+            checked = checked,
+            onCheckedChange = { checked = it },
+            thumbContent = {
+                if(checked) {
+                    Icon(
+                        imageVector = Icons.Outlined.Check,
+                        contentDescription = "switch on")
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.Clear,
+                        contentDescription ="switch off")
+                }
+            },
+            colors = SwitchDefaults.colors(
+                uncheckedBorderColor = Color.Black,
+                uncheckedIconColor = Color.Blue,
+                uncheckedThumbColor = Color.Yellow,
+                uncheckedTrackColor = Color.Green
+            )
+        )
+
+        Switch(
+            checked = !checked,
+            onCheckedChange = { checked = it },
+            thumbContent = {
+                if(checked) {
+                    Icon(
+                        imageVector = Icons.Outlined.Clear,
+                        contentDescription ="switch off")
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.Check,
+                        contentDescription = "switch on")
+                }
+            }, colors = SwitchDefaults.colors(
+                checkedBorderColor = Color.LightGray,
+                checkedIconColor = Color.Yellow,
+                checkedThumbColor = Color.Green,
+                checkedTrackColor = Color.Blue
+            )
+        )
+    }
+}
+
+`
+            },
+
+
+            { id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-switch-1.png', description:
+`
+`
             }
+
+
         ];
 
         return data.find(item => item.id === parseInt(cardId));
