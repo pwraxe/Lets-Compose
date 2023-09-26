@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tests in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / Test</h1>
+    <div>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+    <div class="list">
+        <div class="item-container">
+            <div class="page-card def-selected" card-id="1">
+                <h2>Tests Notes</h2>
+                <p>Short Note on Test in compose</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>Functional Test</h2>
+                <p>Functional tests in compose, See Notes first</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="3">
+                <h2>UI Tests</h2>
+                <p>App Auto Open, Perform tests & Close</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+            {
+                id: 1, src: 'image_url',
+                description: `
+Testing Notes
+-> Make 'private' method public by specifying 'internal' modifier
+-> Specify @VisibleForTesting annotation above function/method
+-> Check 'src' directory contains 'src/main' and 'src/tests'
+-> make sure 'src/tests' has folder structure as same as 'src/main'
+-> create new class and start writing tests
+
+                `
+            },
+            {
+                id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-test-1.png',
+                description: `
+
+//NOTE: Consider this is actual function in code
+@VisibleForTesting
+internal fun calculateTip( amount: Double,tipPercent: Double = 15.0,
+    roundUp: Boolean): String {
+
+    var tip = tipPercent / 100 * amount
+    if (roundUp) {
+        tip = kotlin.math.ceil(tip)
+    }
+    return NumberFormat.getCurrencyInstance().format(tip)
+}
+
+============================================================
+Make sure you have test file as shown in output image
+
+package com.example.tiptime
+
+class TipCalculatorTests {
+
+    @Test
+    fun calculateTipTests() {
+        val amount = 100.0
+        val tipPercentage = 15.0
+        val expected = NumberFormat.getCurrencyInstance().format(15.0)
+        val actual = calculateTip(amount,tipPercentage,false)
+        Assert.assertEquals(expected, actual)
+    }
+}
+
+ `
+            },
+            {
+                id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-test-2.png',
+                description:
+`
+class TipUiTests {
+
+    @get:Rule
+    val composeTestRule = createComposeRule()
+
+    @Test
+    fun calculateTipTests() {
+        composeTestRule.setContent {
+            TipTimeTheme {
+                TipTimeLayout()
+            }
+        }
+        composeTestRule
+            //Note: this label name should same as define in orginal layout
+            .onNodeWithText("Bill Amount")
+
+            //This like, editText.setText("100")
+            .performTextInput("100")
+
+        composeTestRule
+            .onNodeWithText("Tip Percentage")
+            .performTextInput("15")
+
+        val expectedTip1 = NumberFormat.getCurrencyInstance().format(15.0)
+
+        composeTestRule
+            .onNodeWithText("Tip Amount: $expectedTip1")
+            .assertExists("Text was found")
+    }
+}
+`
+            },
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>
