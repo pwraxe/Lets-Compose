@@ -22,14 +22,38 @@
     <div class="list">
         <div class="item-container">
             <div class="page-card def-selected" card-id="1">
-                <h2>Layout - 1</h2>
-                <p>Row Layout, Align Elements row wise</p>
+                <h2>Row</h2>
+                <p>Row as a Container fill width and height by default</p>
             </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>Row / Horizontal Alignment</h2>
+                <p>Row Layout, Align Elements row wise, Horizontally</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="3">
+                <h2>Row / Vertical Alignment</h2>
+                <p>Row Layout, Align Elements row wise, Vertically</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>Column / Default</h2>
+                <p>Column Default vertical arrangements</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="5">
+                <h2>Column / Vertical Alignment</h2>
+                <p>Different Vertical Arrangements of columns</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="6">
+                <h2>Column / Horizontal Alignment</h2>
+                <p>Different Horizontal Arrangements of columns</p>
+            </div>
+
         </div>
     </div>
 </div>
-
-
 
 
 <script type="text/javascript">
@@ -82,8 +106,203 @@
         console.log(`Fetching data for card ID: ${cardId}`);
 
         const data = [
-            { id: 1, src: 'image_url', description: ``
+            {
+                id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-layout-1.png',
+                description:
+`
+@Preview(showSystemUi = true)
+@Composable
+fun Layouts() {
+
+    Row(modifier = Modifier.background(Color.Yellow)) {
+        Text(text = "Hello there")
+        Button(onClick = {}) { Text(text = "Button") }
+        Switch(checked = true, onCheckedChange = {})
+    }
+}
+`
+            },
+
+            {
+                id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-layout-2.png',
+                description:
+`
+@Preview(showSystemUi = true)
+@Composable
+fun Layouts() {
+
+    Surface {
+        Row(
+            modifier = Modifier.background(Color.Yellow),
+            horizontalArrangement = Arrangement.Start
+//            horizontalArrangement = Arrangement.Center
+//            horizontalArrangement = Arrangement.End
+//            horizontalArrangement = Arrangement.SpaceEvenly
+//            horizontalArrangement = Arrangement.SpaceBetween
+//            horizontalArrangement = Arrangement.SpaceAround
+
+        ) {
+            Button(onClick = {}) { Text(text = "Button 1") }
+            Button(onClick = {}) { Text(text = "Button 2") }
+            Button(onClick = {}) { Text(text = "Button 3") }
+        }
+    }
+}
+`
+            },
+
+            {
+                id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-layout-3.png',
+                description: `
+
+@Preview(showSystemUi = true)
+@Composable
+fun Layouts() {
+
+    Surface {
+        Row(
+            modifier = Modifier.background(Color.Yellow),
+//            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.Center,
+//            horizontalArrangement = Arrangement.End,
+//            horizontalArrangement = Arrangement.SpaceEvenly,
+//            horizontalArrangement = Arrangement.SpaceBetween,
+//            horizontalArrangement = Arrangement.SpaceAround,
+
+
+//            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.CenterVertically
+//            verticalAlignment = Alignment.Bottom
+
+
+        ) {
+            Button(onClick = {}) { Text(text = "Button 1") }
+            Button(onClick = {}) { Text(text = "Button 2") }
+            Button(onClick = {}) { Text(text = "Button 3") }
+        }
+    }
+}
+
+                `
+            },
+
+            {
+                id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-layout-4.png',
+                description:
+                `
+@Preview(showSystemUi = true)
+@Composable
+fun Layouts() {
+
+    Surface {
+        Column (
+            modifier = Modifier.background(Color.Yellow)
+        ) {
+            Button(onClick = {}) { Text(text = "Button 1") }
+            Button(onClick = {}) { Text(text = "Button 2") }
+            Button(onClick = {}) { Text(text = "Button 3") }
+        }
+    }
+}
+
+                `
+            },
+
+             {
+                id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-layout-5.png',
+                description:
+                `
+
+@Preview(showSystemUi = true)
+@Composable
+fun Layouts() {
+
+    Surface {
+        Column (
+            modifier = Modifier.background(Color.Yellow),
+
+//            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.Center,
+//            verticalArrangement = Arrangement.Bottom,
+//            verticalArrangement = Arrangement.SpaceAround,
+//            verticalArrangement = Arrangement.SpaceBetween,
+//            verticalArrangement = Arrangement.SpaceEvenly,
+
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
+            Button(onClick = {}) { Text(text = "Button 1") }
+            Button(onClick = {}) { Text(text = "Button 2") }
+            Button(onClick = {}) { Text(text = "Button 3") }
+        }
+    }
+}
+                `
+            },
+
+             {
+                id: 6, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-layout-6.png',
+                description: `
+
+@Preview(showSystemUi = true)
+@Composable
+fun Layouts() {
+
+    Surface {
+
+        //NOTE: You can refer
+        // Row / Horizontal Alignment and
+        // Row / Vertical Alignment Cards
+
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
+
+            Column (
+                modifier = Modifier
+                    .background(Color.Red)
+                    .padding(start = 10.dp, end = 10.dp),
+
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = {}) { Text(text = "Button 1") }
+                Button(onClick = {}) { Text(text = "Button 2") }
+                Button(onClick = {}) { Text(text = "Button 3") }
             }
+
+            Column (
+                modifier = Modifier
+                    .background(Color.Green)
+                    .padding(start = 10.dp,end = 10.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = {}) { Text(text = "Button 1") }
+                Button(onClick = {}) { Text(text = "Button 2") }
+                Button(onClick = {}) { Text(text = "Button 3") }
+            }
+
+            Column (
+                modifier = Modifier
+                    .background(Color.Yellow).padding(start = 10.dp, end = 10.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = {}) { Text(text = "Button 1") }
+                Button(onClick = {}) { Text(text = "Button 2") }
+                Button(onClick = {}) { Text(text = "Button 3") }
+            }
+        }
+    }
+}
+
+                `
+            },
+
+
+
         ];
 
         return data.find(item => item.id === parseInt(cardId));
