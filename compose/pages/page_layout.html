@@ -12,6 +12,7 @@
 <header>
     <h1 class="header-heading">Jetpack Compose / Layout</h1>
     <div>
+        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
         <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
         <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
     </div>
@@ -49,6 +50,11 @@
             <div class="page-card def-selected" card-id="6">
                 <h2>Column / Horizontal Alignment</h2>
                 <p>Different Horizontal Arrangements of columns</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="7">
+                <h2>Box Layout</h2>
+                <p>Define Top Start to Bottom End</p>
             </div>
 
         </div>
@@ -295,6 +301,49 @@ fun Layouts() {
                 Button(onClick = {}) { Text(text = "Button 3") }
             }
         }
+    }
+}
+`
+            },
+
+            {
+                id: 7, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-layout-7.png',
+                description:
+                `
+@Preview(showSystemUi = true)
+@Composable
+fun Layout() {
+
+    Box (contentAlignment = Alignment.TopStart){
+        Button(onClick = {}) { Text(text = "Top Start") }
+    }
+    Box(contentAlignment = Alignment.TopCenter) {
+        Button(onClick = {}) { Text(text = "Top Center") }
+    }
+    Box(contentAlignment = Alignment.TopEnd) {
+        Button(onClick = {}) { Text(text = "Top End") }
+    }
+
+    //==========================================================
+    Box(contentAlignment = Alignment.CenterStart) {
+        Button(onClick = {}) { Text(text = "Center Start") }
+    }
+    Box(contentAlignment = Alignment.Center) {
+        Button(onClick = {}) { Text(text = "Center") }
+    }
+    Box(contentAlignment = Alignment.CenterEnd) {
+        Button(onClick = {}) { Text(text = "Center End") }
+    }
+    //==========================================================
+
+    Box(contentAlignment = Alignment.BottomStart) {
+        Button(onClick = {}) { Text(text = "Botm Start") }
+    }
+    Box(contentAlignment = Alignment.BottomCenter) {
+        Button(onClick = {}) { Text(text = "Botm Center") }
+    }
+    Box(contentAlignment = Alignment.BottomEnd) {
+        Button(onClick = {}) { Text(text = "Botm End") }
     }
 }
 
