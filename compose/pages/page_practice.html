@@ -42,6 +42,21 @@
                 <p>Based on Codelab learnings, Build Business card, Using Box, Column, Row Layout</p>
             </div>
 
+            <div class="page-card def-selected" card-id="5">
+                <h2>Login Logout Card View</h2>
+                <p>Show Login View and Logout view based on click event and pass on click function to compose ui</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="6">
+                <h2>Lazy Column / Simple 1</h2>
+                <p>Simple view of lazy column, no listener</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="7">
+                <h2>Lazy Column / Simple 2</h2>
+                <p>Simple view of lazy column, no listener</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -360,8 +375,349 @@ fun Exercise() {
         }
     }
 }
+ `
+            },
+             {
+                id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_login_logout.gif',
+                description:
                 `
+
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            JetpackComposeTheme {
+                UpdateUi()
             }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewWindow() {
+    UpdateUi()
+}
+
+@Composable
+fun UpdateUi() {
+    var shouldShowLogoutDialog by remember { mutableStateOf(true) }
+    if(shouldShowLogoutDialog)
+        LoginDialog(onClicked = { shouldShowLogoutDialog = false})
+    else LogoutDialog(onClicked = { shouldShowLogoutDialog = true})
+}
+
+@Composable
+fun LoginDialog(onClicked : () -> Unit) {
+    Surface(
+        color = MaterialTheme.colorScheme.inversePrimary,
+        modifier = Modifier.fillMaxSize()
+    ) {
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(20.dp)
+                .background(color = Color.White, RoundedCornerShape(20.dp))
+        ) {
+
+            Text(text = "Login?",
+                textAlign = TextAlign.Center,
+                fontSize = 30.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontStyle = FontStyle.Italic,
+                fontWeight = FontWeight(600)
+            )
+
+            Text(text = "Are you Sure Want to Login?",
+                modifier = Modifier.padding(10.dp),
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight(100),
+            )
+
+            Row {
+
+                Button (
+                    onClick = onClicked,
+                    modifier = Modifier.padding(10.dp)
+
+                ) {
+                    Text(text = "Cancel"
+                        //color = Color.Blue
+                    )
+                }
+
+                Button(onClick = onClicked ,
+                    modifier = Modifier.padding(10.dp)) {
+                    Text(text = "Login",
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(600),
+                        fontStyle = FontStyle.Italic
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun LogoutDialog(onClicked : () -> Unit) {
+    Surface(
+        color = MaterialTheme.colorScheme.inverseOnSurface,
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .wrapContentWidth()
+                .wrapContentHeight()
+                .background(color = Color.White, RoundedCornerShape(20.dp))
+        ) {
+
+            Text(text = "Logout",
+                textAlign = TextAlign.Center,
+                fontSize = 30.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight(600)
+            )
+
+            val textWithStrike = buildAnnotatedString {
+                append("Are you Sure Want to Login? Logout?")
+                addStyle(
+                    style = SpanStyle(textDecoration = TextDecoration.LineThrough),
+                    start = 21,end = 27
+                )
+            }
+            Text(text = textWithStrike,
+                modifier = Modifier.padding(10.dp),
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight(400),
+            )
+
+
+            Row {
+
+                val customButton = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow,
+                    contentColor = Color.Black
+                )
+                Button (
+                    onClick = onClicked,
+                    colors = customButton,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .border(
+                            2.dp, color = Color.Black,
+                            shape = RoundedCornerShape(20.dp, 0.dp, 20.dp, 0.dp)
+                        )
+
+                ) {
+                    Text(text = "Cancel"
+                        //color = Color.Blue
+                    )
+                }
+
+                Button(onClick = onClicked ,
+                    modifier = Modifier.padding(10.dp)) {
+                    Text(text = "Logout",
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(600),
+                        fontStyle = FontStyle.Italic
+                    )
+                }
+            }
+        }
+    }
+}
+                `
+             },
+
+              {
+                id: 6, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-lazy-colm-1.png',
+                description:
+`
+
+data class Users(val name: String,val designation: String, val experience: String)
+
+@Preview(showSystemUi = true)
+@Composable
+fun LazyColumnCardPreview() {
+    LazyColumn {
+        items(10) {
+            LazyColumnCard(users = Users("Akshay Pawar","Android Dev","2 Year"))
+        }
+    }
+}
+
+@Composable
+fun LazyColumnCard(users: Users, modifier: Modifier = Modifier) {
+    Card(
+        colors = CardDefaults.cardColors(
+                containerColor = Color.White,
+                contentColor = Color.Black), border = BorderStroke(1.dp, Color.Black),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight(Alignment.Top)
+            .padding(10.dp)) {
+
+        Row {
+            Box(
+                modifier
+                    .padding(10.dp)
+                    .background(Color.LightGray, shape = CircleShape)
+                    .size(80.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_person),
+                    contentDescription = "User Name",
+                    modifier
+                        .size(50.dp)
+                        .align(Alignment.Center))
+            }
+
+            Column (modifier.align(Alignment.CenterVertically)){
+                Text(text = users.name,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.W800
+                )
+
+                Text(text = users.designation,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.W400
+                )
+
+                Text(text = users.experience,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.W200
+                )
+            }
+        }
+    }
+}
+
+`
+                },
+
+                 {
+                id: 7, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-lazy-colm-2.png',
+                description:
+`
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun Show() {
+    LazyColumn {
+        items(10) {
+            CardView()
+        }
+    }
+}
+
+
+@Composable
+fun CardView() {
+    Surface(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+            .wrapContentHeight(align = Alignment.Top),
+        color = Color(0xFFF0F0F0),
+        shape = RoundedCornerShape(26.dp)) {
+
+        Box {
+
+            Column {
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+
+                    //Image
+                    Image (
+                        painter = painterResource(
+                        id = R.drawable.ic_launcher_background),
+                        contentDescription = "Sample Image",
+                        modifier = Modifier
+                            .size(80.dp)
+                            .padding(10.dp)
+                            .clip(CircleShape))
+
+
+                    //Column {name, title}
+                    Column {
+                        Text(
+                            text = "Andrew Wilson",
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+
+                        )
+                        Text(text = "2 Year 3 Month of Experience",
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 10.sp
+                        )
+                    }
+                }
+
+
+                Text(text = "Employee Position",
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+
+                Text(text = "Hello this is long description so user and " +
+                        "someone who has less size screen can understand how text " +
+                        "works in jetpack compose",
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily.SansSerif,
+                    modifier = Modifier.padding(
+                        start = 10.dp, end = 10.dp, bottom = 10.dp)
+                )
+            }
+
+            Box(modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)) {
+                val isStarred = remember { mutableStateOf(false) }
+
+                //start icon
+                IconToggleButton(checked = isStarred.value,
+                    onCheckedChange = {isStarred.value = !isStarred.value},
+                    modifier = Modifier
+                        .size(30.dp)
+                        .background(Color.White, CircleShape)
+                        .padding(5.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isStarred.value) Icons.Default.Star
+                            else Icons.Outlined.Star,
+
+                        contentDescription = "Star",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+`
+                }
 
 
         ];
