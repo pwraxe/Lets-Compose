@@ -78,7 +78,12 @@
             </div>
 
             <div class="page-card def-selected" card-id="12">
-                <h2>Lazy Grid Horizontal</h2>
+                <h2>Lazy GridHr / Sample 1</h2>
+                <p>Simple view of LazyVerticalGrid</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="13">
+                <h2>Lazy GridHr / Sample 2</h2>
                 <p>Simple view of LazyVerticalGrid</p>
             </div>
 
@@ -896,7 +901,118 @@ fun LazyRowPreview(userData: UserData, modifier: Modifier = Modifier) {
     }
 }
             `
+        },
+         {
+            id: 13, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-lazy-grid-hr-1.png',
+            description:
+            `
+
+data class UserData(
+    val stars: Int,
+    val image:Int,
+    val designation: String,
+    val name: String,
+    val experience: String )
+
+@Preview
+@Composable
+fun Show(modifier: Modifier = Modifier) {
+
+    val list = listOf<UserData>(
+        UserData(1,R.drawable.dice_1,"One Developer","AP Sing","Exp. 1 Year"),
+        UserData(2,R.drawable.dice_2,"Two Developer","VIP Sing","Exp. 2 Year"),
+        UserData(3,R.drawable.dice_3,"Three Developer","Akshay Sing","Exp. 3 Year"),
+        UserData(4,R.drawable.dice_4,"Four Developer","AK Mishra","Exp. 4 Year"),
+        UserData(5,R.drawable.dice_5,"Five Developer","NIL M","Exp. 5 Year"),
+        UserData(6,R.drawable.dice_6,"Six Developer","Kem kum","Exp. 6 Year"),
+    )
+
+    LazyHorizontalGrid(rows = GridCells.Fixed(2),
+        modifier = modifier.height(480.dp)) {
+
+        items(list) {
+            LazyRowPreview(userData = it)
         }
+    }
+}
+
+@Composable
+fun LazyRowPreview(userData: UserData, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier
+            .wrapContentSize()
+            .padding(4.dp)
+            .shadow(1.dp, shape = RoundedCornerShape(20.dp))) {
+
+        Column (
+            modifier = modifier
+                .wrapContentSize(align = Alignment.TopStart)
+        //        .padding(4.dp)
+        ) {
+
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+                    .align(Alignment.End)
+                    .padding(4.dp)) {
+
+                Text(text = "dollorSign{userData.stars}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp)
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_star_outline),
+                    contentDescription = "Star",
+                    modifier = modifier.size(26.dp)
+                )
+            }
+
+            Box (modifier = modifier.align(Alignment.CenterHorizontally)) {
+
+                Image(
+                    painter = painterResource(id = userData.image),
+                    contentDescription = "null",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                        .size(140.dp)
+                        //.padding(6.dp)
+                        .shadow(elevation = 1.dp, shape = CircleShape)
+                        .border(
+                            width = 1.dp,
+                            color = Color.Black,
+                            shape = CircleShape
+                        )
+                )
+
+                Text(text = userData.designation,
+                    color = Color.White,
+                    modifier = modifier
+                        .align(Alignment.BottomCenter)
+                        .background(
+                            color = Color(0xFF306EFF),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .padding(4.dp)
+                )
+            }
+
+            Text(text = userData.name,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = modifier
+                    .padding(start = 6.dp, end = 6.dp)
+                    .align(alignment = Alignment.CenterHorizontally))
+
+            Text(text = userData.experience,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Light,
+                modifier = modifier
+                    .padding(bottom = 4.dp)
+                    .align(alignment = Alignment.CenterHorizontally))
+        }
+    }
+}
+            `
+         }
 
 
 
