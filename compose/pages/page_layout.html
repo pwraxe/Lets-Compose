@@ -57,6 +57,31 @@
                 <p>Define Top Start to Bottom End</p>
             </div>
 
+            <div class="page-card def-selected" card-id="8">
+                <h2>Lazy Column / Simple 1</h2>
+                <p>Simple view of lazy column, no listener</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="9">
+                <h2>Lazy Column / Simple 2</h2>
+                <p>Simple view of lazy column, no listener</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="10">
+                <h2>Lazy Row</h2>
+                <p>Simple view of lazy row, no listener</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="11">
+                <h2>Lazy Grid</h2>
+                <p>Simple view of LazyVerticalGrid</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="12">
+                <h2>Lazy Grid Horizontal</h2>
+                <p>Simple view of LazyVerticalGrid</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -346,9 +371,532 @@ fun Layout() {
         Button(onClick = {}) { Text(text = "Botm End") }
     }
 }
+    `
+    },
 
-                `
-            },
+    {
+        id: 8, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-lazy-colm-1.png',
+        description: `
+
+data class Users(val name: String,val designation: String, val experience: String)
+
+@Preview(showSystemUi = true)
+@Composable
+fun LazyColumnCardPreview() {
+    LazyColumn {
+        items(10) {
+            LazyColumnCard(users = Users("Akshay Pawar","Android Dev","2 Year"))
+        }
+    }
+}
+
+@Composable
+fun LazyColumnCard(users: Users, modifier: Modifier = Modifier) {
+    Card(
+        colors = CardDefaults.cardColors(
+                containerColor = Color.White,
+                contentColor = Color.Black), border = BorderStroke(1.dp, Color.Black),
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight(Alignment.Top)
+            .padding(10.dp)) {
+
+        Row {
+            Box(
+                modifier
+                    .padding(10.dp)
+                    .background(Color.LightGray, shape = CircleShape)
+                    .size(80.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_person),
+                    contentDescription = "User Name",
+                    modifier
+                        .size(50.dp)
+                        .align(Alignment.Center))
+            }
+
+            Column (modifier.align(Alignment.CenterVertically)){
+                Text(text = users.name,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.W800
+                )
+
+                Text(text = users.designation,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.W400
+                )
+
+                Text(text = users.experience,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.W200
+                )
+            }
+        }
+    }
+}
+
+`
+                },
+
+                 {
+                id: 9, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-lazy-colm-2.png',
+                description:
+`
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun Show() {
+    LazyColumn {
+        items(10) {
+            CardView()
+        }
+    }
+}
+
+
+@Composable
+fun CardView() {
+    Surface(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+            .wrapContentHeight(align = Alignment.Top),
+        color = Color(0xFFF0F0F0),
+        shape = RoundedCornerShape(26.dp)) {
+
+        Box {
+
+            Column {
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+
+                    //Image
+                    Image (
+                        painter = painterResource(
+                        id = R.drawable.ic_launcher_background),
+                        contentDescription = "Sample Image",
+                        modifier = Modifier
+                            .size(80.dp)
+                            .padding(10.dp)
+                            .clip(CircleShape))
+
+
+                    //Column {name, title}
+                    Column {
+                        Text(
+                            text = "Andrew Wilson",
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+
+                        )
+                        Text(text = "2 Year 3 Month of Experience",
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 10.sp
+                        )
+                    }
+                }
+
+
+                Text(text = "Employee Position",
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+
+                Text(text = "Hello this is long description so user and " +
+                        "someone who has less size screen can understand how text " +
+                        "works in jetpack compose",
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily.SansSerif,
+                    modifier = Modifier.padding(
+                        start = 10.dp, end = 10.dp, bottom = 10.dp)
+                )
+            }
+
+            Box(modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)) {
+                val isStarred = remember { mutableStateOf(false) }
+
+                //start icon
+                IconToggleButton(checked = isStarred.value,
+                    onCheckedChange = {isStarred.value = !isStarred.value},
+                    modifier = Modifier
+                        .size(30.dp)
+                        .background(Color.White, CircleShape)
+                        .padding(5.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isStarred.value) Icons.Default.Star
+                            else Icons.Outlined.Star,
+
+                        contentDescription = "Star",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+`
+},
+        {
+            id: 10, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-lazy-row-1.png',
+            description:
+            `
+//Lazy Row
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            Show()
+        }
+    }
+}
+
+
+data class UserData(
+    val stars: Int,
+    val image:Int,
+    val designation: String,
+    val name: String,
+    val experience: String )
+
+@Preview(showSystemUi = true)
+@Composable
+fun Show() {
+
+    val list = listOf<UserData>(
+        UserData(1,R.drawable.dice_1,"One Developer","AP Sing","Exp. 1 Year"),
+        UserData(2,R.drawable.dice_2,"Two Developer","VIP Sing","Exp. 2 Year"),
+        UserData(3,R.drawable.dice_3,"Three Developer","Akshay Sing","Exp. 3 Year"),
+        UserData(4,R.drawable.dice_4,"Four Developer","AK Mishra","Exp. 4 Year"),
+        UserData(5,R.drawable.dice_5,"Five Developer","NIL M","Exp. 5 Year"),
+        UserData(6,R.drawable.dice_6,"Six Developer","Kem kum","Exp. 6 Year"),
+    )
+
+
+    LazyRow {
+        items(list) {
+            LazyRowPreview(it)
+        }
+    }
+}
+
+@Composable
+fun LazyRowPreview(userData: UserData, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier
+            .padding(4.dp)
+            .shadow(4.dp, shape = RoundedCornerShape(20.dp))
+            .wrapContentHeight()
+            .wrapContentWidth()) {
+        Column (horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier.wrapContentWidth()) {
+
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+                    .align(Alignment.End)
+                    .padding(4.dp)) {
+                Text(text = "(DollorSign){userData.stars}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp)
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_star_outline),
+                    contentDescription = "Star",
+                    modifier = modifier.size(26.dp)
+                )
+            }
+
+            Box (contentAlignment = Alignment.Center) {
+
+                Image(
+                    painter = painterResource(id = userData.image),
+                    contentDescription = "null",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                        .size(140.dp).padding(6.dp)
+                        .shadow(elevation = 1.dp, shape = CircleShape)
+                        .border(width = 1.dp, color = Color.Black, shape = CircleShape)
+                )
+
+                Text(text = userData.designation,
+                    color = Color.White,
+                    modifier = modifier
+                        .align(Alignment.BottomCenter)
+                        .background(
+                            color = Color(0xFF306EFF),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .padding(4.dp)
+                )
+            }
+
+            Text(text = userData.name,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = modifier.padding(start = 6.dp, end = 6.dp))
+
+            Text(text = userData.experience,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Light,
+                modifier = modifier.padding(bottom = 4.dp))
+        }
+    }
+}
+            `
+        },
+        {
+            id: 11, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-lazy-grid-vr-1.png',
+            description:
+            `
+
+//Lazy Grid Vertical
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            Show()
+        }
+    }
+}
+
+
+data class UserData(
+    val stars: Int,
+    val image:Int,
+    val designation: String,
+    val name: String,
+    val experience: String )
+
+@Preview(showSystemUi = true)
+@Composable
+fun Show() {
+
+    val list = listOf<UserData>(
+        UserData(1,R.drawable.dice_1,"One Developer","AP Sing","Exp. 1 Year"),
+        UserData(2,R.drawable.dice_2,"Two Developer","VIP Sing","Exp. 2 Year"),
+        UserData(3,R.drawable.dice_3,"Three Developer","Akshay Sing","Exp. 3 Year"),
+        UserData(4,R.drawable.dice_4,"Four Developer","AK Mishra","Exp. 4 Year"),
+        UserData(5,R.drawable.dice_5,"Five Developer","NIL M","Exp. 5 Year"),
+        UserData(6,R.drawable.dice_6,"Six Developer","Kem kum","Exp. 6 Year"),
+    )
+
+
+    LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+        items(list) {
+            LazyRowPreview(it)
+        }
+    }
+}
+
+@Composable
+fun LazyRowPreview(userData: UserData, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier
+            .padding(4.dp)
+            .shadow(4.dp, shape = RoundedCornerShape(20.dp))) {
+        Column (
+            modifier = modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()) {
+
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+                    .align(Alignment.End)
+                    .padding(4.dp)) {
+                Text(text = "dollerSign{userData.stars}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp)
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_star_outline),
+                    contentDescription = "Star",
+                    modifier = modifier.size(26.dp)
+                )
+            }
+
+            Box (modifier = modifier.align(Alignment.CenterHorizontally)) {
+
+                Image(
+                    painter = painterResource(id = userData.image),
+                    contentDescription = "null",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                        .size(140.dp)
+                        .padding(6.dp)
+                        .shadow(elevation = 1.dp, shape = CircleShape)
+                        .border(
+                            width = 1.dp,
+                            color = Color.Black,
+                            shape = CircleShape)
+                )
+
+                Text(text = userData.designation,
+                    color = Color.White,
+                    modifier = modifier
+                        .align(Alignment.BottomCenter)
+                        .background(
+                            color = Color(0xFF306EFF),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .padding(4.dp)
+                )
+            }
+
+            Text(text = userData.name,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = modifier
+                    .padding(start = 6.dp, end = 6.dp)
+                    .align(alignment = Alignment.CenterHorizontally))
+
+            Text(text = userData.experience,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Light,
+                modifier = modifier
+                    .padding(bottom = 4.dp)
+                    .align(alignment = Alignment.CenterHorizontally))
+        }
+    }
+}
+            `
+        },
+
+        {
+            id: 12, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-lazy-stagger-grid-1.png',
+            description:
+            `
+
+//Lazy Stagger Grid
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            Show()
+        }
+    }
+}
+
+
+data class UserData(
+    val stars: Int,
+    val image:Int,
+    val designation: String,
+    val name: String,
+    val experience: String )
+
+@OptIn(ExperimentalFoundationApi::class)
+@Preview(showSystemUi = true)
+@Composable
+fun Show() {
+
+    val list = listOf<UserData>(
+        UserData(1,R.drawable.dice_1,"One Developer","AP Sing","Exp. 1 Year"),
+        UserData(2,R.drawable.dice_2,"Two Developer","VIP Sing","Exp. 2 Year"),
+        UserData(3,R.drawable.dice_3,"Three Developer","Akshay Sing","Exp. 3 Year"),
+        UserData(4,R.drawable.dice_4,"Four Developer","AK Mishra","Exp. 4 Year"),
+        UserData(5,R.drawable.dice_5,"Five Developer","NIL M","Exp. 5 Year"),
+        UserData(6,R.drawable.dice_6,"Six Developer","Kem kum","Exp. 6 Year"),
+    )
+
+
+    LazyHorizontalStaggeredGrid(rows = StaggeredGridCells.Fixed(2),
+        modifier = Modifier.wrapContentSize(align = Alignment.TopStart),
+        horizontalItemSpacing = 4.dp,
+        verticalArrangement = Arrangement.Top) {
+        items(list) {
+            LazyRowPreview(it)
+        }
+    }
+}
+
+@Composable
+fun LazyRowPreview(userData: UserData, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .wrapContentSize(align = Alignment.TopStart)
+            .padding(4.dp)
+            .shadow(1.dp, shape = RoundedCornerShape(20.dp))
+            ) {
+
+        Column (
+            modifier = modifier
+                .wrapContentSize(align = Alignment.TopStart).padding(4.dp)) {
+
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+                    .align(Alignment.End)
+                    .padding(4.dp)) {
+
+                Text(text = "dollorSign{userData.stars}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp)
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_star_outline),
+                    contentDescription = "Star",
+                    modifier = modifier.size(26.dp)
+                )
+            }
+
+            Box (modifier = modifier.align(Alignment.CenterHorizontally)) {
+
+                Image(
+                    painter = painterResource(id = userData.image),
+                    contentDescription = "null",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                        .size(140.dp)
+                        .padding(6.dp)
+                        .shadow(elevation = 1.dp, shape = CircleShape)
+                        .border(
+                            width = 1.dp,
+                            color = Color.Black,
+                            shape = CircleShape
+                        )
+                )
+
+                Text(text = userData.designation,
+                    color = Color.White,
+                    modifier = modifier
+                        .align(Alignment.BottomCenter)
+                        .background(
+                            color = Color(0xFF306EFF),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .padding(4.dp)
+                )
+            }
+
+            Text(text = userData.name,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = modifier
+                    .padding(start = 6.dp, end = 6.dp)
+                    .align(alignment = Alignment.CenterHorizontally))
+
+            Text(text = userData.experience,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Light,
+                modifier = modifier
+                    .padding(bottom = 4.dp)
+                    .align(alignment = Alignment.CenterHorizontally))
+        }
+    }
+}
+            `
+        }
 
 
 
