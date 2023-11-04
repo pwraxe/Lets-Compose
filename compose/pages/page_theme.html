@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Layouts in Compose</title>
+  <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+  <h1 class="header-heading">Jetpack Compose / Layout</h1>
+  <div>
+    <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+    <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+    <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+  </div>
+</header>
+
+<div class="page">
+  <div class="code-container"></div>
+
+  <div class="list">
+    <div class="item-container">
+
+      <div class="page-card def-selected" card-id="1">
+        <h2>Color</h2>
+        <p>Add Custom and Dynamic Color from <a href="https://m3.material.io/theme-builder#/custom">Material Theme</a>
+        </p>
+      </div>
+
+      <div class="page-card def-selected" card-id="2">
+        <h2>Shape</h2>
+        <p>Default Shape in Compose, with different size</p>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+  const profileLink = document.getElementById("profileLink");
+  const composeLink = document.getElementById("composeLink");
+  const headerHeading = document.querySelector(".header-heading");
+
+  profileLink.addEventListener("click", () => {
+      profileLink.classList.add("selected");
+      composeLink.classList.remove("selected");
+      headerHeading.textContent = "Akshay's Profile";
+  });
+
+  composeLink.addEventListener("click", () => {
+      composeLink.classList.add("selected");
+      profileLink.classList.remove("selected");
+      headerHeading.textContent = "Jetpack Compose";
+  });
+
+  //---------------------------------------------------------------
+  const cards = document.querySelectorAll('.page-card');
+  const dataContainer = document.querySelector('.code-container');
+  cards.forEach(pcard => {
+      pcard.addEventListener('click', () => {
+          cards.forEach(otherCard => {
+              otherCard.classList.remove('selected-card');
+          });
+          pcard.classList.add('selected-card');
+      });
+  });
+
+  const defaultSelectedCard = document.querySelector('.def-selected');
+  if (defaultSelectedCard) {
+      defaultSelectedCard.classList.add('selected-card');
+      const cardId = defaultSelectedCard.getAttribute('card-id');
+      const data = fetchDataById(cardId);
+      displayData(data);
+  }
+
+  cards.forEach(card => {
+      card.addEventListener('click', () => {
+          const cardId = card.getAttribute('card-id');
+          const data = fetchDataById(cardId);
+          displayData(data);
+      });
+  });
+
+  function fetchDataById(cardId) {
+      console.log(`Fetching data for card ID: ${cardId}`);
+
+      const data = [
+          {
+            id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/theme_output_color.png', description: `
+
+Color Picker : https://m3.material.io/theme-builder#/custom
+Color: #[ALPHA][RED][GREEN][BLUE] = #[FF][80][00][88] = #FF800088
+
+Alpha from
+00 = 0 % Opacity = Full Transparent
+to
+FF = 100% Opacity = No Transparent (Solid)
+
+Steps to add Custom Colors in Compose
+
+Step 1: Visit this site https://m3.material.io/theme-builder#/custom
+Step 2: Left Hand Side, "Core Colors",
+        Click on Circular Color to Open "HTC Color Picker",
+        Select Color
+Step 3: Top Right side, Click "Export" -> Jetpack Compose (Theme.kt)
+        This Downloads Theme and Color File, Open, Copy All (Except, package name)
+        In Android Studio -> app -> java -> package_name -> ui.theme
+        Theme.kt -> Open it -> Paste copied contents
+
+        Update Theme File as you need
+
+
+
+/*
+ * Copyright (C) 2023 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.example.woof.ui.theme
+
+import android.app.Activity
+import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+import md_theme_dark_outlineVariant
+import md_theme_dark_primary
+import md_theme_dark_scrim
+import md_theme_light_inverseOnSurface
+import md_theme_light_onPrimary
+import md_theme_light_onPrimaryContainer
+import md_theme_light_onSecondary
+import md_theme_light_onSecondaryContainer
+import md_theme_light_primary
+import md_theme_light_primaryContainer
+import md_theme_light_secondary
+import md_theme_light_secondaryContainer
+import md_theme_light_tertiary
+import md_theme_light_onTertiary
+import md_theme_light_tertiaryContainer
+import md_theme_light_onTertiaryContainer
+import md_theme_light_error
+import md_theme_light_errorContainer
+import md_theme_light_onError
+import md_theme_light_onErrorContainer
+import md_theme_light_background
+import md_theme_light_onBackground
+import md_theme_light_surface
+import md_theme_light_onSurface
+import md_theme_light_surfaceVariant
+import md_theme_light_onSurfaceVariant
+import md_theme_light_outline
+import md_theme_light_inverseSurface
+import md_theme_light_inversePrimary
+import md_theme_light_shadow
+import md_theme_light_surfaceTint
+import md_theme_light_outlineVariant
+import md_theme_light_scrim
+
+import md_theme_dark_onPrimary
+import md_theme_dark_primaryContainer
+import md_theme_dark_onPrimaryContainer
+import md_theme_dark_secondary
+import md_theme_dark_onSecondary
+import md_theme_dark_secondaryContainer
+import md_theme_dark_onSecondaryContainer
+import md_theme_dark_tertiary
+import md_theme_dark_onTertiary
+import md_theme_dark_tertiaryContainer
+import md_theme_dark_onTertiaryContainer
+import md_theme_dark_error
+import md_theme_dark_errorContainer
+import md_theme_dark_onError
+import md_theme_dark_onErrorContainer
+import md_theme_dark_background
+import md_theme_dark_onBackground
+import md_theme_dark_surface
+import md_theme_dark_onSurface
+import md_theme_dark_surfaceVariant
+import md_theme_dark_onSurfaceVariant
+import md_theme_dark_outline
+import md_theme_dark_inverseOnSurface
+import md_theme_dark_inverseSurface
+import md_theme_dark_inversePrimary
+import md_theme_dark_shadow
+import md_theme_dark_surfaceTint
+
+
+private val LightColors = lightColorScheme(
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    primaryContainer = md_theme_light_primaryContainer,
+    onPrimaryContainer = md_theme_light_onPrimaryContainer,
+    secondary = md_theme_light_secondary,
+    onSecondary = md_theme_light_onSecondary,
+    secondaryContainer = md_theme_light_secondaryContainer,
+    onSecondaryContainer = md_theme_light_onSecondaryContainer,
+    tertiary = md_theme_light_tertiary,
+    onTertiary = md_theme_light_onTertiary,
+    tertiaryContainer = md_theme_light_tertiaryContainer,
+    onTertiaryContainer = md_theme_light_onTertiaryContainer,
+    error = md_theme_light_error,
+    errorContainer = md_theme_light_errorContainer,
+    onError = md_theme_light_onError,
+    onErrorContainer = md_theme_light_onErrorContainer,
+    background = md_theme_light_background,
+    onBackground = md_theme_light_onBackground,
+    surface = md_theme_light_surface,
+    onSurface = md_theme_light_onSurface,
+    surfaceVariant = md_theme_light_surfaceVariant,
+    onSurfaceVariant = md_theme_light_onSurfaceVariant,
+    outline = md_theme_light_outline,
+    inverseOnSurface = md_theme_light_inverseOnSurface,
+    inverseSurface = md_theme_light_inverseSurface,
+    inversePrimary = md_theme_light_inversePrimary,
+    surfaceTint = md_theme_light_surfaceTint,
+    outlineVariant = md_theme_light_outlineVariant,
+    scrim = md_theme_light_scrim,
+)
+
+
+private val DarkColors = darkColorScheme(
+    primary = md_theme_dark_primary,
+    onPrimary = md_theme_dark_onPrimary,
+    primaryContainer = md_theme_dark_primaryContainer,
+    onPrimaryContainer = md_theme_dark_onPrimaryContainer,
+    secondary = md_theme_dark_secondary,
+    onSecondary = md_theme_dark_onSecondary,
+    secondaryContainer = md_theme_dark_secondaryContainer,
+    onSecondaryContainer = md_theme_dark_onSecondaryContainer,
+    tertiary = md_theme_dark_tertiary,
+    onTertiary = md_theme_dark_onTertiary,
+    tertiaryContainer = md_theme_dark_tertiaryContainer,
+    onTertiaryContainer = md_theme_dark_onTertiaryContainer,
+    error = md_theme_dark_error,
+    errorContainer = md_theme_dark_errorContainer,
+    onError = md_theme_dark_onError,
+    onErrorContainer = md_theme_dark_onErrorContainer,
+    background = md_theme_dark_background,
+    onBackground = md_theme_dark_onBackground,
+    surface = md_theme_dark_surface,
+    onSurface = md_theme_dark_onSurface,
+    surfaceVariant = md_theme_dark_surfaceVariant,
+    onSurfaceVariant = md_theme_dark_onSurfaceVariant,
+    outline = md_theme_dark_outline,
+    inverseOnSurface = md_theme_dark_inverseOnSurface,
+    inverseSurface = md_theme_dark_inverseSurface,
+    inversePrimary = md_theme_dark_inversePrimary,
+    surfaceTint = md_theme_dark_surfaceTint,
+    outlineVariant = md_theme_dark_outlineVariant,
+    scrim = md_theme_dark_scrim,
+)
+
+
+@Composable
+fun WoofTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context)
+            else dynamicLightColorScheme(context)
+        }
+
+        darkTheme -> DarkColors
+        else -> LightColors
+    }
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view)
+                        .isAppearanceLightStatusBars = darkTheme
+        }
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
+    )
+}
+
+
+
+
+===================================================================
+Color.kt File
+
+
+//Imported from https://m3.material.io/theme-builder#/custom
+
+
+val md_theme_light_primary = Color(0xFF895100)
+val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_primaryContainer = Color(0xFFFFDCBC)
+val md_theme_light_onPrimaryContainer = Color(0xFF2C1700)
+val md_theme_light_secondary = Color(0xFF725A42)
+val md_theme_light_onSecondary = Color(0xFFFFFFFF)
+val md_theme_light_secondaryContainer = Color(0xFFFEDDBE)
+val md_theme_light_onSecondaryContainer = Color(0xFF291805)
+val md_theme_light_tertiary = Color(0xFF57633B)
+val md_theme_light_onTertiary = Color(0xFFFFFFFF)
+val md_theme_light_tertiaryContainer = Color(0xFFDAE9B6)
+val md_theme_light_onTertiaryContainer = Color(0xFF151F01)
+val md_theme_light_error = Color(0xFFBA1A1A)
+val md_theme_light_errorContainer = Color(0xFFFFDAD6)
+val md_theme_light_onError = Color(0xFFFFFFFF)
+val md_theme_light_onErrorContainer = Color(0xFF410002)
+val md_theme_light_background = Color(0xFFFFFBFF)
+val md_theme_light_onBackground = Color(0xFF1F1B16)
+val md_theme_light_surface = Color(0xFFFFFBFF)
+val md_theme_light_onSurface = Color(0xFF1F1B16)
+val md_theme_light_surfaceVariant = Color(0xFFF1DFD0)
+val md_theme_light_onSurfaceVariant = Color(0xFF50453A)
+val md_theme_light_outline = Color(0xFF837568)
+val md_theme_light_inverseOnSurface = Color(0xFFFAEFE7)
+val md_theme_light_inverseSurface = Color(0xFF352F2B)
+val md_theme_light_inversePrimary = Color(0xFFFFB86B)
+val md_theme_light_shadow = Color(0xFF000000)
+val md_theme_light_surfaceTint = Color(0xFF895100)
+val md_theme_light_outlineVariant = Color(0xFFD5C4B5)
+val md_theme_light_scrim = Color(0xFF000000)
+
+val md_theme_dark_primary = Color(0xFFFFB86B)
+val md_theme_dark_onPrimary = Color(0xFF492900)
+val md_theme_dark_primaryContainer = Color(0xFF683D00)
+val md_theme_dark_onPrimaryContainer = Color(0xFFFFDCBC)
+val md_theme_dark_secondary = Color(0xFFE0C1A3)
+val md_theme_dark_onSecondary = Color(0xFF402D18)
+val md_theme_dark_secondaryContainer = Color(0xFF58432C)
+val md_theme_dark_onSecondaryContainer = Color(0xFFFEDDBE)
+val md_theme_dark_tertiary = Color(0xFFBECC9B)
+val md_theme_dark_onTertiary = Color(0xFF293411)
+val md_theme_dark_tertiaryContainer = Color(0xFF3F4B25)
+val md_theme_dark_onTertiaryContainer = Color(0xFFDAE9B6)
+val md_theme_dark_error = Color(0xFFFFB4AB)
+val md_theme_dark_errorContainer = Color(0xFF93000A)
+val md_theme_dark_onError = Color(0xFF690005)
+val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)
+val md_theme_dark_background = Color(0xFF1F1B16)
+val md_theme_dark_onBackground = Color(0xFFEBE1D9)
+val md_theme_dark_surface = Color(0xFF1F1B16)
+val md_theme_dark_onSurface = Color(0xFFEBE1D9)
+val md_theme_dark_surfaceVariant = Color(0xFF50453A)
+val md_theme_dark_onSurfaceVariant = Color(0xFFD5C4B5)
+val md_theme_dark_outline = Color(0xFF9D8E81)
+val md_theme_dark_inverseOnSurface = Color(0xFF1F1B16)
+val md_theme_dark_inverseSurface = Color(0xFFEBE1D9)
+val md_theme_dark_inversePrimary = Color(0xFF895100)
+val md_theme_dark_shadow = Color(0xFF000000)
+val md_theme_dark_surfaceTint = Color(0xFFFFB86B)
+val md_theme_dark_outlineVariant = Color(0xFF50453A)
+val md_theme_dark_scrim = Color(0xFF000000)
+
+
+val seed = Color(0xFF754500)
+
+ `
+          },
+          { id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output-color.png', description: `
+
+Check Shape.kt file Exists at, [app -> java -> package -> ui.theme -> Shape.kt]
+if Exists Open it Else Create New File
+
+Define new variable
+
+
+val Shapes = Shapes(
+    extraSmall = RoundedCornerShape(10.dp),
+    small = RoundedCornerShape(15.dp),
+    medium = RoundedCornerShape(20.dp),
+    large = RoundedCornerShape(25.dp),
+    extraLarge = RoundedCornerShape(30.dp)
+)
+
+
+Heres You Define Shape size as  your Preference
+
+Here How you can Call this variable from code
+"shape = MaterialTheme.shapes.medium"
+
+
+
+
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            JetpackComposeTheme(darkTheme = false){
+
+            }
+        }
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun LetsStart() {
+
+    LazyColumn {
+        items(5) {
+            Card (modifier = Modifier
+                .wrapContentHeight(Alignment.Top)
+                .padding(4.dp)
+                .fillMaxWidth()
+                .clip(shape = MaterialTheme.shapes.small),
+                colors = CardDefaults.cardColors(Color.White),
+                border = BorderStroke(1.dp, Color.Blue)
+            ){
+                Row {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_task_completed),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(60.dp)
+                            .padding(6.dp))
+
+                    Column {
+                        Text(
+                            text = "About",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.W400,
+                            color = Color.Black)
+
+                        Text(text = "This is Default About Section")
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+          ` },
+          { id: 3, src: 'image_url', description: `` }
+      ];
+
+      return data.find(item => item.id === parseInt(cardId));
+  }
+
+  function displayData(data) {
+      console.log(`Displaying data: ${data}`);
+      if (data) {
+          dataContainer.innerHTML = `
+
+                   <div class="output-image">
+                  <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+              </div>
+
+              <div class="output-code">
+
+                  <pre>
+                      <code class="language-kotlin">${data.description}</code>
+                  </pre>
+              </div>
+          `;
+      } else {
+          dataContainer.innerHTML = 'Data not found';
+      }
+  }
+</script>
+
+</body>
+</html>
