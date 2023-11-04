@@ -35,6 +35,11 @@
         <p>Default Shape in Compose, with different size</p>
       </div>
 
+      <div class="page-card def-selected" card-id="3">
+        <h2>Font Family / Typography</h2>
+        <p>Set Default Font and Add Custom Font</p>
+      </div>
+
 
     </div>
   </div>
@@ -468,7 +473,93 @@ fun LetsStart() {
 
 
           ` },
-          { id: 3, src: 'image_url', description: `` }
+          { id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_font.png', description: `
+To Add Custom Font
+- Goto --> https://fonts.google.com/
+- Select Font you want to download
+- Download From Opened Panel
+- In Android Studio, check 'Font' Fonder exists under 'res'
+  copy paste '.ttf' file you want to include
+
+- Open Type.kt, Add your require Fonts as Follows
+
+val fontBold = FontFamily(Font(R.font.montserrat_bold))
+val fontMedium = FontFamily(Font(R.font.montserrat_medium))
+val fontThin = FontFamily(Font(R.font.montserrat_thin))
+
+
+
+//You can add this Typography to Theme.kt file
+MaterialTheme(
+      colorScheme = colorScheme,
+      typography = Typography, <------
+      content = content
+)
+val Typography = Typography(
+        displayLarge = TextStyle(
+              fontFamily = FontFamily(Font(R.font.montserrat_bold, FontWeight.W800)),
+              fontWeight = FontWeight.Normal,
+              fontSize = 36.sp
+        ),
+        displayMedium = TextStyle(
+              fontFamily = FontFamily(Font(R.font.montserrat_medium, FontWeight.W600)),
+              fontWeight = FontWeight.Bold,
+              fontSize = 20.sp
+        ),
+        labelSmall = TextStyle(
+              fontFamily = FontFamily(Font(R.font.montserrat_medium, FontWeight.W300)),
+              fontWeight = FontWeight.Bold,
+              fontSize = 14.sp
+        ),
+        bodyLarge = TextStyle(
+              fontFamily = FontFamily(Font(R.font.montserrat_thin, FontWeight.W200)),
+              fontWeight = FontWeight.Normal,
+              fontSize = 14.sp
+        )
+)
+
+==============================================
+
+
+@Preview(showSystemUi = true)
+@Composable
+fun LetsStart() {
+    Column {
+        Text(
+            text = "About",
+            fontSize = 30.sp,
+            fontFamily = FontFamily.Cursive,
+            fontWeight = FontWeight.W400,
+            color = Color.Black)
+
+        Text(
+            text = "About",
+            fontSize = 30.sp,
+            fontFamily = fontBold,
+            fontWeight = FontWeight.W400,
+            color = Color.Black)
+
+        Text(
+            text = "About",
+            fontSize = 30.sp,
+            fontFamily = fontMedium,
+            fontWeight = FontWeight.W400,
+            color = Color.Black)
+
+        Text(
+            text = "About",
+            fontSize = 30.sp,
+            fontFamily = fontThin,
+            fontWeight = FontWeight.W400,
+            color = Color.Black)
+    }
+}
+
+
+
+
+
+          ` }
       ];
 
       return data.find(item => item.id === parseInt(cardId));
