@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Layouts in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / Layout</h1>
+    <div>
+        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+
+    <div class="list">
+        <div class="item-container">
+
+            <div class="page-card def-selected" card-id="1">
+                <h2>Animation</h2>
+                <p>Default and Custom Spring Animation, Damping-NoBound to Damping-HighBounce</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>Spring Animation</h2>
+                <p>Spring Animation from Damping low to high and stiffness low to high</p>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+            { id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_animation_1.png',
+            description:
+`
+@Preview(showSystemUi = true)
+@Composable
+fun LetsStudy() {
+    Column {
+        Animation1()
+        Animation2()
+        Animation3()
+        Animation4()
+        Animation5()
+    }
+}
+
+@Composable
+fun Animation1(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+
+    Card (modifier = modifier
+        .animateContentSize()
+        .padding(10.dp)) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column (
+                modifier = modifier
+                    .padding(14.dp)
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center) {
+
+                Text(
+                    text = "AnimateContentSize()",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Simple Animation with
+                               { modifier.animateContentSize() }
+                               animation style",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore,
+                    contentDescription = "open"
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation2(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioNoBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-NoBounce, Stiff-low)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioNoBouncy, StiffnessLow",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation3(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-Low, Stiff-Low)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioLowBouncy, StiffnessLow",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation4(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-Medium, Stiff-Low)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioMediumBouncy, StiffnessLow",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation5(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioHighBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-High, Stiff-Low)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioHighBouncy, StiffnessLow",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+`
+},
+{ id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_animation_2.png',
+description:
+`
+@Preview(showSystemUi = true)
+@Composable
+fun LetsStudy() {
+
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())) {
+        Text(
+            text = "DampingRatioNoBouncy",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W300,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 10.dp)
+        )
+
+        Animation1()
+        Animation2()
+        Animation3()
+
+        Divider(
+            color = Color.Black,
+            thickness = 1.dp,
+            modifier = Modifier
+                .padding(
+                    start = 10.dp,
+                    top = 14.dp,
+                    end = 10.dp))
+
+        Text(
+            text = "DampingRatioLowBouncy",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W300,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 10.dp)
+        )
+
+        Animation4()
+        Animation5()
+        Animation6()
+
+        Divider(
+            color = Color.Black,
+            thickness = 1.dp,
+            modifier = Modifier
+                .padding(
+                    start = 10.dp,
+                    top = 14.dp,
+                    end = 10.dp))
+
+        Text(
+            text = "DampingRatioMediumBouncy",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W300,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 10.dp)
+        )
+
+        Animation7()
+        Animation8()
+        Animation9()
+
+        Divider(
+            color = Color.Black,
+            thickness = 1.dp,
+            modifier = Modifier
+                .padding(
+                    start = 10.dp,
+                    top = 14.dp,
+                    end = 10.dp))
+
+        Text(
+            text = "DampingRatioHighBouncy",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W300,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 10.dp)
+        )
+
+        Animation10()
+        Animation11()
+        Animation12()
+
+    }
+
+}
+
+
+@Composable
+fun Animation1(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioNoBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-NoBounce, Stiff-low)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioNoBouncy, StiffnessLow",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation2(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioNoBouncy,
+                stiffness = Spring.StiffnessMedium
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-NoBounce, Stiff-Medium)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioNoBouncy, StiffnessMedium",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation3(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioNoBouncy,
+                stiffness = Spring.StiffnessHigh
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-NoBounce, Stiff-High)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioNoBouncy, StiffnessHigh",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+//-----------------------------------------------------
+@Composable
+fun Animation4(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-Low, Stiff-Low)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioLowBouncy, StiffnessLow",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation5(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessMedium
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-Low, Stiff-Medium)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioLowBouncy, StiffnessMedium",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation6(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessHigh
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-Low, Stiff-High)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioLowBouncy, StiffnessHigh",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+//-----------------------------------------------------
+@Composable
+fun Animation7(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-Medium, Stiff-Low)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioMediumBouncy, StiffnessLow",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation8(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessMedium
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-Medium, Stiff-Medium)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioMediumBouncy, StiffnessMedium",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation9(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessHigh
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-Medium, Stiff-High)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioMediumBouncy, StiffnessHigh",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+//-----------------------------------------------------
+@Composable
+fun Animation10(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioHighBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-High, Stiff-Low)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioHighBouncy, StiffnessLow",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation11(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioHighBouncy,
+                stiffness = Spring.StiffnessMedium
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-High, Stiff-Medium)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioHighBouncy, StiffnessMedium",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation12(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioHighBouncy,
+                stiffness = Spring.StiffnessHigh
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Spring, (Damping-High, Stiff-High)",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Spring >  DampingRatioHighBouncy, StiffnessHigh",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+`
+
+            }
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>
