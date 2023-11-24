@@ -34,6 +34,16 @@
                 <p>Spring Animation from Damping low to high and stiffness low to high</p>
             </div>
 
+            <div class="page-card def-selected" card-id="3">
+                <h2>Tween Animation</h2>
+                <p>FastOutLinearInEasing, FastOutSlowInEasing, LinearOutSlowInEasing, FastOutLinearInEasing, LinearEasing</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>Repeatable Animation</h2>
+                <p>Repeatable Animation with Tween</p>
+            </div>
+
 
         </div>
     </div>
@@ -1002,8 +1012,387 @@ fun Animation12(modifier: Modifier = Modifier) {
     }
 }
 `
+        },
 
+{ id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_animation_3.gif',
+description:
+`
+
+@Preview(showSystemUi = true)
+@Composable
+fun LetsStudy() {
+
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())) {
+        Text(
+            text = "Tween Animation",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W300,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 10.dp)
+        )
+
+        Animation1()
+        Animation2()
+        Animation3()
+        Animation4()
+        Animation5()
+
+
+        Divider(
+            color = Color.Black,
+            thickness = 1.dp,
+            modifier = Modifier
+                .padding(
+                    start = 10.dp,
+                    top = 14.dp,
+                    end = 10.dp))
+
+    }
+}
+
+@Composable
+fun Animation1(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+
+            animationSpec = tween(
+                durationMillis = 1000,
+                delayMillis = 0,
+                easing = FastOutLinearInEasing
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Tween, FastOutLinearInEasing",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Tween >  Duration-1000, Delay-0",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
             }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore,
+                    contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation2(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+
+            animationSpec = tween(
+                durationMillis = 1000,
+                delayMillis = 0,
+                easing = FastOutSlowInEasing
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Tween, FastOutSlowInEasing",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Tween >  Duration-1000, Delay-0",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation3(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+
+            animationSpec = tween(
+                durationMillis = 1000,
+                delayMillis = 0,
+                easing = LinearOutSlowInEasing
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Tween, LinearOutSlowInEasing",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Tween >  Duration-1000, Delay-0",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation4(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+
+            animationSpec = tween(
+                durationMillis = 1000,
+                delayMillis = 0,
+                easing = FastOutLinearInEasing
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Tween, FastOutLinearInEasing",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Tween >  Duration-1000, Delay-0",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+@Composable
+fun Animation5(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+
+            animationSpec = tween(
+                durationMillis = 1000,
+                delayMillis = 0,
+                easing = LinearEasing
+            )
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Tween, LinearEasing",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+                        text = "Tween >  Duration-1000, Delay-0",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore, contentDescription = "open")
+            }
+        }
+    }
+}
+
+`
+
+},
+{ id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_animation_4.gif',
+description:
+`
+
+@Preview(showSystemUi = true)
+@Composable
+fun LetsStudy() {
+
+    Column(modifier = Modifier
+        .verticalScroll(rememberScrollState())) {
+        Text(
+            text = "Repeatable Animation",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.W300,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 10.dp)
+        )
+
+        Animation1()
+
+
+        Divider(
+            color = Color.Black,
+            thickness = 1.dp,
+            modifier = Modifier
+                .padding(
+                    start = 10.dp,
+                    top = 14.dp,
+                    end = 10.dp))
+
+    }
+}
+
+@Composable
+fun Animation1(modifier: Modifier = Modifier) {
+
+    var expanded by remember { mutableStateOf(false) }
+
+    Card(modifier = modifier
+        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+        .animateContentSize(
+            animationSpec = repeatable(iterations = 3,
+                animation = tween(
+                    durationMillis = 2000,
+                    delayMillis = 0,
+                    easing = LinearEasing),
+                    repeatMode = RepeatMode.Reverse)
+        )
+
+    ) {
+
+        Row (modifier = modifier.fillMaxWidth()){
+
+            Column(modifier = modifier
+                .padding(14.dp)
+                .weight(1f)) {
+
+                Text(
+                    text = "Repeatable, Tween, LinearEasing",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Black)
+
+                if (expanded) {
+                    Text(
+text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" +
+    "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam," +
+    "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo" +
+    "consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse" +
+    "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
+    "proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.W400,
+                        color = Color.DarkGray,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.ExpandLess
+                    else Icons.Filled.ExpandMore,
+                    contentDescription = "open")
+            }
+        }
+    }
+}
+`
+}
         ];
 
         return data.find(item => item.id === parseInt(cardId));
