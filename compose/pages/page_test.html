@@ -36,6 +36,12 @@
                 <h2>UI Tests</h2>
                 <p>App Auto Open, Perform tests & Close</p>
             </div>
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>Tests Strategy</h2>
+                <p>Notes about test case</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -108,6 +114,14 @@ Make Sure these Dependencies
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    //More...
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    testImplementation("junit:junit:4.13.2")
+
+    BOM is imported using
+    - implementation platform('androidx.compose:compose-bom:2023.06.01')
+    This is becouse BOM has self link to lagest stable lib version,
+    If you update BOM Version all libraries auto update
 
 for Functional Tests
 Navigate : Project/app/src/tests[unitTest]/java/package_name/TestFileName.kt
@@ -187,6 +201,35 @@ class TipUiTests {
             .assertExists("Text was found")
     }
 }
+`
+            },
+
+            {
+                id: 4, src: 'image_url',
+                description: `
+
+At Basic Level, You can categorize test three scenario
+    1. Success Path
+        -> AKA Happy Path Tests, Focus Testing functionality for positive flow
+    2. Error Path
+        -> Focus Testing functionality for negative flow
+    3. Boundary Case
+
+A good unit test typically has following four properties:
+    1. Focused - It focus on individual piece of code at same time (i.e class or function)
+    2. Understandable - Simple, Easy to understand to read code. Dev immediate understand intension behind test case
+    3. Deterministic - Test should give same result at all time (on same or other device) w/o change in code
+    4. Self-Contained - It does not req. any human interaction to run code
+
+function name in test should be as follows
+
+fun thingUnderTest_TriggerOfTest_ResultOfTest () {}
+
+thingUnderTest = in which file we are testing code or location
+TriggerOfTest = which function testing
+ResultOfTest  = what expected success / failure result
+
+
 `
             },
         ];
