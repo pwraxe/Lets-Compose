@@ -36,6 +36,12 @@
                     </div>
                 </div>
 
+                <div class="item-container">
+                    <div class="page-card def-selected" card-id="3">
+                        <h2>Navigation - II</h2>
+                        <p>Fragment Navigation With Passing Data using ViewModel</p>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -261,7 +267,294 @@ fun LastScreen(
     }
 }
       `
-                    }
+                    },
+                     { id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/nav_2_output.gif', description:
+`
+
+
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            JetpackComposeTheme(darkTheme = false) {
+                LetsStart()
+            }
+        }
+    }
+}
+
+enum class Destinations {
+    Username, Password, Login
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LetsStart(
+    viewModel: MainViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()) {
+
+    Scaffold(
+        topBar = {
+            Toolbar("Username Page",
+            navigateUp = { navController.navigateUp() })
+        },
+        containerColor = Color(0xFFFFFB00),
+        contentColor = Color.Black
+    ) {
+
+        Column (modifier = Modifier.padding(it)){
+            val uiState by viewModel.uiState.collectAsState()
+            val context = LocalContext.current
+            NavHost(
+                navController = navController,
+                startDestination = Destinations.Username.name) {
+
+                composable(Destinations.Username.name) {
+                    UsernameScreen(onNextClicked = {username ->
+                        viewModel.setUsername(username)
+                        navController.navigate(Destinations.Password.name)
+                    })
+                }
+
+                composable(Destinations.Password.name) {
+                    PasswordScreen(username = uiState.username, onNextClicked = { pass ->
+                        viewModel.setPassword(pass)
+                        navController.navigate(Destinations.Login.name)
+
+                    })
+                }
+                composable(Destinations.Login.name) {
+                    LoginScreen(
+                        uiState.username,uiState.password ,
+                        onExitClicked = { closeApp(context as Activity) },
+                        onCancelClick = {
+                            navController.popBackStack(Destinations.Username.name,false)
+                        })
+                }
+            }
+        }
+    }
+}
+//==================================================Toolbar
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Toolbar(title: String, navigateUp: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = title) },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = Color.Blue,
+            titleContentColor = Color.Yellow,
+            navigationIconContentColor = Color.Yellow,
+        ), navigationIcon = {
+            IconButton(onClick = navigateUp) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back Button")
+            }
+        }
+    )
+}
+
+//==================================================Username Fragment
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UsernameScreen(onNextClicked: (String) -> Unit) {
+    var username by rememberSaveable { mutableStateOf("") }
+    var isUsernameEmpty by rememberSaveable { mutableStateOf(true) }
+
+    Column(
+        modifier = Modifier
+            .background(Color.Yellow)
+            .fillMaxSize()
+            .padding(top = 50.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Column(modifier = Modifier.padding(20.dp)) {
+
+            Text(
+                text = "Enter Username",
+                textAlign = TextAlign.Center,
+                fontFamily = FontFamily.Serif,
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            OutlinedTextField(
+                value = username,
+                onValueChange = {
+                    username = it
+                    isUsernameEmpty = username.isEmpty()
+                },
+                textStyle = TextStyle.Default.copy(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                supportingText = { Text(text = "supporting text") },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                modifier = Modifier.fillMaxWidth())
+        }
+
+        Button(
+            onClick = { onNextClicked(username) },
+            enabled = !isUsernameEmpty,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)) {
+            Text(text = "Next")
+        }
+    }
+}
+
+//==================================================Password Fragment
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PasswordScreen(username: String, onNextClicked: (String) -> Unit) {
+
+    var password by rememberSaveable { mutableStateOf("") }
+    var isPassEmpty by rememberSaveable { mutableStateOf(true) }
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Black)
+        .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Column {
+            Text(
+                text = "Username: $username",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontFamily = FontFamily.Serif,
+            )
+
+            Text(
+                text = "Password/Passcode",
+                color = Color.Yellow,
+                fontFamily = FontFamily.Serif,
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 50.dp)
+            )
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = {
+                    password = it
+                    isPassEmpty = password.isEmpty()
+                },
+                placeholder = { Text(text = "Enter Password") },
+
+                //-------------------------------------------Imp Line
+                visualTransformation = PasswordVisualTransformation(),
+                textStyle = TextStyle.Default.copy(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold),
+
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done),
+
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Yellow, textColor = Color.Red,
+                    cursorColor = Color.Black
+                ),
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth()
+            )
+        }
+
+        Column {
+            Button(onClick = { onNextClicked(password) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                enabled = !isPassEmpty) {
+                Text(text = "Final Page")
+            }
+        }
+    }
+}
+
+//==================================================Login Fragment
+@Composable
+fun LoginScreen(
+    username: String,
+    password: String,
+    onExitClicked: () -> Unit,
+    onCancelClick: () -> Unit) {
+
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+            .padding(10.dp),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "UserName:",
+                textDecoration = TextDecoration.Underline,
+                fontFamily = FontFamily.Serif,
+                fontSize = 40.sp)
+
+            Text(
+                text = username,
+                textDecoration = TextDecoration.Underline,
+                fontFamily = FontFamily.Serif,
+                fontSize = 20.sp,
+            )
+        }
+
+        Column(
+            modifier = Modifier.padding(top = 60.dp),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "Password:",
+                textDecoration = TextDecoration.Underline,
+                fontFamily = FontFamily.Serif,
+                fontSize = 40.sp)
+
+            Text(
+                text = password,
+                textDecoration = TextDecoration.Underline,
+                fontFamily = FontFamily.Serif,
+                fontSize = 20.sp,
+            )
+        }
+
+        Column {
+            Button(onClick = onExitClicked,
+                modifier = Modifier.fillMaxWidth()) {
+                Text(text = "Exit From App")
+            }
+
+            OutlinedButton(onClick =onCancelClick,
+                modifier = Modifier.fillMaxWidth()) {
+                Text(text = "Cancel and Reset")
+            }
+        }
+    }
+}
+
+fun closeApp(activity: Activity) {
+    activity.finishAffinity()
+}
+
+@Preview
+@Composable
+fun ScreenPreview() {
+    UsernameScreen(onNextClicked = { })
+//    PasswordScreen("", onNextClicked = {})
+//    LoginScreen("","", onExitClicked = {}, onCancelClick = {})
+}
+
+
+
+
+`
+}
                 ];
 
                 return data.find(item => item.id === parseInt(cardId));
