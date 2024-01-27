@@ -28,6 +28,15 @@
                         <p>Notes Regarding Navigation in Jetpack Compose</p>
                     </div>
                 </div>
+
+                <div class="item-container">
+                    <div class="page-card def-selected" card-id="2">
+                        <h2>Navigation - I</h2>
+                        <p>Fragment Navigation between 3 pages, Simple</p>
+                    </div>
+                </div>
+
+
             </div>
         </div>
 
@@ -110,8 +119,148 @@ NavHost( navController, startDestination: String) {
         function_completeUi_screen(params)
     }
 }
-
 `
+            },
+            { id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/nav_output_gif.gif', description:
+`
+import ....
+
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            JetpackComposeTheme(darkTheme = false) {
+                LetsStart()
+            }
+        }
+    }
+}
+
+//Add this Dependency for Navigation between
+// implementation("androidx.navigation:navigation-compose:2.7.4")
+
+enum class Traverse {
+    FIRST, SECOND, THIRD
+}
+
+
+@Composable
+fun LetsStart(
+    navController: NavHostController = rememberNavController()) {
+    val context = LocalContext.current
+
+    NavHost(
+        navController = navController,
+        startDestination = Traverse.FIRST.name) {
+
+        composable(Traverse.FIRST.name) {
+            HomeScreen(text = "Home Screen", onNextClick = {
+                navController.navigate(Traverse.SECOND.name)
+            })
+        }
+
+        composable(Traverse.SECOND.name) {
+            HomeScreen(text = "Second Screen", onNextClick = {
+                navController.navigate(Traverse.THIRD.name)
+            })
+        }
+
+        composable(Traverse.THIRD.name) {
+            LastScreen(title = "Third Screen",
+                onCancelClick = {
+                    navController.popBackStack(Traverse.FIRST.name,false)
+                },
+                onExitClicked = {
+                    closeApp(context as Activity)
+                })
+        }
+    }
+}
+
+fun closeApp(activity: Activity) {
+    activity.finish()
+}
+
+//=========================================================
+@Preview
+@Composable
+fun ScreenPreviews() {
+//    HomeScreen("Welcome to Home Screen", onNextClick = {})
+//    HomeScreen(text = "This is Second Screen", onNextClick = {})
+    LastScreen("This is Last and Final Screen", onCancelClick = {}, onExitClicked = { })
+}
+
+
+
+//Note: Ui is Same just text is different for First and Second Screen,
+//That's why call same Composable function twice for different screen
+
+//Screen 1: Home Screen
+@Composable
+fun HomeScreen(
+    text: String,
+    onNextClick: () -> Unit,
+    modifier: Modifier = Modifier) {
+    Column(
+        modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceAround,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Text(
+            text = text,
+            fontSize = 40.sp,
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily.Monospace)
+
+        Button(onClick = onNextClick, modifier.padding(10.dp)) {
+            Text(text = "Next")
+        }
+    }
+}
+
+//=========================================================
+//Screen 1: Last Screen
+@Composable
+fun LastScreen(
+    title: String,
+    onCancelClick: () -> Unit,
+    onExitClicked: () -> Unit,
+    modifier: Modifier = Modifier) {
+
+    Column(
+        modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Text(
+            text = title,
+            fontSize = 40.sp,
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily.Monospace)
+
+        Row {
+            OutlinedButton(
+                onClick = onCancelClick,
+                modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(8.dp)) {
+                Text(text = "Cancel")
+            }
+            Button(
+                onClick = onExitClicked,
+                modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(8.dp)
+            ) {
+                Text(text = "Exit")
+            }
+        }
+    }
+}
+      `
                     }
                 ];
 
