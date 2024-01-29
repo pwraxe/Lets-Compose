@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Layouts in Compose</title>
     <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+
+    <style type="text/css">
+        <!--code for border-->
+        code {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            display: inline-block;
+            border: 1px solid #ccc;
+            padding: 5px; /* Adjust padding as needed */
+            font-family: 'Courier New', monospace; /* Use a monospaced font for code */
+        }
+
+    </style>
 </head>
 
 <body>
@@ -24,15 +37,12 @@
     <div class="list">
         <div class="item-container">
             <div class="page-card def-selected" card-id="1">
-                <h2>Layout - 1</h2>
-                <p>Row Layout, Align Elements row wise</p>
+                <h2>Adaptive Layout Notes</h2>
+                <p>Basic Info regarding Adaptive Layout, <a href="../notes.html">View Notes</a> </p>
             </div>
         </div>
     </div>
 </div>
-
-
-
 
 <script type="text/javascript">
 
@@ -84,7 +94,36 @@
         console.log(`Fetching data for card ID: ${cardId}`);
 
         const data = [
-            { id: 1, src: 'image_url', description: ``
+            { id: 1, src: 'image_url', description: `
+
+See Notes for Compose Adaptive Layout
+Make sure you have this dependency
+{ implementation("androidx.compose.material3:material3-window-size-class:1.1.2") }
+
+Calculate window size by
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+
+    val windowSize = calculateWindowSizeClass(this) //you will get
+    windowSize.widthSizeClass & windowSize.heightSizeClass
+    - based on this you will get type of sceen Compat, Medium, Expanded
+
+    when(windowSize) {
+        WindowWidthSizeClass.Compact -> {
+            EnumClass.Type
+        }
+        WindowWidthSizeClass.Medium -> {
+            EnumClass.Type
+        }
+        WindowWidthSizeClass.Expanded -> {
+            EnumClass.Type
+        }
+        else -> {}
+    }
+
+    Define Enum class for Different Adaptive Layout
+
+
+`
             }
         ];
 
@@ -101,10 +140,7 @@
                 </div>
 
                 <div class="output-code">
-
-                    <pre>
-                        <code class="language-kotlin">${data.description}</code>
-                    </pre>
+                <pre>${data.description}</pre>
                 </div>
             `;
         } else {

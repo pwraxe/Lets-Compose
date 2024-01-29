@@ -1,8 +1,34 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>Compose Notes</title>
+
+    <style type="text/css">
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
+
+        th, td {
+          border: 1px solid black;
+          padding: 8px;
+          text-align: center;
+        }
+
+        th {
+          background-color: #f2f2f2;
+        }
+
+        code {
+          background-color: #f0f0f0;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border: 1px solid #ccc;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: 'Courier New', monospace; /* Use a monospaced font for code */
+        }
+    </style>
 </head>
 <body>
     <h1 style="display: inline;">Compose Notes </h1>
@@ -12,16 +38,17 @@
     <p><b>Documents</b></p>
     - Compose handles nested layouts efficiently, This is an improvement from Android Views, where you need to avoid nested layouts for performance reasons.<br>
     - It is a best practice to pass a modifier to every composable and set it to a default value. <br>
-    - In Compose, The only way to update the UI is by changing the state of the app. Hence you can control only state not ui, UI is Dependent on State <br>
-    - UDF (Undirectional Data Flow), It is a Design Pattern in which, state flows `down` and event flows `up` <br>
+    - In Compose, The only way to update the UI is by changing the state of the app. Hence, you can control only state not ui, UI is Dependent on State <br>
+    - UDF (Unidirectional Data Flow), It is a Design Pattern in which, state flows `down` and event flows `up` <br>
     - APK = Android Package (Application Package File)
-    - Compose BOM = Compose Bill Of Material
+    - Compose BOM = Compose Bill Of Material <br>
+    - YOu can change screen withOut NavHost also, just change state of screen it will auto recompose, but this won't maintain backstack, for this you just have to add <code>BackHandler(enabled = true){ onBackPressed() }</code>
     <hr>
     <p><b>Recycler View Notes</b></p>
-    - In Scrollable List, 1) Define Separate Layout in Separate compose function, 2) Call same layout function from lazyColumn {items() { composeFun(param) } }<br>
+    - In Scrollable List, 1) Define Separate Layout in Separate compose function, 2) Call same layout function from <code>lazyColumn {items() { composeFun(param) } }</code><br>
     - When Create Model Class For LazyRow || LazyColumn (i.e. RecyclerView) make sure you annotate string with @StringRes val string:Int
     and drawableImage with @DrawableRes val drawableImage: Int, For Example,
-    <pre>data class Affirmation(<b>@StringRes</b> val string:Int,<b>@DrawableRes</b> val image: Int)</pre>
+    <code>data class Affirmation(<b>@StringRes</b> val string:Int,<b>@DrawableRes</b> val image: Int)</code>
     <hr>
     <p>
 
@@ -31,5 +58,86 @@
         Alpha from <br>
         #00(colorCode) = 0 % Opacity = Full Transparent <b>---to---></b> to #FF(colorCode) = 100% Opacity = No Transparent (Solid) <br>
     </p>
+
+    <hr>
+    <p><b>Adaptive Layout Screen Size (Breakpoint)</b></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Breakpoint Range (dp)</th>
+            <th>Portrait</th>
+            <th>Landscape</th>
+            <th>Window Size class</th>
+            <th>Column</th>
+            <th>Minimum Margin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>0 - 599</td>
+            <td>Handset</td>
+            <td>Phone</td>
+            <td>Compat</td>
+            <td>4</td>
+            <td>8</td>
+        </tr>
+        <tr>
+            <td>600 - 839</td>
+            <td>Foldable Small Tablet</td>
+            <td>Foldable Small Tablet</td>
+            <td>Medium</td>
+            <td>12</td>
+            <td>12</td>
+        </tr>
+        <tr>
+            <td>840+</td>
+            <td>Large Tablet</td>
+            <td>Large Tablet</td>
+            <td>Expanded</td>
+            <td>12</td>
+            <td>32</td>
+        </tr>
+        </tbody>
+    </table>
+    <table>
+        <thead>
+        <tr>
+            <th>Window class (width)</th>
+            <th>Breakpoint (dp)</th>
+            <th>Common devices</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Compact</td>
+                <td>Width < 600</td>
+                <td>Phone in portrait</td>
+            </tr>
+
+            <tr>
+                <td>Medium</td>
+                <td>600 ≤ width  840</td>
+                <td>Tablet in portrait<br>Foldable in portrait (unfolded)</td>
+            </tr>
+
+            <tr>
+                <td>Expanded</td>
+                <td>840 ≤ width < 1200*</td>
+                <td>
+                    Phone in landscape <br>
+                    Tablet in landscape <br>
+                    Foldable in landscape (unfolded) <br>
+                    Desktop
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+        Jetpack Compose already has window size class <code>WindowSizeClass</code> <br>
+        Make sure you have this dependency { <code>implementation("androidx.compose.material3:material3-window-size-class:1.1.2")</code> }
+    </p>
+
+
 </body>
 </html>
