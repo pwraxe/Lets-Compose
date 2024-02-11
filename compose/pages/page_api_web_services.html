@@ -32,8 +32,8 @@
 
 
             <div class="page-card def-selected" card-id="2">
-                <h2>Layout - 1</h2>
-                <p>Row Layout, Align Elements row wise</p>
+                <h2>Basic API Call</h2>
+                <p>Basic code for API call in compose, (ref. codelab)</p>
             </div>
 
         </div>
@@ -114,7 +114,65 @@ Add kotlinx.serialization library dependencies
             `
             },
 
-            { id: 2, src: 'image_url', description: ``
+            { id: 2, src: 'image_url', description: `
+ApiServices.kt
+
+private const val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com"
+
+private val retrofit = Retrofit.Builder()
+    .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+    .baseUrl(BASE_URL)
+    .build()
+
+
+interface MarsApiService {
+
+    @GET("photos")
+    suspend fun getPhotos(): List&lt;MarsPhoto&gt;
+}
+
+object MarsApi {
+    val retrofitService : MarsApiService by lazy {
+        retrofit.create(MarsApiService::class.java)
+    }
+}
+--------------------------------------------------------------------------------------
+@Serializable
+data class MarsPhoto (
+    val id: String,
+    @SerialName(value = "img_src")
+    val imageUrl: String
+)
+--------------------------------------------------------------------------------------
+ViewModel
+val viewModel: ViewModelName = viewModel()
+
+sealed interface MarsUiState {
+    data class Success(val data : String) :MarsUiState
+    object Error: MarsUiState
+    object Loading:MarsUiState
+}
+
+class MarsViewModel : ViewModel() {
+    var marsUiState: MarsUiState by mutableStateOf(MarsUiState.Loading)
+        private set
+
+    init { getMarsPhotos() }
+
+    fun getMarsPhotos() {
+        viewModelScope.launch(Dispatchers.IO) {
+            marsUiState = try {
+                val list = MarsApi.retrofitService.getPhotos()
+                MarsUiState.Success("&#36;{list.size} photos are received")
+            }catch (ex: IOException) {
+                MarsUiState.Error
+            }
+        }
+    }
+}
+---------------
+Please Take a Note about Plugin for API call for Serialization
+            `
             },
         ];
 
