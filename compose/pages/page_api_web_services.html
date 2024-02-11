@@ -36,6 +36,11 @@
                 <p>Basic code for API call in compose, (ref. codelab)</p>
             </div>
 
+            <div class="page-card def-selected" card-id="3">
+                <h2>Dependency Injection</h2>
+                <p>DI Pattern in Compose</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -111,6 +116,58 @@ Add kotlinx.serialization library dependencies
 2. Add Plugin -> id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
 3. Add Dependency -> implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 4. Sync
+
+----------------------------------------------------------------------------
+Note:
+In App threre is 3 ways to get data
+1. From Local Storage (Room or Preference)
+2. From Network Call
+3. From File
+
+Repository is Responsible for get the data based on condition
+that's why 1 interface is define to override same method in all 3 classes
+Ex.
+
+
+interface CommonMethodInterface {
+    fun getData(): String
+}
+
+class DataFromNetworkApiCall: CommonMethodInterface {
+    override fun getData(): String {
+        return "Take this data from API Call"
+    }
+}
+class DataFromRoomDatabase(): CommonMethodInterface {
+    override fun getData(): String {
+        return "Take this Data from Room DB or Share Pref"
+    }
+}
+class DataFromFile(): CommonMethodInterface {
+    override fun getData(): String {
+        return "Take this data from File in device"
+    }
+}
+class DataFromThirdParty(): CommonMethodInterface {
+    override fun getData(): String {
+        return "Take this data from any third party"
+    }
+}
+class DataFromFirebase(): CommonMethodInterface {
+    override fun getData(): String {
+        return "Take this data from Firebase"
+    }
+}
+
+
+As you can see single interface is implemented to all different Classes
+This Mean based on situation data can get from anywhere without affecting of other
+classes
+From ViewModel you just call getData() function, this function is same in all class
+Hence you don't have an headache for, from where data should take
+Repository handle this for you, you just need to call a function
+
+
             `
             },
 
@@ -174,6 +231,114 @@ class MarsViewModel : ViewModel() {
 Please Take a Note about Plugin for API call for Serialization
             `
             },
+            { id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/di_pattern_flow.png', description: `
+
+Application Class
+=================
+class MarsPhotosApplication: Application() {
+
+    lateinit var container: AppContainer
+    override fun onCreate() {
+        super.onCreate()
+        container = DefaultAppContainer()
+    }
+}
+_________________________________________________________________________________
+ViewModel
+=========
+
+class MarsViewModel(private val marsPhotosRepository: MarsPhotosRepository) : ViewModel() {
+
+    var marsUiState: MarsUiState by mutableStateOf(MarsUiState.Loading)
+        private set
+
+    init { getMarsPhotos() }
+
+    fun getMarsPhotos() {
+        viewModelScope.launch {
+            marsUiState = MarsUiState.Loading
+            marsUiState = try {
+                val listResult = marsPhotosRepository.getMarsPhoto()
+                MarsUiState.Success(
+                    "Success: &#36;{listResult.size} Mars photos retrieved"
+                )
+            } catch (e: IOException) {
+                MarsUiState.Error
+            } catch (e: HttpException) {
+                MarsUiState.Error
+            }
+        }
+    }
+
+    companion object {
+        val Factory : ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as MarsPhotosApplication)
+                val marsPhotoRepository = application.container.marsPhotosRepository
+                MarsViewModel(marsPhotosRepository = marsPhotoRepository)
+            }
+        }
+    }
+}
+_________________________________________________________________________________
+Single interface implemented at multiple class to get data from different sources
+
+interface MarsPhotosRepository {
+    suspend fun getMarsPhoto(): List<MarsPhoto>
+}
+class NetworkMarsPhotoRepository(private val marsApiService: MarsApiService): MarsPhotosRepository {
+    override suspend fun getMarsPhoto(): List<MarsPhoto> {
+        return marsApiService.getPhotos()
+    }
+}
+_________________________________________________________________________________
+interface MarsApiService {
+    @GET("photos")
+    suspend fun getPhotos(): List<MarsPhoto>
+}
+_________________________________________________________________________________
+interface AppContainer {
+    //This variable for creating object of class which implement from interface for get data
+    val marsPhotosRepository: MarsPhotosRepository
+}
+
+class DefaultAppContainer: AppContainer {
+
+    private val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com"
+
+    private val retrofit = Retrofit.Builder()
+        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .baseUrl(BASE_URL)
+        .build()
+
+    private val retrofitService: MarsApiService by lazy {
+        retrofit.create(MarsApiService::class.java)
+    }
+
+    //From Network API
+    override val marsPhotosRepository: MarsPhotosRepository by lazy {
+        NetworkMarsPhotoRepository(retrofitService)
+    }
+
+    //Add More Variable for get data
+}
+_________________________________________________________________________________
+Model Class Or POJO class
+
+@Serializable
+data class MarsPhoto(
+    val id: String,
+    @SerialName(value = "img_src")
+    val imgSrc: String
+)
+_________________________________________________________________________________
+This is how you create Object for ViewModel if ViewModel takes a data in constructor
+val marsViewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
+
+
+            `
+
+            }
         ];
 
         return data.find(item => item.id === parseInt(cardId));
