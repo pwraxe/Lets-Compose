@@ -2,7 +2,7 @@ body {
     font-family:Noto Sans,Noto Sans JP,Noto Sans KR,Noto Naskh Arabic,Noto Sans Thai,Noto Sans Hebrew,Noto Sans Bengali,sans-serif;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+
     height: auto;
 }
 
@@ -10,10 +10,12 @@ header {
     background-color: #333;
     color: #fff;
     text-align: right;
-    padding: 20px;
+    padding: 20px 20px 20px 20px;
     display: flex;
     justify-content: space-between; 
     align-items: center;
+
+
 }
 
 .header-heading {

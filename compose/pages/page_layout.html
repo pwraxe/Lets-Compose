@@ -88,6 +88,11 @@
                 <p>Simple view of LazyVerticalGrid</p>
             </div>
 
+            <div class="page-card def-selected" card-id="14">
+                <h2>Adaptive Layout Notes</h2>
+                <p>Basic Info regarding Adaptive Layout, <a href="../notes.html">View Notes</a> </p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -1013,8 +1018,41 @@ fun LazyRowPreview(userData: UserData, modifier: Modifier = Modifier) {
     }
 }
             `
-         }
+         },
 
+         {
+            id: 14, src: 'image_url',
+            description:
+            `
+See Notes for Compose Adaptive Layout
+Make sure you have this dependency
+{ implementation("androidx.compose.material3:material3-window-size-class:1.1.2") }
+
+Calculate window size by
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+
+    val windowSize = calculateWindowSizeClass(this) //you will get
+    windowSize.widthSizeClass & windowSize.heightSizeClass
+    - based on this you will get type of sceen Compat, Medium, Expanded
+
+    when(windowSize) {
+        WindowWidthSizeClass.Compact -> {
+            EnumClass.Type
+        }
+        WindowWidthSizeClass.Medium -> {
+            EnumClass.Type
+        }
+        WindowWidthSizeClass.Expanded -> {
+            EnumClass.Type
+        }
+        else -> {}
+    }
+
+    Define Enum class for Different Adaptive Layout
+
+            `
+
+}
 
 
         ];

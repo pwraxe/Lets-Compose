@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose</h1>
+    <div>
+        <a class="menu" href="../todo.html" id="todoLink">To-Do</a>
+        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <a href="page_texts.html">
+            <h2>Text</h2>
+            <p>TextView in Jetpack Compose</p>
+        </a>
+    </div>
+
+    <div class="card">
+        <a href="page_buttons.html">
+            <h2>Buttons</h2>
+            <p>Different Types of Buttons in Jetpack Compose</p>
+        </a>
+    </div>
+
+    <div class="card">
+        <a href="page_edit_text.html">
+            <h2>EditText</h2>
+            <p>FillTextField, OutlineTextField, different input types</p>
+        </a>
+    </div>
+
+    <div class="card">
+        <a href="page_switch.html">
+            <h2>Switch</h2>
+            <p>Toggle Button, Switch Button in compose</p>
+        </a>
+    </div>
+
+
+    <!-- Add more cards as needed -->
+</div>
+
+<script>
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+</script>
+</body>
+</html>

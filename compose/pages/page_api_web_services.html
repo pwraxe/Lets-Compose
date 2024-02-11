@@ -41,6 +41,22 @@
                 <p>DI Pattern in Compose</p>
             </div>
 
+            <div class="page-card def-selected" card-id="4">
+                <h2>Show Image</h2>
+                <p>Use Coil Dependency to Show Live Url Image</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="5">
+                <h2>Room Database</h2>
+                <p>Small Structure of Room database flow</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="6">
+                <h2>Data Store</h2>
+                <p>Preferences DataStore, Proto DataStore</p>
+            </div>
+
+
         </div>
     </div>
 </div>
@@ -171,7 +187,7 @@ Repository handle this for you, you just need to call a function
             `
             },
 
-            { id: 2, src: 'image_url', description: `
+            { id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/di_file_pattern.png', description: `
 ApiServices.kt
 
 private const val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com"
@@ -338,7 +354,137 @@ val marsViewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
 
             `
 
+            },
+
+            { id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/image_live_url.png',
+            description: `
+
+To show image by Live URL add one of these Dependency
+implementation("com.github.bumptech.glide:glide:4.16.0")
+implementation("io.coil-kt:coil-compose:2.4.0")
+
+We will work on Coil
+
+@Composable
+fun MarsPhotoCard(marsPhoto: MarsPhoto,
+                  modifier: Modifier = Modifier) {
+
+    AsyncImage(
+        model = ImageRequest
+            .Builder(context = LocalContext.current)
+            .data(marsPhoto.imgSrc)
+            .crossfade(true)
+            .build(),
+        error = painterResource(id = R.drawable.ic_broken_image),
+        placeholder = painterResource(id = R.drawable.loading_img),
+        contentDescription = null,
+        modifier = modifier.fillMaxWidth(),
+        contentScale = ContentScale.Crop,
+    )
+}
+        `
+        },
+        { id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/image_live_url.png',
+            description: `
+Coming soon
+
+`},
+
+         { id: 6, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/image_live_url.png',
+            description: `
+When you want to save data like Share Preference, DataStore come into the picture
+
+Preferences DataStore : When you want to save Just Key-Value Pair
+Proto DataStore: When you want to save Object or Array etc / Custom Datatype
+
+Add Dependency
+implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+_______________________________________________________________________
+class UserPreferencesRepository(private val dataStore: DataStore<Preferences>) {
+
+    val isLinearLayout : Flow<Boolean> = dataStore
+        .data
+        .catch { /*For Any unExpected Error / Exception */
+            if (it is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw it
             }
+        }
+        .map {
+        it[IS_LINEAR_LAYOUT] ?: true
+    }
+    companion object {
+        val IS_LINEAR_LAYOUT = booleanPreferencesKey("is_linear_layout")
+
+        //Other
+        val INT = intPreferencesKey("int")
+        val str = stringPreferencesKey("string")
+        val float = floatPreferencesKey("float")
+        val long = longPreferencesKey("long")
+        val double = doublePreferencesKey("double")
+    }
+
+    suspend fun saveLayoutPreference(isLinear: Boolean) {
+
+        //To save or Update Value
+        //Open Pref. in Edit Mode and then Set value to specific key
+        dataStore.edit {
+            it[IS_LINEAR_LAYOUT] = isLinear
+        }
+    }
+}
+
+________________________
+Application Class
+
+private const val LAYOUT_PREF_NAME = "pref_layout"
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = LAYOUT_PREF_NAME)
+class DessertReleaseApplication: Application() {
+
+    lateinit var userPreferencesRepository: UserPreferencesRepository
+
+    override fun onCreate() {
+        super.onCreate()
+        userPreferencesRepository = UserPreferencesRepository(dataStore)
+    }
+}
+________________________
+ViewModel Class
+
+This is How you will create object of ViewModel in parameter
+dessertReleaseViewModel: DessertReleaseViewModel = viewModel(factory = DessertReleaseViewModel.Factory)
+
+class DessertReleaseViewModel(private val userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
+
+    // UI states access for various [DessertReleaseUiState]
+    val uiState: StateFlow<DessertReleaseUiState> = userPreferencesRepository
+        .isLinearLayout.map { DessertReleaseUiState(it) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = DessertReleaseUiState())
+
+    fun selectLayout(isLinearLayout: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.saveLayoutPreference(isLinearLayout)
+        }
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application =
+                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as DessertReleaseApplication
+                DessertReleaseViewModel(application.userPreferencesRepository)
+            }
+        }
+    }
+}
+        `
+        }
+
         ];
 
         return data.find(item => item.id === parseInt(cardId));
