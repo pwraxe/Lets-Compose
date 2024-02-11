@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Layouts in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / Work Manager</h1>
+    <div>
+        <a class="menu" href="../todo.html" id="todoLink">To-Do</a>
+        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+    <div class="list">
+        <div class="item-container">
+            <div class="page-card def-selected" card-id="1">
+                <h2>Notes</h2>
+                <p>Notes Related Work Manager, <a target="_blank" href="https://github.com/pwraxe/Android-in-Kotlin/blob/master/WorkManager/WorkManagerNotes.txt">Refer this</a> For Old Notes</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+            { id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/work_manager_flow.png', description: `
+Add Dependency
+implementation("androidx.work:work-runtime-ktx:2.8.1")
+
+Worker / CoroutineWorker :
+This performs synchronously on background, CoroutineWorker is
+interoperability with kotlin
+
+WorkRequest :
+This class request to do some work
+This is where you define worker need to perform OneTime or Periodically
+we can also place constrains
+There is 2 Type of WorkRequest
+    - OneTimeWorkRequest (executes only once)
+    - PeriodicWorkRequest (executes repeatedly on a cycle)
+
+
+WorkManager :
+This class actually schedule WorkRequest and make it run
+____________________________________________________________________
+Code
+====
+
+//This is Like AppContainer
+interface StudentWorkRepo {
+    fun studentDetails()
+    //define as many as fun and variable you want
+}
+
+
+//you will get object of this classes at Application class
+class CollageStudentRepo : StudentWorkRepo {
+
+    //Can create WorkManager instance in class
+    val workManager = WorkManager.getInstance(context)
+
+    override fun studentDetails() {
+
+        //Multiple work
+        val homeWork = OneTimeWorkRequestBuilder<HomeWork>()
+        val lectureWork = OneTimeWorkRequestBuilder<LectureWork>().build()
+
+        //From FreshnessWork --> LectureWokr --> HomeWork
+        workManager.beginWith(OneTimeWorkRequest.from(FreshnessWork::class.java))
+            .then(lectureWork)
+            .then(homeWork)
+            .enqueue()
+    }
+}
+
+class FreshnessWork(context, workParameter): CoroutineWorker(context, workParameter) {
+    override suspend fun doWork(): Result {
+        withContext(Dispacher) {
+            try {
+                Result.success()
+            }catch (ex:Exception) {
+                Result.failure()
+            }
+        }
+    }
+}
+class HomeWork(context, workParameter): CoroutineWorker(context, workParameter) {
+    override suspend fun doWork(): Result {
+        withContext(Dispacher) {
+            try {
+                Result.success()
+            }catch (ex:Exception) {
+                Result.failure()
+            }
+        }
+    }
+}
+class LectureWork(context, workParameter): CoroutineWorker(context, workParameter) {
+    override suspend fun doWork(): Result {
+        withContext(Dispacher) {
+            try {
+                Result.success()
+            }catch (ex:Exception) {
+                Result.failure()
+            }
+        }
+    }
+}
+
+class ViewModels(val studentWork: StudentWorkRepo): ViewModel() {
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val collageStudentWorkRepo = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as StudentApplication).container.bluromaticRepository
+                ViewModels(studentWork = collageStudentWorkRepo)
+            }
+        }
+    }
+}
+
+`
+            }
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>
