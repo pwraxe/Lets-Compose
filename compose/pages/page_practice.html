@@ -40,7 +40,7 @@
 
             <div class="page-card def-selected" card-id="4">
                 <h2>Business Card</h2>
-                <p>Based on Codelab learnings, Build Business card, Using Box, Column, Row Layout</p>
+                <p>Based on Code-lab learning, Build Business card, Using Box, Column, Row Layout</p>
             </div>
 
             <div class="page-card def-selected" card-id="5">
@@ -48,7 +48,10 @@
                 <p>Show Login View and Logout view based on click event and pass on click function to compose ui</p>
             </div>
 
-
+            <div class="page-card def-selected" card-id="6">
+                <h2>Pizza Order</h2>
+                <p>Menu Screen, Pizza Size and Price Screen, After getting address Bill screen, used navHost, VM</p>
+            </div>
 
         </div>
     </div>
@@ -138,8 +141,6 @@ fun Exercise() {
 }
                 `
             },
-
-
 
             {
                 id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/practice-output-2.png',
@@ -286,7 +287,6 @@ fun Exercise() {
 }
                 `
             },
-
 
              {
                 id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/practice-output-4.png',
@@ -535,8 +535,572 @@ fun LogoutDialog(onClicked : () -> Unit) {
         }
     }
 }
-                `
-             }
+ `
+
+          },
+
+          {
+            id: 6, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/pizza_output.gif',
+            description:
+            `
+MainActivity.kt
+________________
+
+enum class Screens { MENU, SIZE, BILL }
+
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            JetpackComposeTheme(darkTheme = false) {
+                UpdateScreen()
+            }
+        }
+    }
+}
+
+@Composable
+fun UpdateScreen(navController: NavHostController = rememberNavController(),
+            pizzaViewModel: PizzaViewModel = viewModel()) {
+
+    NavHost(
+        navController = navController,
+        startDestination = Screens.MENU.name) {
+
+        composable(Screens.MENU.name) {
+            MenuScreen(onNextClicked = {
+                navController.navigate(Screens.SIZE.name)
+            }, pizzaViewModel)
+        }
+
+        composable(Screens.SIZE.name) {
+            SizeAndAmountScreen(onNextClicked = {
+                    navController.navigate(Screens.BILL.name)
+            }, pizzaViewModel)
+        }
+        composable(Screens.BILL.name) {
+            AddressAndTotalAmount(pizzaViewModel)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PizzaOrderPreview() {
+   MenuScreen({},viewModel())
+   // SizeAndAmountScreen({}, viewModel())
+   // AddressAndTotalAmount()
+}
+
+========================================================================================================================
+MenuScreen.kt
+______________
+
+@Composable
+fun MenuScreen(onNextClicked: () -> Unit,
+    pizzaViewModel: PizzaViewModel,
+    modifier: Modifier = Modifier) {
+
+    val selectedItem by pizzaViewModel.orderData.collectAsState()
+
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween ) {
+
+        Text(
+            text = "Welcome to Pizza Shop",
+
+            //When you want your own font and size to app,
+            // override your font and size by default in android
+            style = LocalTextStyle.current.copy(
+                fontSize = 25.sp,
+                fontFamily = FontFamily.Serif,
+                textAlign = TextAlign.Center
+            ),
+
+            modifier = modifier
+                .padding(40.dp)
+                .align(alignment = Alignment.CenterHorizontally))
+
+
+        MenuList(menu = menu, onCardClick = {
+            pizzaViewModel.setSelectedPizzaData(it)
+        },selectedItem)
+
+        Button(onClick = onNextClicked,
+            modifier = modifier
+                .align(Alignment.End)
+                .padding(5.dp), enabled = selectedItem?.id != 0) {
+            Text(text = "Next")
+        }
+    }
+}
+
+@Composable
+fun MenuList(menu: List<OrderData>,
+        onCardClick: (OrderData?) -> Unit,
+        selectedItem: OrderData?) {
+
+    Column {
+        menu.forEach {
+            MenuItem(it,
+                onCardClick = { data ->
+                    onCardClick(data)
+                }, selectedItem)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MenuItem(menuData: OrderData, onCardClick: (OrderData?) -> Unit, selectedItem: OrderData?) {
+
+    val selectedItemColor = if (selectedItem != null && selectedItem.id == menuData.id) Color(0xFF6750A3) else Color.White
+    val selectedTextColor = if (selectedItem != null && selectedItem.id == menuData.id) Color.White else Color.Black
+
+    OutlinedCard (modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 10.dp, vertical = 5.dp), onClick = {
+        onCardClick(menuData)
+    }) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = selectedItemColor)) {
+            Image(
+                painter = painterResource(id = menuData.image),
+                modifier = Modifier
+                    .size(100.dp)
+                    .padding(10.dp)
+                    .clip(shape = CircleShape),
+                contentScale = ContentScale.Crop,
+                contentDescription = null)
+
+            Text(
+                text = menuData.pizzaName,
+                style = LocalTextStyle.current.copy(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W400,
+                    fontFamily = FontFamily.Serif),
+                color = selectedTextColor,
+                modifier = Modifier.align(Alignment.CenterVertically))
+        }
+    }
+}
+
+
+@Preview
+@Composable
+fun PizzaOrderPreview1() {
+    // MenuScreen({},viewModel())
+   SizeAndAmountScreen({}, viewModel())
+   // AddressAndTotalAmount(viewModel())
+}
+
+========================================================================================================================
+SizeAmountScreen.kt
+______________
+
+@Composable
+fun SizeAndAmountScreen(onNextClicked: () -> Unit,pizzaViewModel: PizzaViewModel) {
+
+    val orderData by pizzaViewModel.orderData.collectAsState()
+
+    val image: Int
+    val size: Dp
+    when(orderData?.image) {
+        R.drawable.pizza_small -> {
+            image = R.drawable.pizza_small
+            size = 80.dp
+        }
+        R.drawable.pizza_medium -> {
+            image = R.drawable.pizza_medium
+            size = 100.dp
+        }
+        R.drawable.pizza_large -> {
+            image = R.drawable.pizza_large
+            size = 120.dp
+        }
+        else-> {
+            image = R.drawable.android_logo
+            size = 100.dp
+        }
+    }
+    Column {
+
+        Image(
+            painter = painterResource(id = image),
+            contentDescription = null,
+            modifier = Modifier
+                .padding(20.dp)
+                .size(size)
+                .clip(shape = CircleShape)
+                .align(alignment = Alignment.CenterHorizontally),
+            contentScale = ContentScale.Crop )
+
+        SizeAmountList(list = sizeAndAmount, onCardClick = {
+            pizzaViewModel.setSizeAndAmountData(it)
+        }, orderData!!)
+
+        Button(onClick = onNextClicked,
+            enabled = orderData?.pizzaSize?.isNotEmpty() == true,
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(10.dp)) {
+            Text(text = "Next")
+        }
+    }
+}
+
+@Composable
+fun SizeAmountList(
+    list: List<OrderData>,
+    onCardClick: (OrderData?) -> Unit,
+    selectedSize: OrderData
+) {
+
+    list.forEach {
+        SizeAndAmount(it, onSizeAmountClicked = { data ->
+            onCardClick(data)
+        }, selectedSize)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SizeAndAmount(
+    orderData: OrderData,
+    onSizeAmountClicked: (OrderData) -> Unit, selectedSize: OrderData) {
+
+    val selectedCardColor = if (orderData.pizzaSize == selectedSize.pizzaSize) Color(0xFF6750A3) else Color.White
+    val selectedCardTextColor = if (orderData.pizzaSize == selectedSize.pizzaSize) Color.White else Color.Black
+    Row (modifier = Modifier.fillMaxWidth()) {
+
+        OutlinedCard (modifier = Modifier
+            .weight(1f)
+            .padding(6.dp),
+            onClick = { onSizeAmountClicked(orderData) }) {
+
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = selectedCardColor)) {
+
+                Text(
+                    text = orderData.pizzaSize,
+                    style = LocalTextStyle.current.copy(
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.W200
+                    ),
+                    color = selectedCardTextColor,
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
+        }
+
+        OutlinedCard(modifier = Modifier
+            .weight(0.5f)
+            .padding(vertical = 6.dp, horizontal = 6.dp)) {
+
+            Row (horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = selectedCardColor)
+            ){
+
+                Text(text = "₹ &#36;{orderData.price}",
+                    style = LocalTextStyle.current.copy(
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.End,
+                        fontFamily = FontFamily.Serif,
+                    ),
+                    color = selectedCardTextColor,
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
+        }
+    }
+}
+
+
+@Preview
+@Composable
+fun PizzaOrderPreview2() {
+//    MenuScreen({},viewModel())
+    SizeAndAmountScreen({}, viewModel())
+//    AddressAndTotalAmount()
+}
+
+========================================================================================================================
+AddressAndTotalAmount.kt || BillScreen.kt
+______________
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddressAndTotalAmount(pizzaViewModel: PizzaViewModel) {
+
+    val orderData by pizzaViewModel.orderData.collectAsState()
+
+    var address by rememberSaveable { mutableStateOf("") }
+    var showBill by rememberSaveable { mutableStateOf(false) }
+
+    Column (modifier = Modifier.fillMaxSize()){
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            value = address,
+            onValueChange = { address = it },
+            label = { Text(
+                text = "Home Address",
+                style = TextStyle(
+                    fontWeight = FontWeight.W500,
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 14.sp
+                )
+            ) }
+            , textStyle = LocalTextStyle.current.copy(
+                fontSize = 14.sp,
+                fontWeight = FontWeight.W400,
+                fontFamily = FontFamily.Serif),
+        )
+        if (address.isNotEmpty()) {
+            Button(onClick = {
+                pizzaViewModel.setAddress(address)
+                showBill = true },
+                modifier = Modifier
+                    .align(alignment = Alignment.End)
+                    .padding(end = 10.dp)) {
+                Text(text = "Update",
+                    style = LocalTextStyle.current.copy(
+                        fontSize = 16.sp,
+                    fontFamily = FontFamily.Serif,
+                ))
+            }
+        }
+
+        if (showBill) {
+            Spacer(modifier = Modifier.padding(top = 100.dp))
+
+            Box {
+                OutlinedCard (
+                    modifier = Modifier.padding(10.dp),
+                    border = BorderStroke(1.dp,
+                    brush = Brush.linearGradient(listOf(Color.Red, Color.Black)))
+                ){
+                    Column (modifier = Modifier
+                        .background(color = Color.Transparent)
+                        .fillMaxWidth()
+                        .padding(10.dp)){
+
+                        Text(
+                            text = "Address",
+                            style = LocalTextStyle.current.copy(
+                                fontSize = 20.sp,
+                                fontFamily = FontFamily.Serif,
+                                fontWeight = FontWeight.W800
+                            )
+                        )
+
+                        Text(text = address,
+                            style = LocalTextStyle.current.copy(
+                                fontSize = 14.sp,
+                                fontFamily = FontFamily.Serif)
+                            )
+
+                        val gst = orderData?.price?.times((18.0/100.0))
+
+                        Row(modifier = Modifier.padding(top = 50.dp, end = 10.dp)) {
+                            Text(
+                                text = "Pizza",
+                                style = LocalTextStyle.current.copy (
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.W600,
+                                    fontFamily = FontFamily.Serif),
+                                modifier = Modifier.weight(1f))
+
+                            Text(
+                                text = orderData?.pizzaName.toString(),
+                                color = Color.Gray,
+                                style = LocalTextStyle.current.copy(
+                                    fontSize = 14.sp,
+                                    fontFamily = FontFamily.Serif),
+                            )
+                        }
+
+                        Row(modifier = Modifier.padding(top = 6.dp, end = 10.dp)) {
+                            Text(
+                                text = "Size",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.W600,
+                                modifier = Modifier.weight(1f))
+
+                            Text(
+                                text = orderData?.pizzaSize.toString(),
+                                color = Color.Gray,
+                                style = LocalTextStyle.current.copy(
+                                    fontSize = 14.sp,
+                                    fontFamily = FontFamily.Serif),
+                            )
+                        }
+
+                        Row(modifier = Modifier.padding(top = 6.dp, end = 10.dp)) {
+                            Text(
+                                text = "Price",
+                                modifier = Modifier.weight(1f),
+                                style = LocalTextStyle.current.copy(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.W600,
+                                    fontFamily = FontFamily.Serif))
+
+                            Text(
+                                text = "₹ &#36;{orderData?.price}",
+                                color = Color.Gray,
+                                style = LocalTextStyle.current.copy(
+                                    fontSize = 14.sp,
+                                    fontFamily = FontFamily.Serif))
+                        }
+
+                        Row(modifier = Modifier.padding(top = 6.dp, end = 10.dp)) {
+                            Text(
+                                text = "GST Tax",
+                                modifier = Modifier.weight(1f),
+                                style = LocalTextStyle.current.copy(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.W600,
+                                    fontFamily = FontFamily.Serif),
+                                )
+
+
+                            Text(
+                                text = "₹ &#36;{gst ?: 0.0}",
+                                color = Color.Gray,
+                                style = LocalTextStyle.current.copy(
+                                    fontSize = 14.sp,
+                                    fontFamily = FontFamily.Serif),
+                            )
+                        }
+
+                        Divider(
+                            modifier = Modifier.padding(top = 10.dp, end = 10.dp),
+                            color = Color.Black,
+                            thickness = 1.dp
+                        )
+                        Row(modifier = Modifier.padding(top = 6.dp, end = 10.dp)) {
+                            Text(
+                                text = "Total",
+                                style = LocalTextStyle.current.copy(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.W600,
+                                    fontFamily = FontFamily.Serif),
+                                modifier = Modifier.weight(1f))
+
+                            val total = ((gst ?: 0.0) + orderData?.price!!)
+                            Text(
+                                text = "₹ &#36;total",
+                                style = LocalTextStyle.current.copy(
+                                    color = Color.Gray,
+                                    fontSize = 20.sp,
+                                    fontFamily = FontFamily.Serif)
+                            )
+                        }
+                    }
+                }
+
+                Image(painter = painterResource(id = R.drawable.verify),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(140.dp)
+                        .align(alignment = Alignment.BottomCenter)
+                        .padding(bottom = 60.dp))
+            }
+        }
+    }
+}
+
+
+@Preview
+@Composable
+fun PizzaOrderPreview() {
+//    MenuScreen({},viewModel())
+//    SizeAndAmountScreen({}, viewModel())
+    AddressAndTotalAmount(viewModel())
+}
+
+
+========================================================================================================================
+ViewModelAndOtherData.kt
+______________
+
+package com.codexdroid.compose.ui.theme
+
+import androidx.annotation.DrawableRes
+import androidx.lifecycle.ViewModel
+import com.codexdroid.compose.R
+import com.google.gson.Gson
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+fun toJson(data:Any?): String = Gson().toJson(data)
+val menu = listOf(
+    OrderData(1,"Cheez Red Pizza", R.drawable.pizza_small),
+    OrderData(2,"Cheez Pan Pizza", R.drawable.pizza_medium),
+    OrderData(3,"Tomato Cheez Pizza", R.drawable.pizza_large)
+)
+
+val sizeAndAmount = listOf(
+    OrderData(pizzaSize = "Small", price = 99.0),
+    OrderData(pizzaSize = "Medium", price = 199.0),
+    OrderData(pizzaSize = "Large", price = 399.0)
+)
+
+
+data class OrderData(
+    val id: Int = 0,
+    var pizzaName: String = "",
+    @DrawableRes val image: Int = 0,
+    var pizzaSize: String = "",
+    var price: Double = 0.0,
+    var address: String = ""
+)
+
+class PizzaViewModel : ViewModel() {
+
+    private val _orderData = MutableStateFlow<OrderData?>(OrderData())
+    val orderData: StateFlow<OrderData?> = _orderData.asStateFlow()
+
+    fun setSelectedPizzaData(orderData: OrderData?) {
+        _orderData.update {
+            it?.copy(
+                id = orderData?.id ?: 0,
+                pizzaName = orderData?.pizzaName.toString(),
+                image = orderData?.image ?: 0
+            )
+        }
+    }
+
+    fun setSizeAndAmountData(orderData: OrderData?) {
+        _orderData.update {
+            it?.copy(
+                pizzaSize = orderData?.pizzaSize.toString(),
+                price = orderData?.price ?: 0.0)
+        }
+    }
+
+    fun setAddress(address: String) {
+        _orderData.update {
+            it?.copy(address = address)
+        }
+    }
+}
+
+            `
+          }
+
         ];
 
         return data.find(item => item.id === parseInt(cardId));
