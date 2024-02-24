@@ -27,6 +27,14 @@
             margin:10px;
         }
 
+        #doneList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 5000px;
+            margin:10px;
+        }
+
         .todo-item {
             padding: 10px;
             background-color: #fff;
@@ -71,9 +79,14 @@
     </div>
 
     <div id="todoList">
+
         <div class="todo-item">
-            <input type="checkbox" id="item0" class="todo-checkbox" checked disabled>
-            <label for="item0" class="todo-label done">Study Switch, Change Color or Customized it</label>
+            <input type="checkbox" id="item0" class="todo-checkbox">
+            <label for="item0" class="todo-label">All Widget of android
+                <a target="_blank" href="https://raw.githubusercontent.com/pwraxe/Android-in-Kotlin/master/Jetpack%20Compose/AndroidWidget.png">
+                    (See this XML Layout/Design Tab/Palette)
+                </a>
+            </label>
         </div>
 
         <div class="todo-item">
@@ -89,11 +102,6 @@
         <div class="todo-item">
             <input type="checkbox" id="item3" class="todo-checkbox">
             <label for="item3" class="todo-label">Try to show multiple same ui in list and add listener</label>
-        </div>
-
-        <div class="todo-item">
-            <input type="checkbox" id="item4" class="todo-checkbox">
-            <label for="item4" class="todo-label">Pizza Order,With NavHost,Update Multiple Screen on uiState Change</label>
         </div>
 
         <div class="todo-item">
@@ -119,7 +127,28 @@
             </label>
         </div>
 
+        <div class="todo-item">
+            <input type="checkbox" id="item9" class="todo-checkbox">
+            <label for="item9" class="todo-label">Create Remainder app using WorkManager
+            </label>
+        </div>
+
     </div>
 
+    <div> <hr> </div>
+
+    <div id="doneList">
+
+        <div class="todo-item">
+            <input type="checkbox" id="done1" class="todo-checkbox" checked disabled>
+            <label for="done1" class="todo-label done">Study Switch, Change Color or Customized it</label>
+        </div>
+
+        <div class="todo-item">
+            <input type="checkbox" id="item4" class="todo-checkbox" checked disabled>
+            <label for="item4" class="todo-label done">Pizza Order,With NavHost,Update Multiple Screen on uiState Change</label>
+        </div>
+
+    </div>
 </body>
 </html>
