@@ -42,7 +42,8 @@
     - UDF (Unidirectional Data Flow), It is a Design Pattern in which, state flows `down` and event flows `up` <br>
     - APK = Android Package (Application Package File)
     - Compose BOM = Compose Bill Of Material <br>
-    - YOu can change screen withOut NavHost also, just change state of screen it will auto recompose, but this won't maintain backstack, for this you just have to add <code>BackHandler(enabled = true){ onBackPressed() }</code>
+    - You can change screen withOut NavHost also, just change state of screen it will auto recompose, but this won't maintain backstack, for this you just have to add <code>BackHandler(enabled = true){ onBackPressed() }</code> <br>
+    - Compose transforms <b>Data</b> into <b>UI</b> by 3 Phase <code>Data --> Composition --> Layout --> Drawing --> UI</code>
     <hr>
     <p><b>Recycler View Notes</b></p>
     - In Scrollable List, 1) Define Separate Layout in Separate compose function, 2) Call same layout function from <code>lazyColumn {items() { composeFun(param) } }</code><br>

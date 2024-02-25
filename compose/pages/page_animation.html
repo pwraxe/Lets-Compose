@@ -25,6 +25,12 @@
     <div class="list">
         <div class="item-container">
 
+
+            <div class="page-card def-selected" card-id="0">
+                <h2>Animation Notes</h2>
+                <p>Notes Regarding Animation and Its States</p>
+            </div>
+
             <div class="page-card def-selected" card-id="1">
                 <h2>Animation</h2>
                 <p>Default and Custom Spring Animation, Damping-NoBound to Damping-HighBounce</p>
@@ -43,6 +49,13 @@
             <div class="page-card def-selected" card-id="4">
                 <h2>Repeatable Animation</h2>
                 <p>Repeatable Animation with Tween</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="5">
+                <h2>Swipe to delete Animation</h2>
+                <p>Swipe to delete, gesture animation
+                    <a target="_blank" href="https://developer.android.com/codelabs/jetpack-compose-animation#7">See this for Article
+                </a> </p>
             </div>
 
 
@@ -103,6 +116,77 @@
         console.log(`Fetching data for card ID: ${cardId}`);
 
         const data = [
+            { id: 0, src: 'image_url',
+            description:`
+- We Can animate anithing by its state
+- We have formula, "animate*State"
+  > Here '*' mean anything like color, dp, float, int, value
+  > Ex animateColorAsState(param), animateDpAsState(param),
+       animateFloatAsState(param), animateIntAsState(param),
+       animateIntSizeAsState(param), animateOffsetAsState(param),
+       animateIntSizeAsState(param), animateIntOffsetAsState(param)
+       animateRectAsState(param), animateValueAsState(param)
+
+Example
+val backColor by animateColorAsState(targetValue = if(this) thenThisColor else thisColor)
+
+— To show any view by its visibility, Animated show and animated hide then
+AnimatedVisibility(visible = booleanValue) { UiWhichShowIfTrue }
+
+— You can also add your enter-exit transition while makeing ui
+  animated visible
+AnimatedVisibility(
+    visible = booleanValue
+    enter = slideInVertically(), expandVertically(),
+    exit = slideOutVertically(), shrinkVertically()
+)
+
+— Animate Modifier.animateContentSize()
+— Animate Multiple Value simultaneously, we use 'Transition'
+— 'Transition' can be created with updateTransition function
+Ex. TabPage
+
+val transition = updateTransition(targetState = tabPage, label = "")
+val leftTab by transition.animateDp(label = "Left TAB") { page ->
+    tabPositions[page.ordinal].left
+}
+val indicatorRight by transition.animateDp(label = "Right") { page ->
+    tabPositions[page.ordinal].right
+}
+val color by transition.animateColor(label = "Border Color") {
+    if (it == TabPage.Home) Black else Blue
+}
+- As you can see, we created 'transition' variable
+  and applied to leftTab, rightTab and color parallel
+___________________________________________________________
+- When you want to more specification in transition
+val leftTab by transition.animateDp(
+ transitionSpec = {
+  if (TabPage.Home isTransitioningTo TabPage.Work) {
+    spring(stiffness = Spring.StiffnessVeryLow)
+  } else spring(stiffness = Spring.StiffnessMedium)
+ },
+ label = "Transition Left") { tabPositions[it.ordinal].left }
+___________________________________________________________
+Repeated Transition (Like Shimmer)
+val infiniteTransition = rememberInfiniteTransition(label = "")
+flt = Float
+//infiniteTransition.animateColor(initialValue = flt, targetValue = flt, animationSpec = )
+//infiniteTransition.animateValue(initialValue = flt, targetValue = flt, animationSpec = )
+
+val alpha by infiniteTransition.animateFloat(
+    initialValue = 0f,
+    targetValue = 1f,
+    animationSpec = infiniteRepeatable(animation = keyframes {
+        durationMillis = 1000
+        0.7f at 500
+        0.9f at 800
+    }, repeatMode = RepeatMode.Reverse), label = ""
+)
+
+`
+            },
+
             { id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_animation_1.gif',
             description:
 `
@@ -121,7 +205,7 @@ fun LetsStudy() {
 @Composable
 fun Animation1(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
 
     Card (modifier = modifier
         .animateContentSize()
@@ -168,7 +252,7 @@ fun Animation1(modifier: Modifier = Modifier) {
 @Composable
 fun Animation2(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -215,7 +299,7 @@ fun Animation2(modifier: Modifier = Modifier) {
 @Composable
 fun Animation3(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -262,7 +346,7 @@ fun Animation3(modifier: Modifier = Modifier) {
 @Composable
 fun Animation4(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -308,7 +392,7 @@ fun Animation4(modifier: Modifier = Modifier) {
 @Composable
 fun Animation5(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -449,7 +533,7 @@ fun LetsStudy() {
 @Composable
 fun Animation1(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -496,7 +580,7 @@ fun Animation1(modifier: Modifier = Modifier) {
 @Composable
 fun Animation2(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -543,7 +627,7 @@ fun Animation2(modifier: Modifier = Modifier) {
 @Composable
 fun Animation3(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -591,7 +675,7 @@ fun Animation3(modifier: Modifier = Modifier) {
 @Composable
 fun Animation4(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -638,7 +722,7 @@ fun Animation4(modifier: Modifier = Modifier) {
 @Composable
 fun Animation5(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -685,7 +769,7 @@ fun Animation5(modifier: Modifier = Modifier) {
 @Composable
 fun Animation6(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -733,7 +817,7 @@ fun Animation6(modifier: Modifier = Modifier) {
 @Composable
 fun Animation7(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -780,7 +864,7 @@ fun Animation7(modifier: Modifier = Modifier) {
 @Composable
 fun Animation8(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -827,7 +911,7 @@ fun Animation8(modifier: Modifier = Modifier) {
 @Composable
 fun Animation9(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -875,7 +959,7 @@ fun Animation9(modifier: Modifier = Modifier) {
 @Composable
 fun Animation10(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -922,7 +1006,7 @@ fun Animation10(modifier: Modifier = Modifier) {
 @Composable
 fun Animation11(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -969,7 +1053,7 @@ fun Animation11(modifier: Modifier = Modifier) {
 @Composable
 fun Animation12(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -1056,7 +1140,7 @@ fun LetsStudy() {
 @Composable
 fun Animation1(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -1106,7 +1190,7 @@ fun Animation1(modifier: Modifier = Modifier) {
 @Composable
 fun Animation2(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -1155,7 +1239,7 @@ fun Animation2(modifier: Modifier = Modifier) {
 @Composable
 fun Animation3(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -1204,7 +1288,7 @@ fun Animation3(modifier: Modifier = Modifier) {
 @Composable
 fun Animation4(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -1253,7 +1337,7 @@ fun Animation4(modifier: Modifier = Modifier) {
 @Composable
 fun Animation5(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
         .animateContentSize(
@@ -1339,7 +1423,7 @@ fun LetsStudy() {
 @Composable
 fun Animation1(modifier: Modifier = Modifier) {
 
-    var expanded by remember { mutableStateOf(false) }
+    Var expanded by remember { mutableStateOf(false) }
 
     Card(modifier = modifier
         .padding(start = 10.dp, top = 10.dp, end = 10.dp)
@@ -1393,7 +1477,62 @@ text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
     }
 }
 `
+},
+{ id: 5, src: 'Pls Update Image',
+description: `
+private fun Modifier.swipeToDismiss(onDismissed: () -> Unit): Modifier = composed {
+
+    val offsetX = remember { androidx.compose.animation.core.Animatable(0f) }
+    pointerInput(Unit) {
+
+        // Used to calculate a settling position of a fling animation.
+        val decay = splineBasedDecay<Float>(this)
+
+        // Wrap in a coroutine scope to use suspend functions for touch events and animation.
+        coroutineScope {
+            while (true) {
+                // Wait for a touch down event.
+                val pointerId = awaitPointerEventScope { awaitFirstDown().id }
+                offsetX.stop()
+                val velocityTracker = VelocityTracker()
+
+                // Wait for drag events.
+                awaitPointerEventScope {
+
+                    horizontalDrag(pointerId) { change ->
+
+                        val horizontalDragOffset = offsetX.value + change.positionChange().x
+                        launch {
+                            offsetX.snapTo(horizontalDragOffset)
+                        }
+
+                        // Record the velocity of the drag.
+                        velocityTracker.addPosition(change.uptimeMillis, change.position)
+
+                        // Consume the gesture event, not passed to external
+                        if (change.positionChange() != Offset.Zero) change.consume()
+                    }
+                }
+                // Dragging finished. Calculate the velocity of the fling.
+                val velocity = velocityTracker.calculateVelocity().x
+                val targetOffsetX = decay.calculateTargetValue(offsetX.value, velocity)
+                offsetX.updateBounds(-size.width.toFloat(), size.width.toFloat())
+
+                launch {
+                    if (targetOffsetX.absoluteValue <= size.width) {
+                        offsetX.animateTo(targetValue = 0f, initialVelocity = velocity)
+                    } else {
+                        offsetX.animateDecay(velocity, decay)
+                        onDismissed()
+                    }
+                }
+            }
+        }
+    }.offset { IntOffset(offsetX.value.roundToInt(), 0) }
 }
+
+
+`}
         ];
 
         return data.find(item => item.id === parseInt(cardId));
