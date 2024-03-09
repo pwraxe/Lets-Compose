@@ -1,0 +1,173 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample</title>
+
+    <style>
+        pre {
+   background-color: #fff9e6;
+   border: 1px solid #ccc;
+   display: inline-block;
+   border-radius: 6px;
+   padding: 5px; /* Adjust padding as needed */
+   font-family: monospace; /* Use a monospaced font for code */
+ }
+
+    </style>
+</head>
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Scaffold(
+        bottomBar = {
+            BottomAppBar(containerColor = Color.Yellow) {
+                IconButton(
+                    onClick = {},
+                    modifier = modifier
+                        .padding(10.dp)) {
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_dev_profile),
+                        contentDescription = null)
+                }
+
+                IconButton(
+                    onClick = {},
+                    modifier = modifier
+                        .padding(10.dp)) {
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_asia),
+                        contentDescription = null,
+                        modifier = modifier.size(48.dp))
+                }
+
+                Column (horizontalAlignment = Alignment.CenterHorizontally){
+                    Image(painter = painterResource(id = R.drawable.ic_linked_in),
+                        contentDescription = null)
+                    Spacer(modifier = Modifier.padding(top = 5.dp))
+                    Text(text = "LinkedIn")
+                }
+
+                Card(modifier.padding(10.dp), colors = CardDefaults.cardColors(
+                    containerColor = Color.Green
+                )) {
+                    Column (
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = modifier.padding(6.dp)) {
+
+                        Image(painter = painterResource(id = R.drawable.ic_github),
+                            contentDescription = null)
+                        Spacer(modifier = Modifier.padding(top = 5.dp))
+                        Text(text = "GitHub")
+                    }
+                }
+            }
+        }) {
+        Column(modifier = Modifier.padding(it)) {
+
+            Column (modifier = modifier.padding(10.dp)){
+
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(color = Blue20, shape = RoundedCornerShape(10.dp))
+                        .padding(10.dp)){
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_dev_profile),
+                        contentDescription = null)
+                    Spacer(modifier = modifier.padding(start = 10.dp))
+                    Text(text = "Icon with no text, simple, default icon")
+                }
+                Spacer(modifier = modifier.padding(top = 10.dp))
+
+                //=================================================================
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(color = Blue20, shape = RoundedCornerShape(10.dp))
+                        .padding(10.dp)) {
+                    IconButton(
+                        onClick = {}) {
+
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_asia),
+                            contentDescription = null,
+                            modifier = modifier.size(48.dp))
+                    }
+                    Text(text = "Icon with no text, default big size icon")
+                }
+                Spacer(modifier = modifier.padding(top = 10.dp))
+
+                //=================================================================
+
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(color = Blue20, shape = RoundedCornerShape(10.dp))
+                        .padding(10.dp)) {
+
+                    Column (horizontalAlignment = Alignment.CenterHorizontally){
+                        Image(painter = painterResource(id = R.drawable.ic_linked_in),
+                            contentDescription = null)
+                        Spacer(modifier = Modifier.padding(top = 5.dp))
+                        Text(text = "LinkedIn")
+                    }
+
+                    Text(text = "Icon with text, default size")
+                }
+                Spacer(modifier = modifier.padding(top = 10.dp))
+
+                //=================================================================
+
+
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = Blue20,
+                            shape = RoundedCornerShape(10.dp))
+                        .padding(end = 10.dp)
+                ) {
+
+                    Card(modifier.padding(10.dp), colors = CardDefaults.cardColors(
+                        containerColor = Color.Green
+                    )) {
+                        Column (
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = modifier.padding(6.dp)) {
+
+                            Image(painter = painterResource(id = R.drawable.ic_github),
+                                contentDescription = null)
+                            Spacer(modifier = Modifier.padding(top = 5.dp))
+                            Text(text = "GitHub")
+                        }
+                    }
+
+                    Text(text = "Icon with text, with style")
+                }
+                Spacer(modifier = modifier.padding(top = 10.dp))
+
+                //=================================================================
+            }
+        }
+    }
+}</pre>
+
+</body>
+</html>

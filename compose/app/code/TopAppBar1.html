@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample</title>
+
+    <style>
+        pre {
+   background-color: #fff9e6;
+   border: 1px solid #ccc;
+   display: inline-block;
+   border-radius: 6px;
+   padding: 5px; /* Adjust padding as needed */
+   font-family: monospace; /* Use a monospaced font for code */
+ }
+
+    </style>
+</head>
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior2 = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior3 = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+
+    Scaffold (
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TopAppBar Title") },
+                navigationIcon = {
+                    Image(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = null)
+                },
+                actions = {
+
+                    //Note: As Action you can show anything,
+                    // it is completely customizable
+
+                    Text(text = "Search")
+
+                    Image(
+                        imageVector = Icons.Filled.DateRange,
+                        contentDescription = null,
+                        modifier = modifier.padding(8.dp))
+                },
+                colors = TopAppBarDefaults
+                    .topAppBarColors()
+                    .copy(containerColor = Color.Yellow),
+                scrollBehavior = scrollBehavior
+            )
+        }
+    ) {
+        Column(modifier = Modifier
+            .padding(it)
+            .padding(10.dp)) {
+
+            Text(text = "Text as a Action", modifier.padding(10.dp))
+            Text(text = "Icon as a Action", modifier.padding(10.dp))
+            Text(text = "Custom UI as a Action", modifier.padding(10.dp))
+        }
+    }
+}</pre>
+
+</body>
+</html>
