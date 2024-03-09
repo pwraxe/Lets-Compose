@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Sample</title>
+
+        <style>
+            pre {
+       background-color: #fff9e6;
+       border: 1px solid #ccc;
+       display: inline-block;
+       border-radius: 6px;
+       padding: 5px; /* Adjust padding as needed */
+       font-family: monospace; /* Use a monospaced font for code */
+     }
+
+        </style>
+    </head>
+    <body>
+<pre>
+@Preview
+@Composable
+fun BottomAppBarPreview() {
+    val compData = ComponentData(
+        componentName = R.string.app_name,
+        componentOutput = AppConstants.URLS.APP_BAR.BOTTOM_OUTPUT,
+        componentCode = AppConstants.URLS.APP_BAR.BOTTOM_CODE)
+    BottomAppBarScreen(compData)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomAppBarScreen(
+    data: ComponentData,
+    modifier: Modifier = Modifier) {
+
+    val list = listOf("Output","Code")
+    var selectedIndex by remember { mutableIntStateOf(0) }
+
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        SingleChoiceSegmentedButtonRow (
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp)) {
+            list.forEachIndexed { index, str ->
+                SegmentedButton(
+                    selected = selectedIndex == index,
+                    onClick = { selectedIndex = index },
+                    shape = SegmentedButtonDefaults
+                        .itemShape(index = index, count = list.size),
+                    border = BorderStroke(width = 1.dp, color = Blue80),
+                    colors = SegmentedButtonDefaults.colors().copy(
+                        activeBorderColor = Blue80,
+                        activeContainerColor = Blue80,
+                        activeContentColor = Blue80,
+                        inactiveBorderColor = Blue20,
+                        inactiveContainerColor = Blue20,
+                        inactiveContentColor = Blue20)) {
+
+                    val selectedTextColor = if (selectedIndex == index) Color.White else Blue80
+
+                    Text(
+                        text = str,
+                        color = selectedTextColor
+                    )
+                }
+            }
+        }
+
+        val url = if (selectedIndex == 0) data.componentOutput
+        else data.componentCode
+
+        LoadWebUrl(url,modifier)
+    }
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun LoadWebUrl(url:String, modifier: Modifier) {
+    AndroidView(modifier = modifier.fillMaxSize(), factory = {
+        WebView(it).apply {
+            settings.javaScriptEnabled = true
+            webViewClient = WebViewClient()
+            loadUrl(url)
+        }
+    }, update = {
+        it.loadUrl(url)
+    })
+}
+
+        </pre>
+
+    </body>
+</html>
