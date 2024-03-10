@@ -1,0 +1,159 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Badge in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)
+        .padding(top = 50.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Column(modifier = modifier
+            .border(1.dp, color = Color.Black)
+            .padding(10.dp)) {
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                FloatingActionButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = null)
+                }
+
+                Text(
+                    text = "FAB Button with Icon",
+                    modifier.padding(start = 10.dp))
+            }
+            Spacer(modifier = modifier.padding(top = 10.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                FloatingActionButton(onClick = {}) {
+                    Text(
+                        text = "FAB with Text",
+                        modifier.padding(
+                            horizontal = 10.dp,
+                            vertical = 10.dp
+                        )
+                    )
+                }
+
+                Text(
+                    text = "FAB Button with Text",
+                    modifier.padding(start = 10.dp))
+            }
+        }
+
+        Column(modifier = modifier
+            .border(1.dp, color = Color.Black)
+            .padding(10.dp)
+        ) {
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+
+                ExtendedFloatingActionButton(onClick = {}) {
+                    Text(text = "Extended FAB")
+                }
+                Text(
+                    text = "Extended FAB with Text",
+                    modifier.padding(start = 10.dp))
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+
+                ExtendedFloatingActionButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Filled.Notifications,
+                        contentDescription = null)
+                    Spacer(modifier = modifier.padding(start = 6.dp))
+                    Text(text = "Extended FAB")
+                }
+                Text(text = "Extended FAB with Text and Icon added",
+                    modifier.padding(start = 10.dp))
+            }
+        }
+
+
+        Column(modifier = modifier
+            .border(1.dp, color = Color.Black)
+            .padding(10.dp)
+        ) {
+            Row {
+                ExtendedFloatingActionButton(
+                    text = { Text(text = "ExtendedFloatingActionButton") },
+                    icon = { Icon(
+                        imageVector = Icons.Filled.Notifications,
+                        contentDescription = null)
+                    },
+
+                    onClick = { })
+
+
+            }
+            Text(text = "Extended FAB with default text, icon alignment")
+        }
+
+
+        Column(modifier = modifier
+            .border(1.dp, color = Color.Black)
+            .padding(10.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                LargeFloatingActionButton(onClick = {}) {
+                    Text(text = "Large FAB")
+                }
+
+                Text(text = "Large FAB with Text")
+            }
+
+            Row (verticalAlignment = Alignment.CenterVertically){
+                LargeFloatingActionButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Filled.Place,
+                        contentDescription = null)
+                }
+
+                Text(text = "Large FAB with Icon")
+            }
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            SmallFloatingActionButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = null
+                )
+            }
+
+            Text(text = "Small FAB with Icon")
+        }
+    }
+}
+
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Outline Button in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var checked by remember { mutableStateOf(false) }
+
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Blue20)
+        .padding(top = 109.dp),
+        horizontalAlignment = Alignment.CenterHorizontally){
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            OutlinedButton(onClick = {}) {
+                Text(
+                    text = "OutlinedButton",
+                    color = Color.Black)
+            }
+
+            Text(
+                text = "Default OutlinedButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            OutlinedButton(
+                onClick = {},
+                modifier = modifier,
+                enabled = true,
+                shape = CutCornerShape(
+                    topStart = 10.dp,
+                    bottomEnd = 10.dp
+                ),
+                border = BorderStroke(
+                    width = 2.dp,
+                    brush = Brush
+                        .linearGradient(
+                            listOf(
+                                Color.Red,
+                                Color.Magenta
+                            )
+                        )
+                )
+            ) {
+                Text(
+                    text = "OutlinedButton with style",
+                    color = Color.Black)
+            }
+
+            Text(
+                text = "OutlinedButton with style",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            OutlinedIconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = null)
+            }
+
+            Text(
+                text = "Default OutlinedIconButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            OutlinedIconButton(
+                onClick = {},
+                enabled = true,
+                shape = CutCornerShape(
+                    topStart = 10.dp,
+                    bottomEnd = 4.dp),
+                modifier = modifier,
+                border = BorderStroke(
+                    width = 1.dp,
+                    brush = Brush
+                        .horizontalGradient(
+                            colors = listOf(Color.Red, Color.Black),
+                            tileMode = TileMode.Repeated))
+                , colors = IconButtonDefaults.outlinedIconButtonColors(
+                    contentColor = Color.Red,
+                    containerColor = Color.Yellow
+                )) {
+                Icon(
+                    imageVector = Icons.Filled.Edit,
+                    contentDescription = null)
+            }
+
+            Text(text = "OutlinedIconButton with style",
+                modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+
+            OutlinedIconToggleButton(
+                checked = checked,
+                onCheckedChange = { checked = !checked }) {
+                val icon = if (checked) Icons.Filled.Favorite
+                else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+            Text(
+                text = "OutlinedIconToggleButton Unselected",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+    }
+}
+</pre>
+
+</body>
+</html>

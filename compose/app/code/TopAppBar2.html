@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Top App bar in Compose</title>
+
+    <style>
+        pre {
+   background-color: #fff9e6;
+   border: 1px solid #ccc;
+   display: inline-block;
+   border-radius: 6px;
+   padding: 5px; /* Adjust padding as needed */
+   font-family: monospace; /* Use a monospaced font for code */
+ }
+
+    </style>
+</head>
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    var showMenu by remember { mutableStateOf(false) }
+
+    Scaffold (topBar = {
+        TopAppBar(
+            title = { Text(
+                text = "Top Appbar",
+                fontSize = 20.sp,
+                fontFamily = fontMontserrat
+                ) },
+            modifier = modifier,
+            navigationIcon = {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = null
+                    )
+                }
+            },
+            actions = {
+
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = null
+                    )
+                }
+
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null
+                    )
+                }
+
+                IconButton(onClick = { showMenu = true }) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = null
+                    )
+
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false },
+                        modifier = modifier,
+                        offset = DpOffset(0.dp,10.dp),
+                        properties = PopupProperties()
+                    ) {
+                        DropdownMenuItem(text = { Text(text = "More 1")}, onClick = { showMenu = false })
+                        DropdownMenuItem(text = { Text(text = "More 2")}, onClick = { showMenu = false })
+                        DropdownMenuItem(text = { Text(text = "More 3")}, onClick = { showMenu = false })
+                        DropdownMenuItem(text = { Text(text = "More 4")}, onClick = { showMenu = false })
+                        DropdownMenuItem(text = { Text(text = "More 5")}, onClick = { showMenu = false })
+                    }
+                }
+            },
+            windowInsets = TopAppBarDefaults.windowInsets,
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Yellow),
+            scrollBehavior = scrollBehavior
+          )
+    }){
+        Column(modifier.padding(it)) {}
+    }
+}
+</pre>
+
+</body>
+</html>

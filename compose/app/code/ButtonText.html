@@ -1,0 +1,119 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text Button in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Blue20)
+        .padding(top = 109.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            TextButton(onClick = {}) {
+                Text(
+                    text = "Click here",
+                    color = Color.Blue
+                )
+            }
+            Text(
+                text = "--> Default TextButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            TextButton(
+                onClick = {},
+                modifier = modifier,
+                enabled = true,
+                shape = RoundedCornerShape(
+                    topStart = 20.dp,
+                    bottomStart = 20.dp
+                ),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Black,
+                    contentColor = Color.Yellow,
+                    disabledContainerColor = Color.LightGray),
+                elevation = ButtonDefaults
+                    .buttonElevation(defaultElevation = 8.dp)
+            ) {
+                Text(text = "Click here")
+            }
+            Text(
+                text = "--> TextButton with style",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            Text(text = buildAnnotatedString {
+
+                withStyle(style = SpanStyle(
+                    color = Color(0xFFFF0000),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium)
+                ) {
+                    append("RED")
+                }
+
+                append(" ")
+                withStyle(style = SpanStyle(
+                    color = Color(0xFF00FF00),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium)
+                ) {
+                    append("GREEN")
+                }
+
+                append(" ")
+                withStyle(style = SpanStyle(
+                    color = Color(0xFF0000FF),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    background = Color.Yellow)) {
+                    append(" BLUE")
+                }
+            })
+
+            Spacer(modifier = modifier.padding(top = 50.dp))
+            Text(
+                text = "--> AnnotatedString",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+    }
+}
+
+</pre>
+
+</body>
+</html>

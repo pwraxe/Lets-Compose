@@ -1,0 +1,129 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filled Button in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var selected by remember { mutableStateOf(0) }
+    var checked by remember { mutableStateOf(false) }
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)
+        .padding(top = 100.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            FilledIconButton(onClick = {}) {
+                Icon(imageVector = Icons.Filled.Favorite, contentDescription = null)
+            }
+            Text(text = "Default FilledIconButton", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            FilledIconButton(
+                onClick = {},
+                modifier = modifier
+                    .border(
+                        border = BorderStroke(width = 2.dp, color = Color.White),
+                        shape = RoundedCornerShape(10.dp)
+                    ),
+                enabled = true,
+                shape = CutCornerShape(10.dp), colors = IconButtonDefaults.iconButtonColors(
+                    contentColor = Color.Yellow,
+                    containerColor = Color.Black
+                )
+            ) {
+                Icon(imageVector = Icons.Filled.Favorite, contentDescription = null)
+            }
+            Text(text = "FilledIconButton with style", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+            FilledIconToggleButton(checked = checked , onCheckedChange = { checked = !checked}) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+            Text(text = "Default FilledIconToggleButton", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+            FilledIconToggleButton(
+                checked = checked ,
+                onCheckedChange = { checked = !checked},
+                modifier = modifier,enabled = true, shape = CutCornerShape(16.dp)
+            ) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+            Text(text = "FilledIconToggleButton with style same as FilledIconButton (second)",
+                modifier = modifier.padding(start = 10.dp))
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+            FilledIconToggleButton(
+                checked = checked ,
+                onCheckedChange = { checked = !checked},
+                modifier = modifier,enabled = true, shape = CutCornerShape(16.dp)
+            ) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Text(text = "AP")
+            }
+            Text(text = "FilledIconToggleButton with Text", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+
+            FilledTonalIconButton(onClick = { checked = !checked }) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+
+            Text(text = "FilledTonalIconButton with Icon change only", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+
+            FilledTonalIconToggleButton(checked = checked, onCheckedChange = { checked = !checked }) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+
+            Text(text = "FilledTonalIconToggleButton with Icon change only same as above",
+                modifier = modifier.padding(start = 10.dp))
+        }
+    }
+}
+
+
+</pre>
+
+</body>
+</html>

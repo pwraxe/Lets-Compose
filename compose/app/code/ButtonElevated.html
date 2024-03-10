@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Elevated Button in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray).padding(top = 100.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        ElevatedButton(onClick = {}) {
+            Text(
+                text = "Elevated Button 1",
+                fontFamily = fontMontserratBold,
+                color = Color.Black
+                )
+        }
+
+        ElevatedButton(
+            onClick = {},
+            modifier = modifier,
+            enabled = true,
+            shape = CutCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow,
+                    contentColor = Color.Black),elevation = ButtonDefaults
+                        .buttonElevation(
+                            defaultElevation = 4.dp,
+                            pressedElevation = 8.dp,
+                            focusedElevation = 6.dp,
+                            hoveredElevation = 10.dp
+                        ),
+            border = BorderStroke(
+                width = 2.dp,
+                brush = Brush.linearGradient(
+                    listOf(Color.Black, Color.Green, Color.Red)
+                ))
+            ) {
+            Text(
+                text = "Elevated Button 2",
+                fontFamily = fontMontserrat,)
+        }
+    }
+}
+
+
+</pre>
+
+</body>
+</html>

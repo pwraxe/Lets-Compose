@@ -43,6 +43,13 @@
                     </div>
                 </div>
 
+                <div class="item-container">
+                    <div class="page-card def-selected" card-id="4">
+                        <h2>Badge in Navigation</h2>
+                        <p>Badges in Bottom Navigation</p>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -547,12 +554,93 @@ fun ScreenPreview() {
 //    PasswordScreen("", onNextClicked = {})
 //    LoginScreen("","", onExitClicked = {}, onCancelClick = {})
 }
-
-
-
-
 `
+},
+{ id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_badge.jpg', description:
+`
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
 }
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    var selectedMenu by remember { mutableIntStateOf(1) }
+
+    Scaffold {
+        Column(modifier = modifier.padding(it)) {
+
+            Box(modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter) {
+                NavigationBar(
+                    modifier = modifier,
+                    containerColor = Color.Yellow,
+                    tonalElevation = 4.dp,
+                ) {
+                    NavigationBarItem(
+                        selected = selectedMenu == 0,
+                        onClick = { selectedMenu = 0 },
+                        icon = {
+                            BadgedBox(
+                                badge = {
+                                    Badge {
+                                        Text(text = "10", modifier = modifier.semantics {
+                                            contentDescription = "8 badge Notification" }
+                                        )
+                                    }
+                                }) {
+                                Icon(imageVector = Icons.Filled.Home, contentDescription = null)
+                            }
+                        })
+
+
+                    NavigationBarItem(
+                        selected = selectedMenu == 1,
+                        onClick = { selectedMenu = 1},
+                        icon = {
+                            BadgedBox(
+                                badge = {
+                                    Badge(
+                                        modifier = modifier
+                                            .padding(start = 2.dp, bottom = 6.dp)
+                                            .size(10.dp)) {
+
+                                    }
+                                }) {
+                                Icon(imageVector = Icons.Filled.Notifications, contentDescription = null)
+                            }
+                        })
+
+
+                    NavigationBarItem(
+                        selected = selectedMenu == 2,
+                        onClick = { selectedMenu = 2 },
+                        icon = {
+                            BadgedBox(
+                                badge = {
+                                    Badge {
+
+                                        Icon(
+                                            imageVector = Icons.Filled.Add,
+                                            contentDescription = null,
+                                            modifier = modifier.size(10.dp)
+                                        )
+                                    }
+                                }) {
+                                Icon(imageVector = Icons.Filled.Call, contentDescription = null)
+                            }
+                        })
+                }
+            }
+        }
+    }
+}
+`
+
+}
+
+
                 ];
 
                 return data.find(item => item.id === parseInt(cardId));
