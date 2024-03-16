@@ -1,0 +1,111 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkbox in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        CheckBox(modifier, 0)
+
+        HorizontalDivider()
+
+        LazyColumn {
+            this.items(5) {
+                CheckBox(label = it, modifier = modifier)
+            }
+        }
+
+        HorizontalDivider()
+
+
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TriStateCheckbox(state = ToggleableState.Off, onClick = { /*TODO*/ })
+            Text(
+                text = "TriStateCheckbox - ToggleableState.Off",
+                fontSize = 16.sp,
+                fontFamily = fontMontserrat
+            )
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TriStateCheckbox(state = ToggleableState.Indeterminate, onClick = { /*TODO*/ })
+            Text(
+                text = "TriStateCheckbox - ToggleableState.Indeterminate",
+                fontSize = 16.sp,
+                fontFamily = fontMontserrat
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            TriStateCheckbox(state = ToggleableState.On, onClick = { /*TODO*/ })
+            Text(
+                text = "TriStateCheckbox - ToggleableState.On",
+                fontSize = 16.sp,
+                fontFamily = fontMontserrat
+            )
+        }
+    }
+}
+
+@Composable
+fun CheckBox(modifier: Modifier = Modifier, label: Int = 0) {
+
+    var checked by remember { mutableStateOf(false) }
+
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.padding(top = 20.dp)
+    ){
+        Checkbox(
+            checked = checked,
+            onCheckedChange = { checked  = !checked },
+            modifier = modifier,
+            enabled = true,
+            colors = CheckboxDefaults
+                .colors(
+                    checkedColor = Color.Blue,
+                    uncheckedColor = Color.Gray
+                )
+        )
+
+        val text = if (checked) "Selected $label" else "UnSelected $label"
+        Text(text = text,
+            fontFamily = fontMontserrat,
+            fontSize = 16.sp,
+            color = Color.Black
+        )
+    }
+}
+
+</pre>
+
+</body>
+</html>

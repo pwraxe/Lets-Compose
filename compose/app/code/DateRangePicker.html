@@ -1,0 +1,72 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Date Range Picker in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val dateRangePickerState = rememberDateRangePickerState()
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        OutlinedCard (modifier = modifier.padding(10.dp)) {
+
+            DateRangePicker(
+                modifier = modifier.padding(6.dp),
+                state = dateRangePickerState,
+                title = { Text(text = "Title") },
+                headline = {
+                    val startDate = dateRangePickerState.selectedStartDateMillis
+                    val endDate = dateRangePickerState.selectedEndDateMillis
+
+                    dateRangePickerState.setSelection(startDate, endDate)
+                    Row (verticalAlignment = Alignment.CenterVertically){
+                        val startDateStr = if (startDate != null) requestDate(startDate) else "Start Date"
+                        Text(text = startDateStr)
+                        Canvas(modifier = modifier.padding(8.dp)) {
+                            drawCircle(color = Color.Black, radius = 6f)
+                        }
+                        val endDateStr = if (endDate != null) requestDate(endDate) else "End Date"
+                        Text(text = endDateStr)
+                    }
+                }
+            )
+        }
+    }
+}
+
+fun requestDate(time: Long?) : String {
+    //06 September 2023
+    val simpleDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    return simpleDateFormat.format(time)
+}
+</pre>
+
+</body>
+</html>

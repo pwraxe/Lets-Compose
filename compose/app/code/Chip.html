@@ -1,0 +1,469 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chip in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val mutableInteractionSource = remember { MutableInteractionSource() }
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        Row {
+
+            AssistChip(
+                onClick = {},
+                label = { Text(text = "Assist Chip")},
+                modifier = modifier.padding(8.dp),
+                enabled = true,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(6.dp),
+                colors = ChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconContentColor = Color.Red,
+                    trailingIconContentColor = Color.Red,
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconContentColor = Color.Gray,
+                    disabledTrailingIconContentColor = Color.Gray
+                ),
+                border = BorderStroke(1.dp, color = Color.Blue),
+                elevation = ChipElevation(
+                    elevation = 10.dp,
+                    pressedElevation = 10.dp,
+                    focusedElevation = 10.dp,
+                    hoveredElevation = 100.dp,
+                    draggedElevation = 10.dp,
+                    disabledElevation = 10.dp),
+                interactionSource = mutableInteractionSource
+            )
+
+            AssistChip(
+                onClick = {},
+                label = { Text(text = "Assist Chip")},
+                modifier = modifier.padding(8.dp),
+                enabled = false,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(6.dp),
+                colors = ChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconContentColor = Color.Red,
+                    trailingIconContentColor = Color.Red,
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconContentColor = Color.Gray,
+                    disabledTrailingIconContentColor = Color.Gray
+                ),
+                border = BorderStroke(1.dp, color = Color.Black),
+                elevation = ChipElevation(
+                    elevation = 10.dp,
+                    pressedElevation = 10.dp,
+                    focusedElevation = 10.dp,
+                    hoveredElevation = 100.dp,
+                    draggedElevation = 10.dp,
+                    disabledElevation = 10.dp),
+                interactionSource = mutableInteractionSource
+            )
+        }
+
+        HorizontalDivider()
+
+        ElevatedAssistChip(
+            onClick = {},
+            label = {
+                Text(text = "Elevated Assist Chip")
+            },
+            modifier = modifier,
+            enabled = true,
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.AddCircle,
+                    contentDescription = null)
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = null
+                )
+            },
+            shape = RoundedCornerShape(10.dp),
+            colors = ChipColors(
+                containerColor = Color.Yellow,
+                labelColor = Color.Blue,
+                leadingIconContentColor = Color.Red,
+                trailingIconContentColor = Color.Red,
+                disabledContainerColor = Color.LightGray,
+                disabledLabelColor = Color.Gray,
+                disabledLeadingIconContentColor = Color.Gray,
+                disabledTrailingIconContentColor = Color.Gray
+            ),
+
+            elevation = ChipElevation(
+                elevation = 10.dp,
+                pressedElevation = 10.dp,
+                focusedElevation = 10.dp,
+                hoveredElevation = 100.dp,
+                draggedElevation = 10.dp,
+                disabledElevation = 10.dp),
+
+            border = BorderStroke(1.dp, color = Color.Blue),
+
+            interactionSource = mutableInteractionSource
+        )
+
+        HorizontalDivider()
+
+        Row {
+            ElevatedFilterChip(
+                selected = false,
+                onClick = {},
+                label = {
+                    Text(text = "ElevatedFilterChip-ON")
+                },
+                modifier = modifier,
+                enabled = true,
+                leadingIcon = {
+                      Icon(
+                          imageVector = Icons.Default.Notifications,
+                          contentDescription = null
+                      )
+                },
+                trailingIcon = {
+                       Icon(
+                           imageVector = Icons.Default.Edit,
+                           contentDescription = null
+                       )
+                },
+                shape = CutCornerShape(7.dp),
+                colors = SelectableChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconColor = Color.Blue,
+                    trailingIconColor = Color.Blue,
+
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconColor = Color.Gray,
+                    disabledTrailingIconColor = Color.Gray,
+                    disabledSelectedContainerColor = Color.Gray,
+
+                    selectedContainerColor = Color.Yellow,
+                    selectedLabelColor = Color.Blue,
+                    selectedLeadingIconColor = Color.Blue,
+                    selectedTrailingIconColor = Color.Blue
+                )
+            )
+
+            ElevatedFilterChip(
+                selected = false,
+                onClick = {},
+                label = {
+                    Text(text = "ElevatedFilterChip-OFF")
+                },
+                modifier = modifier,
+                enabled = false,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(7.dp),
+                colors = SelectableChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconColor = Color.Blue,
+                    trailingIconColor = Color.Blue,
+
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconColor = Color.Gray,
+                    disabledTrailingIconColor = Color.Gray,
+                    disabledSelectedContainerColor = Color.Gray,
+
+                    selectedContainerColor = Color.Yellow,
+                    selectedLabelColor = Color.Blue,
+                    selectedLeadingIconColor = Color.Blue,
+                    selectedTrailingIconColor = Color.Blue
+                )
+            )
+        }
+
+        Row {
+            ElevatedFilterChip(
+                selected = true,
+                onClick = {},
+                label = {
+                    Text(text = "ElevatedFilterChip-ON")
+                },
+                modifier = modifier,
+                enabled = true,
+                leadingIcon = {
+                      Icon(
+                          imageVector = Icons.Default.Home,
+                          contentDescription = null
+                      )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(8.dp),
+                colors = SelectableChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconColor = Color.Blue,
+                    trailingIconColor = Color.Blue,
+
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconColor = Color.Gray,
+                    disabledTrailingIconColor = Color.Gray,
+                    disabledSelectedContainerColor = Color.Gray,
+
+                    selectedContainerColor = Color.Yellow,
+                    selectedLabelColor = Color.Blue,
+                    selectedLeadingIconColor = Color.Blue,
+                    selectedTrailingIconColor = Color.Blue
+                ),
+                border = BorderStroke(
+                    width = 1.dp,
+                    brush = Brush
+                        .linearGradient(
+                            listOf(
+                                Color.Black,
+                                Color.Gray
+                            )
+                        )
+                )
+            )
+
+
+            ElevatedFilterChip(
+                selected = false,
+                onClick = {},
+                label = {
+                    Text(text = "ElevatedFilterChip-OFF")
+                },
+                modifier = modifier,
+                enabled = false,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(8.dp),
+                colors = SelectableChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconColor = Color.Blue,
+                    trailingIconColor = Color.Blue,
+
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconColor = Color.Gray,
+                    disabledTrailingIconColor = Color.Gray,
+                    disabledSelectedContainerColor = Color.Gray,
+
+                    selectedContainerColor = Color.Yellow,
+                    selectedLabelColor = Color.Blue,
+                    selectedLeadingIconColor = Color.Blue,
+                    selectedTrailingIconColor = Color.Blue
+                ),
+                border = BorderStroke(1.dp, Brush.linearGradient(listOf(Color.Black, Color.Gray)))
+            )
+
+            HorizontalDivider()
+        }
+
+        ElevatedSuggestionChip(
+            onClick = {},
+            label = {
+                Text(text = "ElevatedSuggestionChip")
+            },
+            modifier = modifier,
+            enabled = true,
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Face,
+                    contentDescription =null
+                )
+            },
+            shape = RoundedCornerShape(30.dp)
+        )
+
+        Row {
+            FilterChip(
+                selected = true,
+                onClick = {},
+                label = {
+                    Text(text = "Filtered Chip")
+                },
+                modifier = modifier,
+                enabled = true,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(20.dp),
+                border = BorderStroke(1.dp, color = Color.Black)
+            )
+        }
+
+        InputChip(
+            selected = true,
+            onClick = {},
+            label = {
+                Text(text = "Input Chip")
+            },
+            modifier = modifier,
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.MailOutline,
+                    contentDescription = null
+                )
+            },
+            enabled = true,
+            avatar = {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = null
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.MailOutline,
+                    contentDescription = null
+                )
+            },
+
+            shape = RoundedCornerShape(10.dp),
+//            colors = SelectableChipColors( /*same as above */ ),
+//            elevation = SelectableChipElevation( /*same as above */ ),
+            border = BorderStroke(width = 1.dp,color = Color.Red),
+            interactionSource = mutableInteractionSource
+
+            )
+
+        HorizontalDivider()
+
+        var filterChecked by remember { mutableStateOf(false) }
+        var inputChecked by remember { mutableStateOf(false) }
+
+        AssistChip(onClick = {}, label = { Text(text = "Assist") })
+        SuggestionChip(onClick = {}, label = { Text(text = "Suggestion")})
+        Row {
+
+            FilterChip(
+                selected = true,
+                onClick = {},
+                label = { Text(text = "Filter Checked") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null)
+                }
+            )
+
+            FilterChip(
+                selected = false,
+                onClick = {},
+                label = { Text(text = "Filter Unchecked") })
+        }
+        Row {
+            InputChip(
+                selected = true,
+                onClick = {},
+                label = { Text(text = "Input checked") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null)
+                }
+            )
+
+            InputChip(
+                selected = false,
+                onClick = {},
+                label = { Text(text = "Input unchecked") })
+
+        }
+    }
+}
+
+
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LazyList in compose</title>
+
+  <style>
+    pre {
+      background-color: #fff9e6;
+      border: 1px solid #ccc;
+      display: inline-block;
+      border-radius: 6px;
+      padding: 5px; /* Adjust padding as needed */
+      font-family: monospace; /* Use a monospaced font for code */
+    }
+  </style>
+</head>
+
+<body>
+<pre>@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)) {
+
+        SimpleList(modifier)
+    }
+}
+
+
+@Composable
+fun SimpleList(modifier: Modifier) {
+    Column {
+        Text(text = "LazyRow")
+        LazyRow {
+            items(5){
+                SimpleWord(num = it + 1, modifier = modifier)
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyColumn")
+        LazyColumn {
+            items(3) {
+                SimpleWord(num = it + 1, modifier = modifier)
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyVerticalGrid")
+        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+            items(5) {
+                SimpleWord(num = it + 1, modifier = modifier)
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyHorizontalGrid")
+        Box (modifier = modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .background(color = Color.Yellow)
+        ) {
+            LazyHorizontalGrid(
+                rows = GridCells.Fixed(2)
+            ) {
+                items(10) {
+                    SimpleWord(num = it + 1, modifier = modifier)
+                }
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyHorizontalStaggeredGrid")
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(color = Color.Magenta)
+        ) {
+            LazyHorizontalStaggeredGrid(rows = StaggeredGridCells.Fixed(2)) {
+                items(5) {
+                    SimpleWord(num = it + 1, modifier = modifier)
+                }
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyVerticalStaggeredGrid")
+        LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(4)) {
+            items(8) {
+                SimpleWord(num = it + 1, modifier = modifier)
+            }
+        }
+
+    }
+}
+
+@Composable
+fun SimpleWord(num:Int, modifier: Modifier) {
+    OutlinedCard(modifier = modifier.padding(10.dp)) {
+        Text(
+            text = "It's Word $num",
+            fontFamily = fontMontserrat,
+            fontSize = 14.sp,
+            modifier = modifier.padding(6.dp)
+        )
+    }
+}
+</pre>
+
+</body>
+</html>

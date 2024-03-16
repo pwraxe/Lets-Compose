@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Date Picker in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var showDatePicker by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = System.currentTimeMillis())
+    val context = LocalContext.current
+
+    //YearMonthSkeleton = yMMMM (March 2021)
+    //YearAbbrMonthDaySkeleton = "yMMMd (Mar 27, 2021)
+    //YearMonthWeekdayDaySkeleton = yMMMMEEEEd (Saturday, March 27, 2021)
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        OutlinedCard (modifier = modifier.padding(10.dp)){
+            DatePickerView(modifier, datePickerState)
+        }
+
+        OutlinedButton(
+            onClick = { showDatePicker = !showDatePicker },
+            enabled = !showDatePicker) {
+            Text(text = "Open Date Picker Dialog")
+        }
+        if (showDatePicker) {
+            OpenDatePicker(modifier,
+                onConfirm =  {
+                    showDatePicker = false
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                             },
+                onDismiss = { showDatePicker = false },datePickerState)
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OpenDatePicker(
+    modifier: Modifier,
+    onConfirm: (String) -> Unit,
+    onDismiss:() -> Unit,
+    datePickerState: DatePickerState
+    ) {
+
+
+    DatePickerDialog(
+        modifier = modifier,
+        confirmButton = {
+            TextButton(onClick = {
+                onConfirm(
+                    requestDate(
+                        datePickerState.selectedDateMillis
+                    )
+                )
+            }
+        ) {
+                Text(text = "Confirm")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = "Dismiss")
+            }
+        },
+        onDismissRequest = {},
+        shape = CutCornerShape(10.dp),
+        tonalElevation = 10.dp) {
+
+        DatePickerView(modifier = modifier, datePickerState)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePickerView(modifier: Modifier, datePickerState: DatePickerState) {
+
+    DatePicker(
+        state = datePickerState,
+        modifier = modifier.padding(10.dp),
+        dateFormatter = DatePickerDefaults.dateFormatter(
+            yearSelectionSkeleton = DatePickerDefaults.YearMonthSkeleton,
+            selectedDateSkeleton = DatePickerDefaults.YearAbbrMonthDaySkeleton,
+            selectedDateDescriptionSkeleton = DatePickerDefaults.YearMonthSkeleton
+        ),title = {
+            Text(text = "DatePicker Title, ${requestDate(datePickerState.selectedDateMillis)}")
+        },
+        headline = {
+            Text(text = "DatePicker Headline")
+        },
+        showModeToggle = true)
+}
+
+fun requestDate(time: Long?) : String {
+    //06 September 2023
+    val simpleDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    return simpleDateFormat.format(time)
+}
+</pre>
+
+</body>
+</html>

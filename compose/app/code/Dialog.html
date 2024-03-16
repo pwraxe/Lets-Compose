@@ -1,0 +1,198 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dialog in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var dialogId by remember { mutableIntStateOf(-1) }
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.White)) {
+
+        OutlinedButton(
+            onClick = { dialogId = 0 },
+            modifier = modifier.padding(top = 100.dp)) {
+            Text(text = "Open Dialog")
+        }
+
+        OutlinedButton(onClick = { dialogId = 1 }) {
+            Text(text = "Open AlertDialog")
+        }
+
+        OutlinedButton(onClick = {dialogId = 2 }) {
+            Text(text = "Open BasicAlertDialog")
+        }
+
+        when(dialogId) {
+            0 -> OpenDialog(modifier,
+                onPositiveButtonClicked = { dialogId = -1 },
+                onNegativeButtonClicked = { dialogId = -1 })
+            1 -> OpenAlertDialog(modifier,
+                onConfirmClicked = { dialogId = -1 },
+                onDismissClicked = { dialogId = -1 }
+            )
+            2 -> OpenBasicAlertDialog(modifier,
+                onPositiveButtonClicked = { dialogId = -1 },
+                onNegativeButtonClicked = { dialogId = -1 }
+            )
+            else -> {}
+        }
+    }
+}
+
+@Composable
+fun OpenDialog(modifier: Modifier,
+               onPositiveButtonClicked: () -> Unit,
+               onNegativeButtonClicked: () -> Unit ) {
+
+    Dialog(onDismissRequest = {},
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true,
+            usePlatformDefaultWidth = true,
+            decorFitsSystemWindows = true
+        )
+    ) {
+        DialogView(
+            modifier = modifier,
+            onPositiveButtonClicked = { onPositiveButtonClicked() },
+            onNegativeButtonClicked = { onNegativeButtonClicked() }
+        )
+    }
+}
+
+@Composable
+fun OpenAlertDialog(
+    modifier: Modifier,
+    onConfirmClicked: () -> Unit,
+    onDismissClicked: () -> Unit
+    ) {
+    AlertDialog(
+        onDismissRequest = { onDismissClicked() },
+        modifier = modifier,
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirmClicked()
+                }
+            ) {
+                Text(text = "Confirm")
+            }
+        },
+        dismissButton = {
+            OutlinedButton(
+                onClick = {
+                    onDismissClicked()
+                }
+            ) {
+                Text(text = "Dismiss")
+            }
+
+        },
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Lock,
+                contentDescription = null
+            )
+        },
+        title = {
+                Text(text = "This is Title")
+        },
+        text = { Text(text = "This is long message text" ) },
+        shape = RoundedCornerShape(30.dp),
+        containerColor = Color.Yellow,
+        iconContentColor = Color.Blue,
+        titleContentColor = Color.Green,
+        textContentColor = Color.Red,
+        tonalElevation = 8.dp
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OpenBasicAlertDialog(
+    modifier: Modifier,
+    onPositiveButtonClicked: () -> Unit,
+    onNegativeButtonClicked: () -> Unit
+    ) {
+    BasicAlertDialog(
+        onDismissRequest = { onNegativeButtonClicked() }) {
+        DialogView(
+            modifier = modifier,
+            onPositiveButtonClicked = { onPositiveButtonClicked() },
+            onNegativeButtonClicked = { onNegativeButtonClicked() })
+    }
+}
+
+@Composable
+fun DialogView(
+    modifier: Modifier,
+    onPositiveButtonClicked: () -> Unit,
+    onNegativeButtonClicked: () -> Unit
+    ) {
+    OutlinedCard(modifier = modifier.padding(10.dp)) {
+        Column(modifier= modifier.padding(10.dp)) {
+            Text(
+                text = "This is default title",
+                fontFamily = fontMontserratBold,
+                fontWeight = FontWeight.W800
+            )
+            Text(
+                text = "This is actual long message having multiple words " +
+                    "which tells user its use case why thi prompted",
+                fontFamily = fontMontserrat,
+                modifier = modifier.padding(top = 10.dp)
+                )
+
+            Row(modifier.align(alignment = Alignment.End)) {
+                TextButton(onClick = {
+                    onPositiveButtonClicked()
+                }) {
+                    Text(
+                        text = "+Ve Button",
+                        fontFamily = fontMontserrat
+                    )
+                }
+
+                TextButton(onClick = {
+                    onNegativeButtonClicked()
+                }) {
+                    Text(
+                        text = "-Ve Button",
+                        fontFamily = fontMontserrat
+                    )
+                }
+            }
+        }
+    }
+}
+</pre>
+
+</body>
+</html>

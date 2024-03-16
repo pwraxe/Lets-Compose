@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Divider in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)
+        .padding(10.dp)) {
+
+        Text(
+            text = "This is first V text",
+            fontFamily = fontMontserrat,
+            fontSize = 20.sp
+        )
+        HorizontalDivider()
+        Text(
+            text = "This is second V text",
+            fontFamily = fontMontserrat,
+            fontSize = 20.sp
+            )
+
+
+        HorizontalDivider(
+            modifier = modifier
+                .padding(10.dp),
+            thickness = 2.dp,
+            color = Color.Black,
+        )
+
+        LazyColumn {
+            items(5) {
+                Text(text = "This is row no $it")
+                HorizontalDivider()
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Row {
+            Text(
+                text = "This is first H text",
+                fontFamily = fontMontserrat,
+                fontSize = 20.sp
+            )
+
+            //VerticalDivider()
+            VerticalDivider(
+                modifier = modifier
+                    .padding(
+                            start = 10.dp,
+                            end = 10.dp),
+                thickness = 2.dp, color = Color.Black
+            )
+            Text(
+                text = "This is second H text",
+                fontFamily = fontMontserrat,
+                fontSize = 20.sp
+            )
+        }
+    }
+}
+</pre>
+
+</body>
+</html>
