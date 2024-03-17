@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Popup menu in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val density = LocalDensity.current
+    var touchPoint: Offset by remember { mutableStateOf(Offset.Zero) }
+    var expand by remember { mutableStateOf(false) }
+
+    BoxWithConstraints(Modifier
+        .fillMaxSize()
+        .background(color = Color.White)
+        .pointerInput(Unit) {
+            detectTapGestures {
+                touchPoint = it
+                expand = true
+            }
+        }
+    ) {
+
+        val (xDp, yDp) = with(density) {
+            (touchPoint.x.toDp()) to (touchPoint.y.toDp())
+        }
+        DropdownMenu(
+            expanded = expand,
+            onDismissRequest = { expand = false },
+            modifier = modifier,
+            offset = DpOffset(xDp,-maxHeight + yDp)
+        ) {
+            repeat(5) {
+                DropdownMenuItem(
+                    text = {
+                        Text(text = "Menu Item No $it")
+                    },
+                    onClick = { expand = false } )
+            }
+        }
+    }
+}
+</pre>
+
+</body>
+</html>

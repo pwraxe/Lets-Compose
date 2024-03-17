@@ -1,0 +1,119 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)) {
+
+        OutlinedCard(modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
+            Text(
+                text = "Refer, Bottom App Bar 1",
+                modifier = modifier.padding(10.dp)
+            )
+        }
+
+        OutlinedCard(modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
+            Text(
+                text = "Refer, Bottom App Bar 2",
+                modifier = modifier.padding(10.dp)
+            )
+        }
+
+        OutlinedCard(modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
+            Text(
+                text = "Refer, Top App Bar 1",
+                modifier = modifier.padding(10.dp)
+            )
+        }
+
+        OutlinedCard(modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
+            Text(
+                text ="Refer, Top App Bar 2",
+                modifier = modifier.padding(10.dp)
+            )
+        }
+
+        OutlinedCard(modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
+            Text(
+                text = "Refer, Segmented Button",
+                modifier = modifier.padding(10.dp)
+            )
+        }
+
+        OutlinedCard(modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
+            Text(
+                text = "Refer, Popup Menu",
+                modifier = modifier.padding(10.dp)
+            )
+        }
+
+        OutlinedCard(modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
+            Text(
+                text = "Refer, Navigation Bar",
+                modifier = modifier.padding(10.dp)
+            )
+        }
+
+        OutlinedCard(modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
+            Text(
+                text = "Refer, Navigation Drawer",
+                modifier = modifier.padding(10.dp)
+            )
+        }
+
+        OutlinedCard(modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
+            Text(
+                text = "Refer, Navigation Rail",
+                modifier = modifier.padding(10.dp)
+            )
+        }
+    }
+}
+</pre>
+
+</body>
+</html>
