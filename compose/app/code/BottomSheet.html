@@ -1,0 +1,113 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bottom Sheet in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var openModalBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true, confirmValueChange = { true }
+    )
+    var openBottomSheetScaffold by remember { mutableStateOf(false) }
+
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray),
+        horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+        Spacer(modifier = modifier.padding(top = 80.dp))
+
+        OutlinedButton(onClick = { openModalBottomSheet = true }) {
+            Text(text = "Open Modal Bottom Sheet")
+        }
+
+        OutlinedButton(onClick = { openBottomSheetScaffold = true }) {
+            Text(text = "Open OpenBottomSheetWithScaffold")
+        }
+    }
+
+    if (openModalBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { openModalBottomSheet = false },
+            modifier = modifier,
+            sheetState = sheetState,
+            sheetMaxWidth = BottomSheetDefaults.SheetMaxWidth,
+            shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp),
+            scrimColor = Color(211,211,211,0XFF),
+            dragHandle = { BottomSheetDefaults.DragHandle() }
+        ) {
+            DummyList(modifier = modifier) {
+                openModalBottomSheet = false
+            }
+        }
+    }
+
+    if (openBottomSheetScaffold) {
+        BottomSheetScaffold(sheetContent = {
+            DummyList(modifier = modifier) {
+                openBottomSheetScaffold = false
+            }
+        },modifier = modifier,
+            scaffoldState = rememberBottomSheetScaffoldState(),
+            sheetPeekHeight = 100.dp,
+            sheetMaxWidth = BottomSheetDefaults.SheetMaxWidth,
+            sheetContainerColor = Color.Yellow,
+            sheetShape = CutCornerShape(topStart = 30.dp, topEnd = 30.dp),
+            sheetShadowElevation = 10.dp,
+            sheetTonalElevation = 20.dp,
+            sheetDragHandle = {  BottomSheetDefaults.DragHandle() },
+            sheetSwipeEnabled = true,
+            topBar = {
+                TopAppBar(title = { Text(text = "Top App Bar")} )
+            }
+        ) {}
+    }
+}
+
+@Composable
+fun DummyList(modifier: Modifier, onClicked: () -> Unit) {
+    LazyColumn {
+        items(5) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier.clickable {
+                    onClicked()
+                }
+            ){
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null
+                )
+                Text(text = "Bottom Drawer Item ${it + 1}")
+            }
+        }
+    }
+}
+</pre>
+
+</body>
+</html>

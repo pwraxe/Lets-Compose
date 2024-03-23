@@ -1,0 +1,109 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Bar in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+
+    val list = remember {
+        mutableStateListOf(
+            "Kotlin",
+            "Java",
+            "Python"
+        )
+    }
+
+    var searchQuery by remember { mutableStateOf("") }
+    var isActive by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)) {
+
+        SearchBar(
+            query = searchQuery,
+            onQueryChange = {
+                searchQuery = it
+            },
+            onSearch = {
+                if(it !in list) list.add(it)
+            },
+            active = isActive,
+            onActiveChange = {
+                isActive = it
+            },
+            modifier = modifier.padding(10.dp),
+            enabled = true,
+            placeholder = { Text(text = "Placeholder") },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null)
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = null,
+                    modifier = modifier
+                        .clickable { searchQuery = "" }
+                    )
+            },
+            shape = RoundedCornerShape(20.dp)
+        ) {
+
+
+            if (isActive) {
+
+                LazyColumn {
+                    items(list) {
+                        Row (
+                            modifier = modifier
+                                .padding(10.dp)
+                                .clip(shape = RoundedCornerShape(10.dp))
+                                .clickable {
+                                    searchQuery = it
+                                }
+                            ,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Icon(imageVector = Icons.Default.Refresh,
+                                contentDescription = null)
+                            Text(
+                                text = it,
+                                modifier = modifier
+                                    .padding(start = 10.dp))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+</pre>
+
+</body>
+</html>
