@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Progress Indicator in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = modifier.padding(top = 60.dp))
+        Text(text = "CircularProgressIndicator :  0.65f Progress")
+        CircularProgressIndicator(
+            progress = { 0.65f },
+            modifier = modifier
+                .align(Alignment.CenterHorizontally)
+                .size(80.dp)
+                .padding(top = 10.dp),
+            color = Color.Blue,
+            strokeWidth = 7.dp,
+            trackColor = Color.Gray,
+            strokeCap = StrokeCap.Round
+        )
+
+
+        HorizontalDivider(
+            color = Color.Blue,
+            modifier = modifier.padding(top = 20.dp))
+
+        Spacer(modifier = modifier.padding(10.dp))
+
+        Text(text = "LinearProgressIndicator : 0.60f Progress")
+        LinearProgressIndicator(
+            progress = { 0.60f },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            color = Color.Black,
+            trackColor = Color.Gray,
+            strokeCap = StrokeCap.Round,
+        )
+
+    }
+}
+</pre>
+
+</body>
+</html>

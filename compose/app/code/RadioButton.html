@@ -1,0 +1,82 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Radio Button in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        Row {
+            repeat(3) {
+                Row (verticalAlignment = Alignment.CenterVertically){
+                    RadioButton(
+                        selected = it == 1,
+                        onClick = {})
+                    Text(text = "R-Button ${it + 1}")
+                }
+            }
+        }
+
+        HorizontalDivider(
+            modifier = modifier,
+            thickness = 1.dp,
+            color = Color.Black)
+
+        repeat(5) {
+            Row (verticalAlignment = Alignment.CenterVertically){
+                RadioButton(
+                    selected = it == 2,
+                    onClick = {})
+                Text(text = "R-Button ${it + 1}")
+            }
+        }
+
+        HorizontalDivider(
+            modifier = modifier,
+            thickness = 1.dp,
+            color = Color.Black)
+
+        Row {
+            repeat(5) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    FilledIconToggleButton(
+                        checked = it == 1,
+                        onCheckedChange = {}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = null)
+                    }
+                    Text(text = "RB-${it + 1}")
+                }
+            }
+        }
+    }
+}
+</pre>
+
+</body>
+</html>

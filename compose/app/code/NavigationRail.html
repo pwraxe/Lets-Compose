@@ -1,0 +1,224 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation Rail in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+//Add Following Dependency in Gradle, (do check Version)
+//implementation("androidx.navigation:navigation-compose:2.7.7")
+
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Box(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)) {
+
+        NavigationRail(
+            modifier = modifier,
+            header = {
+
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = null
+                )
+
+                Text(
+                    text = "A",
+                    fontSize = 20.sp,
+                    modifier = modifier
+                        .padding(10.dp)
+                        .border(1.dp, color = Color.Black,
+                            shape = RoundedCornerShape(30.dp))
+                        .background(
+                            color = Color.Yellow,
+                            shape = CircleShape
+                        )
+                        .padding(10.dp)
+                )
+
+            }) {
+
+            NavigationRailItem(
+                selected = true,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Home",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Notification",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Setting",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.AddCircle,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Add More",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true,
+            )
+            Spacer(modifier = modifier.weight(1f))
+        }
+
+        //===========================================================
+
+        NavigationRail(
+            modifier = modifier
+                       .align(alignment = Alignment.CenterEnd),
+            header = {
+                Text(text = "Heading")
+            }) {
+
+            Spacer(modifier = modifier.weight(1f))
+            NavigationRailItem(
+                selected = true,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Likes",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Delete",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Lock",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "More",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true,
+            )
+            Spacer(modifier = modifier.weight(1f))
+        }
+    }
+}
+
+</pre>
+
+</body>
+</html>
