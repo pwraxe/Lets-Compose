@@ -1,0 +1,144 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TextField in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+
+<pre>
+
+ <a href="https://pwraxe.github.io/compose/compose/pages/page_edit_text.html">View Here for More TextField</a>
+
+</pre>
+<br>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var text by remember { mutableStateOf("") }
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)
+        .padding(10.dp)
+    ) {
+
+        TextField(
+            value = text,
+            onValueChange = { text = it },
+            modifier = modifier.fillMaxWidth(),
+            enabled = true,
+            readOnly = false,
+            //textStyle = LocalTextStyle.current,
+            label = { Text(text = "TextField Label") },
+            placeholder = { Text(text = "TextField Placeholder", color = Color.Gray) },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Email,
+                    contentDescription = "")
+            },
+            trailingIcon = {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "")
+                }
+            },
+            prefix = { Text(text = "Mr-") },
+            suffix = { Text(text = "-Suff") },
+            supportingText = { Text(text = "Support Text") },
+            isError = true,
+            //visualTransformation = VisualTransformation.None,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Characters,autoCorrect = true,
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Text
+            ),
+            keyboardActions = KeyboardActions(onDone = {}, onNext = {}),
+            singleLine = true,
+            maxLines = 1
+        )
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        OutlinedTextField (
+            value = text,
+            onValueChange = { text = it },
+            modifier = modifier.fillMaxWidth(),
+            enabled = true,
+            readOnly = true,
+            label = { Text(text = "Outline Label") },
+            placeholder = { Text(text = "Placeholder",
+                color = Color.Gray) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = ""
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = ""
+                )
+            },
+            prefix = { Text(text = "Pre") },
+            suffix = { Text(text = "Suf") },
+            supportingText = { Text(text = "Outline Supporting Text") },
+            isError = false,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Characters,autoCorrect = true,
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Text
+            ),
+            keyboardActions = KeyboardActions(onDone = {}, onNext = {}),
+            singleLine = true,
+            maxLines = 1
+        )
+
+        BasicTextField(
+            value = "Sample input Text",
+            onValueChange = { text = it },
+            modifier = modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = Color.Black,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(10.dp),
+            enabled = true,
+            readOnly = false,
+            textStyle = TextStyle.Default,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Characters,autoCorrect = true,
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Text
+            ),
+            keyboardActions = KeyboardActions(onDone = {}, onNext = {}),
+            singleLine = true,
+            maxLines = 1
+        )
+    }
+}
+</pre>
+
+</body>
+</html>

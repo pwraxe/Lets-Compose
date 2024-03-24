@@ -1,0 +1,208 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slider in compose</title>
+
+  <style>
+    pre {
+      background-color: #fff9e6;
+      border: 1px solid #ccc;
+      display: inline-block;
+      border-radius: 6px;
+      padding: 5px; /* Adjust padding as needed */
+      font-family: monospace; /* Use a monospaced font for code */
+    }
+  </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val steps = 10
+    val interactionSource = remember { MutableInteractionSource() }
+    val context = LocalContext.current
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.White)) {
+
+        Column {
+            val progress = remember { mutableFloatStateOf(38f) }
+
+            Text(text = "Slider (can change by value)")
+            Slider(
+                state = SliderState (
+                    value = progress.floatValue,
+                    steps = steps,
+                    onValueChangeFinished = {
+
+                        Toast.makeText(context, "finished", Toast.LENGTH_SHORT).show()
+                    },
+                    valueRange = 1f .. 100f),
+                modifier = modifier,enabled = true,
+                colors = SliderDefaults
+                    .colors(
+                        thumbColor = Color.Black,
+                        activeTrackColor = Color.Red,
+                        activeTickColor = Color.Yellow,
+                        inactiveTrackColor = Color.LightGray,
+                        inactiveTickColor = Color.Black
+                    ),
+                thumb = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_asia),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                },
+            )
+        }
+
+        Column {
+
+            val progress = remember { mutableFloatStateOf(0.0f) }
+
+            Text(text = "Slider with onValue Change")
+            Slider (
+                value = progress.floatValue + 0.2f,
+                onValueChange = { progress.floatValue = it },
+                modifier = modifier,
+                enabled = true,
+                onValueChangeFinished = {},
+                colors = SliderDefaults.colors(
+                    thumbColor = Color.Red,
+                    activeTrackColor = Color.Black,
+                    activeTickColor = Color.White,
+                    inactiveTrackColor = Color.LightGray,
+                    inactiveTickColor = Color.Black
+                ),
+                steps = steps,
+                thumb = {
+                    SliderDefaults.Thumb(
+                        interactionSource = interactionSource,
+                        thumbSize = DpSize(36.dp,36.dp)
+                    )
+                }, track = {
+                    SliderDefaults.Track(sliderState = it)
+                },
+                interactionSource = interactionSource
+            )
+        }
+
+        Column {
+
+            val thumbProgress = remember { mutableFloatStateOf(0f) }
+
+            Text(text = "Slider (Read Current Thumb Value)")
+            Slider(
+                value = thumbProgress.floatValue,
+                onValueChange = {
+                    thumbProgress.floatValue = it
+                },
+                modifier = modifier,
+                enabled = true,
+                onValueChangeFinished = {},
+                colors = SliderDefaults.colors(
+                    thumbColor = Color.Green,
+                    activeTrackColor = Color.Yellow,
+                    activeTickColor = Color.Blue,
+                    inactiveTrackColor = Color.Black,
+                    inactiveTickColor = Color.White
+                ),
+                interactionSource = interactionSource,
+                steps = steps,
+                thumb = {
+                    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                        SliderDefaults.Thumb(interactionSource = interactionSource,
+                            thumbSize = DpSize(36.dp,36.dp)
+                        )
+                        Text(text = "${thumbProgress.floatValue.toInt()}",
+                        fontSize = 20.sp, color = Color.White)
+                    }
+                },
+                track = {
+                    SliderDefaults.Track(sliderState = it)
+                },
+                valueRange = 1f .. 100f
+            )
+        }
+
+        Column {
+            val start = remember { mutableFloatStateOf(30f) }
+            val end = remember { mutableFloatStateOf(80f) }
+            val startInteractionSource = remember { MutableInteractionSource() }
+            val endInteractionSource = remember { MutableInteractionSource() }
+
+            RangeSlider(
+                value = start.floatValue .. end.floatValue,
+                onValueChange = {
+                    start.floatValue = it.start
+                    end.floatValue = it.endInclusive
+                },
+                modifier = modifier,
+                enabled = true,
+                valueRange = 1f .. 100f,
+                colors = SliderColors(
+                    thumbColor = Color.Red,
+                    activeTrackColor = Color.Black,
+                    activeTickColor = Color.White,
+                    inactiveTrackColor = Color.LightGray,
+                    inactiveTickColor = Color.Black,
+                    disabledThumbColor = Color.Gray,
+                    disabledActiveTickColor = Color.Gray,
+                    disabledActiveTrackColor = Color.Gray,
+                    disabledInactiveTickColor = Color.Gray,
+                    disabledInactiveTrackColor = Color.Gray
+                ),
+                onValueChangeFinished = {},
+                startInteractionSource = startInteractionSource,
+                endInteractionSource = endInteractionSource,
+                startThumb = {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null,
+                        modifier = modifier
+                            .clip(CircleShape)
+                            .padding(10.dp)
+                            .border(
+                                width = 1.dp,
+                                color = Color.Black,
+                                shape = CircleShape
+                            )
+                            .padding(6.dp)
+                    )
+                },
+                endThumb = {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = null,
+                        modifier = modifier
+                            .clip(CircleShape)
+                            .padding(10.dp)
+                            .border(
+                                width = 1.dp,
+                                color = Color.Black,
+                                shape = CircleShape
+                            )
+                            .padding(6.dp)
+                    )
+                },
+                //track = {}
+            )
+        }
+    }
+}
+</pre>
+
+</body>
+</html>

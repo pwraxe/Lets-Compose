@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Snackbar in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    var showSnack by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    Scaffold (
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = modifier
+            )
+        },
+
+        floatingActionButton = {
+
+            ExtendedFloatingActionButton(
+                text = { Text(text = "Show Snack") },
+                icon = { Icon(Icons.Filled.Email, contentDescription = "") },
+                onClick = {
+                    scope.launch {
+                        val result = snackbarHostState.showSnackbar(
+                            message = "This is Snack Message",
+                            actionLabel = "Action Lbl",
+                            duration = SnackbarDuration.Indefinite
+                        )
+                        when(result) {
+                            SnackbarResult.ActionPerformed -> {}
+                            SnackbarResult.Dismissed -> {
+                                showSnack = false
+                            }
+                            else -> {}
+                        }
+                    }
+                }
+            )
+        }
+
+    ) {
+
+        Column(
+            modifier = modifier
+                .padding(it)
+                .fillMaxSize()
+                .background(color = Color.White)) {
+
+            Column {
+                var showSnack by remember { mutableStateOf(false) }
+                OutlinedButton(onClick = { showSnack = true }) {
+                    Text(text = "Show Snack", color = Color.Black)
+                }
+
+                AnimatedVisibility(
+                    visible = showSnack, label = "Animated",
+                    modifier = modifier.align(alignment = Alignment.CenterHorizontally)) {
+
+                    Box (contentAlignment = Alignment.Center){
+                        Snackbar(
+                            action = {},
+                            modifier = modifier.padding(6.dp),
+                            dismissAction = {},
+                            actionOnNewLine = false,
+                            shape = RoundedCornerShape(10.dp)) {
+
+                            Row (verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "Hello, Prompt from Snack,",
+                                    modifier = modifier.weight(1f)
+                                )
+
+                                TextButton(onClick = { showSnack = false }) {
+                                    Text(text = "Close")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</pre>
+
+</body>
+</html>

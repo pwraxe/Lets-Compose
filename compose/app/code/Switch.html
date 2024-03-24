@@ -1,0 +1,150 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Switch in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .background(color = Color.White)
+        .fillMaxSize()
+        .padding(10.dp)
+
+    ) {
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(checked = true, onCheckedChange = {})
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Default Switch - ON")
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(checked = false, onCheckedChange = {})
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Default Switch - OFF")
+        }
+
+        HorizontalDivider(modifier = modifier.padding(top = 10.dp))
+
+        var checked by remember { mutableStateOf(false) }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(
+                checked = checked,
+                onCheckedChange = { checked = it },
+                thumbContent = {
+                    if(checked) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = "switch on")
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription ="switch off")
+                    }
+                }
+            )
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Switch with icon - OFF")
+        }
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(
+                checked = !checked,
+                onCheckedChange = { checked = it },
+                thumbContent = {
+                    if(!checked) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = "switch on")
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription ="switch off")
+                    }
+                }
+            )
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Switch with icon - ON")
+        }
+
+        HorizontalDivider(modifier = modifier.padding(top = 10.dp))
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(
+                checked = checked,
+                onCheckedChange = { checked = it },
+                thumbContent = {
+                    if(checked) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = "switch on")
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription ="switch off")
+                    }
+                },
+                colors = SwitchDefaults.colors(
+                    uncheckedBorderColor = Color.Black,
+                    uncheckedIconColor = Color.Blue,
+                    uncheckedThumbColor = Color.Yellow,
+                    uncheckedTrackColor = Color.Green
+                )
+            )
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Switch with icon and Color - OFF")
+        }
+
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Switch(
+                checked = !checked,
+                onCheckedChange = { checked = it },
+                thumbContent = {
+                    if(checked) {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription ="switch off")
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = "switch on")
+                    }
+                }, colors = SwitchDefaults.colors(
+                    checkedBorderColor = Color.LightGray,
+                    checkedIconColor = Color.Yellow,
+                    checkedThumbColor = Color.Green,
+                    checkedTrackColor = Color.Blue
+                )
+            )
+
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Switch with icon and Color - OFF")
+        }
+    }
+}
+</pre>
+
+</body>
+</html>

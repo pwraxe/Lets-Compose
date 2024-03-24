@@ -1,0 +1,135 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tooltip in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        Column {
+            var showRichTooltip by remember { mutableStateOf(false) }
+            OutlinedButton(onClick = { showRichTooltip = true }) {
+                Text(text = "Show Rich Tooltip")
+            }
+
+            if (showRichTooltip) {
+                RichTooltip(modifier = modifier,
+                    title = {
+                        Text(text = "This could be full description of particular content or functionality")
+                    },
+                    action = {
+                        TextButton(onClick = { showRichTooltip = false }) {
+                            Text(text = "Next")
+                        }
+                    },
+                    shape = RoundedCornerShape(20.dp),
+                    colors = RichTooltipColors(containerColor = Color.Yellow, contentColor = Color.Black,
+                        titleContentColor = Color.Red, actionContentColor = Color.Blue
+                    )
+                ) {}
+            }
+
+        }
+
+        Column {
+            val state = rememberTooltipState(
+                initialIsVisible = false,
+                isPersistent = true,
+                mutatorMutex = MutatorMutex()
+            )
+            val pos = TooltipDefaults.rememberPlainTooltipPositionProvider()
+            var showTooltip by remember { mutableStateOf(false) }
+
+            OutlinedButton(onClick = { showTooltip = true }) {
+                Text(text = "Open TooltipBox")
+            }
+
+            if(showTooltip) {
+                TooltipBox(
+                    positionProvider = pos,
+                    tooltip = {},
+                    state = state,
+                    modifier = modifier,
+                    focusable = true,
+                    enableUserInput = true) {
+
+                    ToolTipView(modifier, onClicked = { showTooltip = false })
+                }
+            }
+        }
+
+        Column {
+            var openBasicToolTip by remember { mutableStateOf(false) }
+            val state = rememberBasicTooltipState(
+                initialIsVisible = false,
+                isPersistent = true,
+                mutatorMutex = MutatorMutex()
+            )
+            val pos = TooltipDefaults.rememberPlainTooltipPositionProvider()
+
+            OutlinedButton(onClick = { openBasicToolTip = true }) {
+                Text(text = "Open BasicTooltipBox")
+            }
+
+            if (openBasicToolTip) {
+                BasicTooltipBox(positionProvider = pos,
+                    tooltip = {
+                        ToolTipView(modifier = modifier) {}
+                    }, state = state ) {
+                    ToolTipView(modifier = modifier) { openBasicToolTip = false }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ToolTipView(modifier: Modifier, onClicked: () -> Unit) {
+
+    Column (modifier = modifier
+        .background(
+            color = Color(0xAA000000),
+            shape = RoundedCornerShape(10.dp)
+        )
+        .padding(10.dp)
+
+    ) {
+
+        Text(text = "Hello From Title", color = Color.White)
+        Text(text = "Hello From New Passage or new line can't say anything",
+            color = Color.White)
+        TextButton(onClick = { onClicked() },
+            modifier = modifier.align(alignment = Alignment.End)) {
+            Text(text = "Next", color = Color.White,)
+        }
+    }
+}
+</pre>
+
+</body>
+</html>

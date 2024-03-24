@@ -1,0 +1,349 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabs in compose</title>
+
+    <style>
+        pre {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+
+<body>
+<pre>
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .background(color = Color.White)
+        .fillMaxSize()
+        .padding(10.dp)) {
+
+
+        Column {
+            var tabIndex by remember { mutableIntStateOf(0) }
+            Text(text = "Default Tab")
+            TabRow(selectedTabIndex = tabIndex) {
+
+                Tab(selected = tabIndex == 0,
+                    onClick = { tabIndex = 0},
+                    modifier = modifier,
+                    text = {
+                        Text(text = "Home")
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = ""
+                        )
+                    }
+                )
+
+                Tab(selected = tabIndex == 1,
+                    onClick = { tabIndex = 1},
+                    modifier = modifier,
+                    enabled = true,
+                    text = {
+                        Text(text = "Settings")
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = ""
+                        )
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 20.dp))
+
+        Column {
+
+            var tabIndex by remember { mutableIntStateOf(0) }
+            Text(text = "Default Tab with style ")
+            TabRow(selectedTabIndex = tabIndex,
+                modifier = modifier,
+                containerColor = Color.Yellow,
+                contentColor = Color.Black,
+                divider = {
+                    HorizontalDivider()
+                },
+                tabs = {
+                    Tab(selected = tabIndex == 0,
+                        onClick = { tabIndex = 0},
+                        modifier = modifier,
+                        text = {
+                            Text(text = "Home")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Home,
+                                contentDescription = ""
+                            )
+                        },
+                        selectedContentColor = Color.Blue,
+                        unselectedContentColor = Color.LightGray
+                    )
+
+                    Tab(selected = tabIndex == 1,
+                        onClick = { tabIndex = 1},
+                        modifier = modifier,
+                        enabled = true,
+                        text = {
+                            Text(text = "Settings")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = ""
+                            )
+                        },
+                        selectedContentColor = Color.Blue,
+                        unselectedContentColor = Color.LightGray
+                    )
+                }
+            )
+        }
+
+        Spacer(modifier = modifier.padding(top = 20.dp))
+
+        Column {
+
+            val tabIndex by remember { mutableIntStateOf(0) }
+
+            Text(text = "SecondaryTabRow")
+            SecondaryTabRow(selectedTabIndex = tabIndex,
+            modifier = modifier, containerColor = Color.LightGray,
+                contentColor = Color.Gray,
+                indicator = {
+                    TabRowDefaults.SecondaryIndicator(
+                        modifier = modifier,
+                        height = 2.dp,
+                        color = Color.Red)
+                },
+                divider = {
+                    HorizontalDivider()
+                }
+            ) {
+                Tab(
+                    selected = tabIndex == 0,
+                    onClick = {},
+                    modifier = modifier,enabled = true,
+                    text = { Text(text = "Search") },
+                    icon = {
+                        Icon(imageVector = Icons.Default.Search,
+                        contentDescription = "")
+                    },
+                    selectedContentColor = Color.Black,
+                    unselectedContentColor = Color.LightGray
+                    )
+                Tab(
+                    selected = tabIndex == 1,
+                    onClick = {},
+                    modifier = modifier,
+                    enabled = true,
+                    text = { Text(text = "Refresh") },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = ""
+                        )
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+            Text(text = "ScrollableTabRow")
+            ScrollableTabRow(
+                selectedTabIndex = 0,
+                modifier = modifier,
+                contentColor = Color.Red,
+                containerColor = Color.Yellow,
+                edgePadding = 10.dp,
+                divider = {
+                    HorizontalDivider()
+                }
+            ) {
+
+                repeat(10) {
+                    Tab(
+                        selected = it == 2, onClick = {},
+                        modifier = modifier,
+                        enabled = true,
+                        text = { Text(text = "Refresh $it") },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = ""
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+            Text(text = "SecondaryScrollableTabRow")
+            SecondaryScrollableTabRow(
+                selectedTabIndex = 2,
+                modifier = modifier, scrollState = rememberScrollState(),
+                containerColor = Color.Red,
+                contentColor = Color.Yellow,
+                edgePadding = 4.dp
+            ) {
+                repeat(10) {
+                    Tab(
+                        selected = it == 2,
+                        onClick = {},
+                        modifier = modifier,
+                        enabled = it == 2,
+                        selectedContentColor = Color.Yellow,
+                        unselectedContentColor = Color.Blue,
+                        text = {
+                            Text(text = "Search")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = ""
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+
+            Text(text = "PrimaryTabRow")
+
+            PrimaryTabRow(
+                selectedTabIndex = 1,
+                modifier = modifier,
+                containerColor = Color.Yellow,
+                contentColor = Color.Yellow
+                ) {
+
+                repeat(3) {
+                    Tab(
+                        selected = it == 1 ,
+                        onClick = {},
+                        modifier = modifier,
+                        enabled = true,
+                        selectedContentColor = Color.Black,
+                        unselectedContentColor = Color.Gray,
+                        text = {
+                            Text(text = "Tab ${it+1}")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = ""
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+            Text(text = "PrimaryScrollableTabRow")
+            PrimaryScrollableTabRow(
+                selectedTabIndex = 3,
+                modifier = modifier,
+                scrollState = rememberScrollState(),
+                contentColor = Color.Blue,
+                containerColor = Color.Yellow
+            ) {
+
+                repeat(10) {
+                    Tab(
+                        selected = it == 3,
+                        onClick = {},
+                        modifier = modifier,
+                        enabled = it == 3,
+                        selectedContentColor = Color.Blue,
+                        unselectedContentColor = Color.Gray,
+                        text = {
+                            Text(text = "Shopping")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.ShoppingCart,
+                                contentDescription = "")
+                        }
+                    )
+                }
+
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+
+            Text(text = "PrimaryTabRow - LeadingIconTab")
+
+            PrimaryTabRow(selectedTabIndex = 0) {
+                LeadingIconTab(
+                    selected = true,
+                    onClick = {},
+                    text = { Text(text = "Home")},
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = ""
+                        )
+                    },
+                    modifier = modifier,
+                    enabled = true,
+                    selectedContentColor = Color.Black,
+                    unselectedContentColor = Color.Gray
+                )
+
+                LeadingIconTab(
+                    selected = false,
+                    onClick = {},
+                    text = { Text(text = "Setting")},
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = ""
+                        )
+                    },
+                    modifier = modifier,
+                    enabled = true,
+                    selectedContentColor = Color.Black,
+                    unselectedContentColor = Color.Gray
+                )
+            }
+        }
+    }
+}
+</pre>
+
+</body>
+</html>
