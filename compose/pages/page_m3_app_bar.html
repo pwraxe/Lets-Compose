@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Layouts in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / AppBar</h1>
+    <div>
+        <a class="menu" href="../todo.html" id="todoLink">To-Do</a>
+        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+
+    <div class="list">
+
+        <div class="item-container">
+
+            <div class="page-card def-selected" card-id="1">
+                <h2>Bottom Appbar - 1</h2>
+                <p>Bottom Appbar with different icons</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>Bottom Appbar - 2</h2>
+                <p>Bottom Appbar with same custom ui with list</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="3">
+                <h2>Appbar</h2>
+                <p>Top Appbar with text, icon as action</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>Top Appbar 1</h2>
+                <p>Top Appbar with text, icon as action</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="5">
+                <h2>Top Appbar 2</h2>
+                <p>Top Appbar with text, icon as action</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="6">
+                <h2>Popup Menu</h2>
+                <p>onClick Popup Menu</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="7">
+                <h2>Navigation Bar</h2>
+                <p>Navigation Bar</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="8">
+                <h2>Navigation Drawer</h2>
+                <p>Navigation Drawer</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="9">
+                <h2>Navigation Rail</h2>
+                <p>Navigation Rail</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="10">
+                <h2>Bottom Sheet</h2>
+                <p>Modal Bottom Sheet</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="11">
+                <h2>Side Sheet</h2>
+                <p>Modal Side Sheet</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="12">
+                <h2>Tab</h2>
+                <p>TabView</p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+{ id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_bottom_appbar1.jpg',
+description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Scaffold(
+        bottomBar = {
+            BottomAppBar(containerColor = Color.Yellow) {
+                IconButton(
+                    onClick = {},
+                    modifier = modifier
+                        .padding(10.dp)) {
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_dev_profile),
+                        contentDescription = null)
+                }
+
+                IconButton(
+                    onClick = {},
+                    modifier = modifier
+                        .padding(10.dp)) {
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_asia),
+                        contentDescription = null,
+                        modifier = modifier.size(48.dp))
+                }
+
+                Column (horizontalAlignment = Alignment.CenterHorizontally){
+                    Image(painter = painterResource(id = R.drawable.ic_linked_in),
+                        contentDescription = null)
+                    Spacer(modifier = Modifier.padding(top = 5.dp))
+                    Text(text = "LinkedIn")
+                }
+
+                Card(modifier.padding(10.dp), colors = CardDefaults.cardColors(
+                    containerColor = Color.Green
+                )) {
+                    Column (
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = modifier.padding(6.dp)) {
+
+                        Image(painter = painterResource(id = R.drawable.ic_github),
+                            contentDescription = null)
+                        Spacer(modifier = Modifier.padding(top = 5.dp))
+                        Text(text = "GitHub")
+                    }
+                }
+            }
+        }) {
+        Column(modifier = Modifier.padding(it)) {
+
+            Column (modifier = modifier.padding(10.dp)){
+
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(color = Blue20, shape = RoundedCornerShape(10.dp))
+                        .padding(10.dp)){
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_dev_profile),
+                        contentDescription = null)
+                    Spacer(modifier = modifier.padding(start = 10.dp))
+                    Text(text = "Icon with no text, simple, default icon")
+                }
+                Spacer(modifier = modifier.padding(top = 10.dp))
+
+                //=================================================================
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(color = Blue20, shape = RoundedCornerShape(10.dp))
+                        .padding(10.dp)) {
+                    IconButton(
+                        onClick = {}) {
+
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_asia),
+                            contentDescription = null,
+                            modifier = modifier.size(48.dp))
+                    }
+                    Text(text = "Icon with no text, default big size icon")
+                }
+                Spacer(modifier = modifier.padding(top = 10.dp))
+
+                //=================================================================
+
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(color = Blue20, shape = RoundedCornerShape(10.dp))
+                        .padding(10.dp)) {
+
+                    Column (horizontalAlignment = Alignment.CenterHorizontally){
+                        Image(painter = painterResource(id = R.drawable.ic_linked_in),
+                            contentDescription = null)
+                        Spacer(modifier = Modifier.padding(top = 5.dp))
+                        Text(text = "LinkedIn")
+                    }
+
+                    Text(text = "Icon with text, default size")
+                }
+                Spacer(modifier = modifier.padding(top = 10.dp))
+
+                //=================================================================
+
+
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = Blue20,
+                            shape = RoundedCornerShape(10.dp))
+                        .padding(end = 10.dp)
+                ) {
+
+                    Card(modifier.padding(10.dp), colors = CardDefaults.cardColors(
+                        containerColor = Color.Green
+                    )) {
+                        Column (
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = modifier.padding(6.dp)) {
+
+                            Image(painter = painterResource(id = R.drawable.ic_github),
+                                contentDescription = null)
+                            Spacer(modifier = Modifier.padding(top = 5.dp))
+                            Text(text = "GitHub")
+                        }
+                    }
+
+                    Text(text = "Icon with text, with style")
+                }
+                Spacer(modifier = modifier.padding(top = 10.dp))
+
+                //=================================================================
+            }
+        }
+    }
+}
+`
+
+},
+
+{ id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_bottom_appbar2.jpg',
+description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Scaffold(
+        bottomBar = {
+            BottomAppBar(containerColor = Color.Yellow) {
+
+                LazyRow {
+                    items(10) {
+                        Card(modifier.padding(10.dp), colors = CardDefaults.cardColors(
+                            containerColor = Color.Green
+                        )) {
+                            Column (
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = modifier.padding(6.dp)) {
+
+                                Image(painter = painterResource(id = R.drawable.ic_github),
+                                    contentDescription = null)
+                                Spacer(modifier = Modifier.padding(top = 5.dp))
+                                Text(text = "GitHub $it")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ) {
+        Column(modifier = Modifier.padding(it).padding(10.dp)) {
+
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = Blue20,
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .padding(end = 10.dp)
+            ) {
+
+                Card(modifier.padding(10.dp), colors = CardDefaults.cardColors(
+                    containerColor = Color.Green
+                )) {
+                    Column (
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = modifier.padding(6.dp)) {
+
+                        Image(painter = painterResource(id = R.drawable.ic_github),
+                            contentDescription = null)
+                        Spacer(modifier = Modifier.padding(top = 5.dp))
+                        Text(text = "GitHub")
+                    }
+                }
+
+                Text(text = "menu of same type can be in LazyRow with count")
+            }
+        }
+    }
+}
+`
+},
+
+
+{ id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_app_bar.jpg',
+description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Box (
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.Gray),
+        contentAlignment = Alignment.Center) {
+
+
+        Column {
+
+            Text(text = "BottomAppBar with text", fontSize = 20.sp)
+
+            BottomAppBar(
+                actions = {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = modifier
+                            .padding(10.dp)
+                            .clickable {}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = null
+                        )
+                        Text(text = "Home")
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = modifier.padding(10.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = null
+                        )
+                        Text(text = "Notification")
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = modifier.padding(10.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = null
+                        )
+                        Text(text = "Setting")
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = modifier.padding(10.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Lock,
+                            contentDescription = null
+                        )
+                        Text(text = "Security")
+                    }
+                },
+                modifier = modifier,
+                floatingActionButton = {
+                    FloatingActionButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+
+            Spacer(modifier = modifier.padding(top = 20.dp))
+
+            Text(text = "BottomAppBar without text", fontSize = 20.sp)
+            BottomAppBar(
+                actions = {
+
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null
+                    )
+                }
+
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = null
+                    )
+                }
+
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = null
+                    )
+                }
+
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null
+                    )
+                }
+            },
+                modifier = modifier,
+                floatingActionButton = {
+                LargeFloatingActionButton(onClick = {}) {
+                    Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                }
+            })
+
+            Spacer(modifier = modifier.padding(top = 20.dp))
+
+            Text(text = "CenterAlignedTopAppBar without text", fontSize = 20.sp)
+            CenterAlignedTopAppBar(
+                title = {
+                        Text(text = "Toolbar Title")
+                },
+                modifier = modifier,
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = null
+                    )
+                },
+                actions = {
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+
+            Spacer(modifier = modifier.padding(top = 20.dp))
+
+            Text(text = "LargeTopAppBar", fontSize = 20.sp)
+            LargeTopAppBar(
+                title = { Text(text = "Large Top AppBar") },
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = null
+                    )
+                },
+                actions = {
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Lock,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.MailOutline,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+
+            Spacer(modifier = modifier.padding(top = 20.dp))
+            Text(text = "MediumTopAppBar", fontSize = 20.sp)
+
+            MediumTopAppBar(
+                title = { Text(text = "Medium Top AppBar") },
+                modifier = modifier,
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = null
+                    )
+                },
+                actions = {
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Lock,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.MailOutline,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+
+            Spacer(modifier = modifier.padding(top = 20.dp))
+            Text(text = "TopAppBar", fontSize = 20.sp)
+
+            TopAppBar(
+                title = { Text(text = "Top AppBar") },
+                modifier = modifier,
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = null
+                    )
+                },
+
+                actions = {
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = null
+                        )
+                    }
+
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+        }
+    }
+}
+
+`
+},
+
+{ id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_top_appbar1.jpg',
+description: `
+
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior2 = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior3 = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+
+    Scaffold (
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "TopAppBar Title") },
+                navigationIcon = {
+                    Image(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = null)
+                },
+                actions = {
+
+                    //Note: As Action you can show anything,
+                    // it is completely customizable
+
+                    Text(text = "Search")
+
+                    Image(
+                        imageVector = Icons.Filled.DateRange,
+                        contentDescription = null,
+                        modifier = modifier.padding(8.dp))
+                },
+                colors = TopAppBarDefaults
+                    .topAppBarColors()
+                    .copy(containerColor = Color.Yellow),
+                scrollBehavior = scrollBehavior
+            )
+        }
+    ) {
+        Column(modifier = Modifier
+            .padding(it)
+            .padding(10.dp)) {
+
+            Text(text = "Text as a Action", modifier.padding(10.dp))
+            Text(text = "Icon as a Action", modifier.padding(10.dp))
+            Text(text = "Custom UI as a Action", modifier.padding(10.dp))
+        }
+    }
+}
+
+`
+},
+{ id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_top_appbar2.jpg',
+description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    var showMenu by remember { mutableStateOf(false) }
+
+    Scaffold (topBar = {
+        TopAppBar(
+            title = { Text(
+                text = "Top Appbar",
+                fontSize = 20.sp,
+                fontFamily = fontMontserrat
+                ) },
+            modifier = modifier,
+            navigationIcon = {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = null
+                    )
+                }
+            },
+            actions = {
+
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = null
+                    )
+                }
+
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null
+                    )
+                }
+
+                IconButton(onClick = { showMenu = true }) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = null
+                    )
+
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false },
+                        modifier = modifier,
+                        offset = DpOffset(0.dp,10.dp),
+                        properties = PopupProperties()
+                    ) {
+                        DropdownMenuItem(text = { Text(text = "More 1")}, onClick = { showMenu = false })
+                        DropdownMenuItem(text = { Text(text = "More 2")}, onClick = { showMenu = false })
+                        DropdownMenuItem(text = { Text(text = "More 3")}, onClick = { showMenu = false })
+                        DropdownMenuItem(text = { Text(text = "More 4")}, onClick = { showMenu = false })
+                        DropdownMenuItem(text = { Text(text = "More 5")}, onClick = { showMenu = false })
+                    }
+                }
+            },
+            windowInsets = TopAppBarDefaults.windowInsets,
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Yellow),
+            scrollBehavior = scrollBehavior
+          )
+    }){
+        Column(modifier.padding(it)) {}
+    }
+}`
+},
+
+{
+    id: 6,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_popup.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val density = LocalDensity.current
+    var touchPoint: Offset by remember { mutableStateOf(Offset.Zero) }
+    var expand by remember { mutableStateOf(false) }
+
+    BoxWithConstraints(Modifier
+        .fillMaxSize()
+        .background(color = Color.White)
+        .pointerInput(Unit) {
+            detectTapGestures {
+                touchPoint = it
+                expand = true
+            }
+        }
+    ) {
+
+        val (xDp, yDp) = with(density) {
+            (touchPoint.x.toDp()) to (touchPoint.y.toDp())
+        }
+        DropdownMenu(
+            expanded = expand,
+            onDismissRequest = { expand = false },
+            modifier = modifier,
+            offset = DpOffset(xDp,-maxHeight + yDp)
+        ) {
+            repeat(5) {
+                DropdownMenuItem(
+                    text = {
+                        Text(text = "Menu Item No $it")
+                    },
+                    onClick = { expand = false } )
+            }
+        }
+    }
+}
+    `
+},
+
+{
+    id: 7,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_navigation_bar.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var selectedId by remember { mutableIntStateOf(1) }
+
+    Box (
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.Gray),
+        contentAlignment = Alignment.Center) {
+
+        NavigationBar(
+            containerColor = Color.Yellow,
+            modifier = modifier
+                .padding(10.dp)
+                .border(
+                    width = 2.dp,
+                    color = Color.Blue,
+                    shape = RoundedCornerShape(16.dp)
+                )
+        ) {
+            NavigationBarItem(
+                selected = selectedId == 0,
+                onClick = {selectedId = 0 },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null
+                    )
+                },
+                label =  { Text(text = "Home") },
+                alwaysShowLabel = selectedId == 0
+            )
+            NavigationBarItem(
+                selected = selectedId == 1,
+                onClick = {
+                    selectedId = 1
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = null
+                    )
+                },
+                label =  { Text(text = "Notifications") },
+                alwaysShowLabel = selectedId == 1
+            )
+            NavigationBarItem(
+                selected = selectedId == 2,
+                onClick = { selectedId = 2 },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null
+                    )
+                },
+                label =  { Text(text = "Profile") },
+                alwaysShowLabel = selectedId == 2
+            )
+        }
+    }
+}
+
+    `
+},
+
+{
+    id: 8,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_navigation_drawer.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
+
+    val coroutineScope = rememberCoroutineScope()
+
+    Scaffold {
+        Column(modifier = modifier.padding(it)) {
+
+            TopAppBar(
+                title = {
+                    Text(text = "TopAppBar")
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        coroutineScope.launch {
+                            drawerState.open()
+                        }
+                    }) {
+
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+
+            ModalNavigationDrawer (
+                drawerContent = {
+
+                    ModalDrawerSheet (
+                        modifier = modifier,
+                        drawerShape = CutCornerShape(topEnd = 20.dp, bottomEnd = 20.dp),
+                        drawerContainerColor = Color.White
+                    ){
+
+
+                        Column(
+                            modifier = modifier
+                                .wrapContentWidth()
+                                .padding(10.dp)
+                        ) {
+
+                            Spacer(modifier = modifier.padding(top = 30.dp))
+
+                            Text(
+                                text = "Drawer Title",
+                                fontSize = 20.sp,
+                                fontFamily = fontMontserratBold,
+                            )
+
+                            Spacer(modifier = modifier.padding(top = 30.dp))
+
+                            NavigationDrawerItem(
+                                label = { Text(text = "Dashboard") },
+                                selected = true,
+                                onClick = {},
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Home,
+                                        contentDescription = null
+                                    )
+                                },
+                                badge = {
+                                    Badge {
+                                        Text(text = "99+")
+                                    }
+                                }
+                            )
+
+                            Spacer(modifier = modifier.padding(top = 10.dp))
+
+                            NavigationDrawerItem(
+                                label = { Text(text = "Notification") },
+                                selected = false,
+                                onClick = {},
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Notifications,
+                                        contentDescription = null
+                                    )
+                                },
+                                badge = {
+                                    Badge {
+                                        Text(text = "50")
+                                    }
+                                }
+                            )
+
+                            Spacer(modifier = modifier.padding(top = 10.dp))
+
+                            NavigationDrawerItem(
+                                label = { Text(text = "Pending Updates") },
+                                selected = false,
+                                onClick = {},
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Warning,
+                                        contentDescription = null
+                                    )
+                                },
+                                badge = {
+                                    Badge {
+                                        Text(text = "11")
+                                    }
+                                }
+                            )
+                        }
+                    }
+
+                },
+                modifier = modifier,
+                drawerState = drawerState,
+                gesturesEnabled = true,
+                scrimColor = Color.LightGray,
+            ) {}
+        }
+    }
+}
+    `
+},
+
+{
+    id: 9,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_nav_rail.jpg',
+    description: `
+
+//Add Following Dependency in Gradle, (do check Version)
+//implementation("androidx.navigation:navigation-compose:2.7.7")
+
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Box(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)) {
+
+        NavigationRail(
+            modifier = modifier,
+            header = {
+
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = null
+                )
+
+                Text(
+                    text = "A",
+                    fontSize = 20.sp,
+                    modifier = modifier
+                        .padding(10.dp)
+                        .border(1.dp, color = Color.Black,
+                            shape = RoundedCornerShape(30.dp))
+                        .background(
+                            color = Color.Yellow,
+                            shape = CircleShape
+                        )
+                        .padding(10.dp)
+                )
+
+            }) {
+
+            NavigationRailItem(
+                selected = true,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Home",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Notification",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Setting",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.AddCircle,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Add More",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true,
+            )
+            Spacer(modifier = modifier.weight(1f))
+        }
+
+        //===========================================================
+
+        NavigationRail(
+            modifier = modifier
+                       .align(alignment = Alignment.CenterEnd),
+            header = {
+                Text(text = "Heading")
+            }) {
+
+            Spacer(modifier = modifier.weight(1f))
+            NavigationRailItem(
+                selected = true,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Likes",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Delete",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Lock",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true
+            )
+
+            NavigationRailItem(
+                selected = false,
+                onClick = {},
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = null
+                    )
+                },
+                label = {
+                    Text(
+                        text = "More",
+                        fontFamily = fontMontserrat
+                    )
+                },
+                alwaysShowLabel = true,
+            )
+            Spacer(modifier = modifier.weight(1f))
+        }
+    }
+}
+
+    `
+},
+
+
+{
+    id: 10,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_bottom_sheet.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var openModalBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true, confirmValueChange = { true }
+    )
+    var openBottomSheetScaffold by remember { mutableStateOf(false) }
+
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray),
+        horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+        Spacer(modifier = modifier.padding(top = 80.dp))
+
+        OutlinedButton(onClick = { openModalBottomSheet = true }) {
+            Text(text = "Open Modal Bottom Sheet")
+        }
+
+        OutlinedButton(onClick = { openBottomSheetScaffold = true }) {
+            Text(text = "Open OpenBottomSheetWithScaffold")
+        }
+    }
+
+    if (openModalBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { openModalBottomSheet = false },
+            modifier = modifier,
+            sheetState = sheetState,
+            sheetMaxWidth = BottomSheetDefaults.SheetMaxWidth,
+            shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp),
+            scrimColor = Color(211,211,211,0XFF),
+            dragHandle = { BottomSheetDefaults.DragHandle() }
+        ) {
+            DummyList(modifier = modifier) {
+                openModalBottomSheet = false
+            }
+        }
+    }
+
+    if (openBottomSheetScaffold) {
+        BottomSheetScaffold(sheetContent = {
+            DummyList(modifier = modifier) {
+                openBottomSheetScaffold = false
+            }
+        },modifier = modifier,
+            scaffoldState = rememberBottomSheetScaffoldState(),
+            sheetPeekHeight = 100.dp,
+            sheetMaxWidth = BottomSheetDefaults.SheetMaxWidth,
+            sheetContainerColor = Color.Yellow,
+            sheetShape = CutCornerShape(topStart = 30.dp, topEnd = 30.dp),
+            sheetShadowElevation = 10.dp,
+            sheetTonalElevation = 20.dp,
+            sheetDragHandle = {  BottomSheetDefaults.DragHandle() },
+            sheetSwipeEnabled = true,
+            topBar = {
+                TopAppBar(title = { Text(text = "Top App Bar")} )
+            }
+        ) {}
+    }
+}
+
+@Composable
+fun DummyList(modifier: Modifier, onClicked: () -> Unit) {
+    LazyColumn {
+        items(5) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier.clickable {
+                    onClicked()
+                }
+            ){
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null
+                )
+                Text(text = "Bottom Drawer Item (dollerSign){it + 1}")
+            }
+        }
+    }
+}
+
+    `
+},
+
+{
+    id: 11,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_side_sheet.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var openDrawerSheet by remember { mutableStateOf(false) }
+    var openDismissableDrawerSheet by remember { mutableStateOf(false) }
+    var openPermDrawerSheet by remember { mutableStateOf(false) }
+
+
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = modifier.padding(top = 80.dp))
+
+        OutlinedButton(onClick = { openDrawerSheet = true }) {
+            Text(text = "Open Modal Drawer Sheet", color = Color.Black)
+        }
+
+        OutlinedButton(onClick = { openDismissableDrawerSheet = true }) {
+            Text(text = "Open Dismissible DrawerSheet", color = Color.Black)
+        }
+
+        OutlinedButton(onClick = { openPermDrawerSheet = true }) {
+            Text(text = "Open PermanentDrawerSheet", color = Color.Black)
+        }
+    }
+
+
+    if (openDrawerSheet) {
+        ModalDrawerSheet(modifier = modifier,
+            drawerShape = RoundedCornerShape(topEnd = 40.dp, bottomEnd = 40.dp),
+            drawerContainerColor = Color.Yellow,
+        ) {
+            DummyList(modifier, onClicked =  { openDrawerSheet = false })
+        }
+    }
+
+    if (openDismissableDrawerSheet) {
+        DismissibleDrawerSheet {
+            DummyList(modifier = modifier, onClicked = { openDismissableDrawerSheet = false })
+        }
+    }
+
+    if (openPermDrawerSheet) {
+        PermanentDrawerSheet(modifier = modifier) {
+            DummyList(modifier = modifier) {
+                openPermDrawerSheet = false
+            }
+        }
+    }
+}
+
+@Composable
+fun DummyList(modifier: Modifier, onClicked: () -> Unit) {
+    LazyColumn {
+        items(5) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier.clickable {
+                    onClicked()
+                }
+            ){
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null
+                )
+                Text(text = "Bottom Drawer Item (dollerSign){it + 1}")
+            }
+        }
+    }
+}
+    `
+},
+
+{
+    id: 12,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_tabs.jpg',
+    description: `
+
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .background(color = Color.White)
+        .fillMaxSize()
+        .padding(10.dp)) {
+
+
+        Column {
+            var tabIndex by remember { mutableIntStateOf(0) }
+            Text(text = "Default Tab")
+            TabRow(selectedTabIndex = tabIndex) {
+
+                Tab(selected = tabIndex == 0,
+                    onClick = { tabIndex = 0},
+                    modifier = modifier,
+                    text = {
+                        Text(text = "Home")
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = ""
+                        )
+                    }
+                )
+
+                Tab(selected = tabIndex == 1,
+                    onClick = { tabIndex = 1},
+                    modifier = modifier,
+                    enabled = true,
+                    text = {
+                        Text(text = "Settings")
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = ""
+                        )
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 20.dp))
+
+        Column {
+
+            var tabIndex by remember { mutableIntStateOf(0) }
+            Text(text = "Default Tab with style ")
+            TabRow(selectedTabIndex = tabIndex,
+                modifier = modifier,
+                containerColor = Color.Yellow,
+                contentColor = Color.Black,
+                divider = {
+                    HorizontalDivider()
+                },
+                tabs = {
+                    Tab(selected = tabIndex == 0,
+                        onClick = { tabIndex = 0},
+                        modifier = modifier,
+                        text = {
+                            Text(text = "Home")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Home,
+                                contentDescription = ""
+                            )
+                        },
+                        selectedContentColor = Color.Blue,
+                        unselectedContentColor = Color.LightGray
+                    )
+
+                    Tab(selected = tabIndex == 1,
+                        onClick = { tabIndex = 1},
+                        modifier = modifier,
+                        enabled = true,
+                        text = {
+                            Text(text = "Settings")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = ""
+                            )
+                        },
+                        selectedContentColor = Color.Blue,
+                        unselectedContentColor = Color.LightGray
+                    )
+                }
+            )
+        }
+
+        Spacer(modifier = modifier.padding(top = 20.dp))
+
+        Column {
+
+            val tabIndex by remember { mutableIntStateOf(0) }
+
+            Text(text = "SecondaryTabRow")
+            SecondaryTabRow(selectedTabIndex = tabIndex,
+            modifier = modifier, containerColor = Color.LightGray,
+                contentColor = Color.Gray,
+                indicator = {
+                    TabRowDefaults.SecondaryIndicator(
+                        modifier = modifier,
+                        height = 2.dp,
+                        color = Color.Red)
+                },
+                divider = {
+                    HorizontalDivider()
+                }
+            ) {
+                Tab(
+                    selected = tabIndex == 0,
+                    onClick = {},
+                    modifier = modifier,enabled = true,
+                    text = { Text(text = "Search") },
+                    icon = {
+                        Icon(imageVector = Icons.Default.Search,
+                        contentDescription = "")
+                    },
+                    selectedContentColor = Color.Black,
+                    unselectedContentColor = Color.LightGray
+                    )
+                Tab(
+                    selected = tabIndex == 1,
+                    onClick = {},
+                    modifier = modifier,
+                    enabled = true,
+                    text = { Text(text = "Refresh") },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = ""
+                        )
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+            Text(text = "ScrollableTabRow")
+            ScrollableTabRow(
+                selectedTabIndex = 0,
+                modifier = modifier,
+                contentColor = Color.Red,
+                containerColor = Color.Yellow,
+                edgePadding = 10.dp,
+                divider = {
+                    HorizontalDivider()
+                }
+            ) {
+
+                repeat(10) {
+                    Tab(
+                        selected = it == 2, onClick = {},
+                        modifier = modifier,
+                        enabled = true,
+                        text = { Text(text = "Refresh $it") },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = ""
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+            Text(text = "SecondaryScrollableTabRow")
+            SecondaryScrollableTabRow(
+                selectedTabIndex = 2,
+                modifier = modifier, scrollState = rememberScrollState(),
+                containerColor = Color.Red,
+                contentColor = Color.Yellow,
+                edgePadding = 4.dp
+            ) {
+                repeat(10) {
+                    Tab(
+                        selected = it == 2,
+                        onClick = {},
+                        modifier = modifier,
+                        enabled = it == 2,
+                        selectedContentColor = Color.Yellow,
+                        unselectedContentColor = Color.Blue,
+                        text = {
+                            Text(text = "Search")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = ""
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+
+            Text(text = "PrimaryTabRow")
+
+            PrimaryTabRow(
+                selectedTabIndex = 1,
+                modifier = modifier,
+                containerColor = Color.Yellow,
+                contentColor = Color.Yellow
+                ) {
+
+                repeat(3) {
+                    Tab(
+                        selected = it == 1 ,
+                        onClick = {},
+                        modifier = modifier,
+                        enabled = true,
+                        selectedContentColor = Color.Black,
+                        unselectedContentColor = Color.Gray,
+                        text = {
+                            Text(text = "Tab (dollerSign){it+1}")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = ""
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+            Text(text = "PrimaryScrollableTabRow")
+            PrimaryScrollableTabRow(
+                selectedTabIndex = 3,
+                modifier = modifier,
+                scrollState = rememberScrollState(),
+                contentColor = Color.Blue,
+                containerColor = Color.Yellow
+            ) {
+
+                repeat(10) {
+                    Tab(
+                        selected = it == 3,
+                        onClick = {},
+                        modifier = modifier,
+                        enabled = it == 3,
+                        selectedContentColor = Color.Blue,
+                        unselectedContentColor = Color.Gray,
+                        text = {
+                            Text(text = "Shopping")
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.ShoppingCart,
+                                contentDescription = "")
+                        }
+                    )
+                }
+
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Column {
+
+            Text(text = "PrimaryTabRow - LeadingIconTab")
+
+            PrimaryTabRow(selectedTabIndex = 0) {
+                LeadingIconTab(
+                    selected = true,
+                    onClick = {},
+                    text = { Text(text = "Home")},
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = ""
+                        )
+                    },
+                    modifier = modifier,
+                    enabled = true,
+                    selectedContentColor = Color.Black,
+                    unselectedContentColor = Color.Gray
+                )
+
+                LeadingIconTab(
+                    selected = false,
+                    onClick = {},
+                    text = { Text(text = "Setting")},
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = ""
+                        )
+                    },
+                    modifier = modifier,
+                    enabled = true,
+                    selectedContentColor = Color.Black,
+                    unselectedContentColor = Color.Gray
+                )
+            }
+        }
+    }
+}
+
+    `
+}
+
+
+
+
+
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>

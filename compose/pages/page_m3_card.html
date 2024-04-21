@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Layouts in Compose</title>
+  <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+  <h1 class="header-heading">Jetpack Compose / Card</h1>
+  <div>
+    <a class="menu" href="../todo.html" id="todoLink">To-Do</a>
+    <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+    <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+    <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+  </div>
+</header>
+
+<div class="page">
+  <div class="code-container"></div>
+  <div class="list">
+    <div class="item-container">
+
+      <div class="page-card def-selected" card-id="1">
+        <h2>Cards</h2>
+        <p>Default, WithStyle, Elevated, Outline Card</p>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+  const profileLink = document.getElementById("profileLink");
+  const composeLink = document.getElementById("composeLink");
+  const headerHeading = document.querySelector(".header-heading");
+
+  profileLink.addEventListener("click", () => {
+      profileLink.classList.add("selected");
+      composeLink.classList.remove("selected");
+      headerHeading.textContent = "Akshay's Profile";
+  });
+
+  composeLink.addEventListener("click", () => {
+      composeLink.classList.add("selected");
+      profileLink.classList.remove("selected");
+      headerHeading.textContent = "Jetpack Compose";
+  });
+
+  //---------------------------------------------------------------
+  const cards = document.querySelectorAll('.page-card');
+  const dataContainer = document.querySelector('.code-container');
+  cards.forEach(pcard => {
+      pcard.addEventListener('click', () => {
+          cards.forEach(otherCard => {
+              otherCard.classList.remove('selected-card');
+          });
+          pcard.classList.add('selected-card');
+      });
+  });
+
+  const defaultSelectedCard = document.querySelector('.def-selected');
+  if (defaultSelectedCard) {
+      defaultSelectedCard.classList.add('selected-card');
+      const cardId = defaultSelectedCard.getAttribute('card-id');
+      const data = fetchDataById(cardId);
+      displayData(data);
+  }
+
+  cards.forEach(card => {
+      card.addEventListener('click', () => {
+          const cardId = card.getAttribute('card-id');
+          const data = fetchDataById(cardId);
+          displayData(data);
+      });
+  });
+
+  function fetchDataById(cardId) {
+      console.log(`Fetching data for card ID: ${cardId}`);
+
+      const data = [
+      {
+        id: 1,
+        src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_card.jpg',
+        description: `
+
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        Card(modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 10.dp, top = 10.dp, end = 10.dp)) {
+            CardData(modifier)
+        }
+        Text(text = "Default Card")
+
+        Card(modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 0.dp, top = 10.dp, end = 10.dp),
+            onClick = {},
+            enabled = true,
+            shape = CutCornerShape(10.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Yellow
+            ), border = BorderStroke(width = 1.dp, Color.Black),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        ) {
+            CardData(modifier = modifier)
+        }
+        Text(text = "Default Card with Style")
+
+        ElevatedCard(
+            onClick = {},
+            modifier = modifier.padding(
+                start = 10.dp,
+                top = 10.dp,
+                end = 10.dp)) {
+            CardData(modifier = modifier)
+        }
+        Text(text = "Elevated Card")
+
+        OutlinedCard(
+            onClick = {},
+            modifier = modifier.padding(
+                start = 10.dp,
+                top = 10.dp,
+                end = 10.dp)
+            ) {
+            CardData(modifier = modifier)
+        }
+        Text(text = "Outline Card")
+    }
+}
+
+@Composable
+fun CardData(modifier: Modifier) {
+    Column (modifier = modifier.padding(10.dp)){
+        Text(text = "This is Card")
+        Text(text = "This is Content 1")
+        Text(text = "This is Content 2")
+        Text(text = "This is Content n")
+        Text(text = "Like wise you can add anything")
+
+    }
+}
+        `
+      }
+      ];
+
+      return data.find(item => item.id === parseInt(cardId));
+  }
+
+  function displayData(data) {
+      console.log(`Displaying data: ${data}`);
+      if (data) {
+          dataContainer.innerHTML = `
+
+                   <div class="output-image">
+                  <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+              </div>
+
+              <div class="output-code">
+
+                  <pre>
+                      <code class="language-kotlin">${data.description}</code>
+                  </pre>
+              </div>
+          `;
+      } else {
+          dataContainer.innerHTML = 'Data not found';
+      }
+  }
+</script>
+
+</body>
+</html>

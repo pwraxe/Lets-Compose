@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Layouts in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / Picker</h1>
+    <div>
+        <a class="menu" href="../todo.html" id="todoLink">To-Do</a>
+        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+    <div class="list">
+        <div class="item-container">
+
+            <div class="page-card def-selected" card-id="1">
+                <h2>Date Picker</h2>
+                <p>Select date from dialog</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>Date Range Picker</h2>
+                <p>Select Range of dates</p>
+            </div>
+
+
+            <div class="page-card def-selected" card-id="3">
+                <h2>Time Picker</h2>
+                <p>Select Time from dialog</p>
+            </div>
+
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>Slider - 1</h2>
+                <p>slider from range, custom</p>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+{
+    id: 1,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_date_picker.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var showDatePicker by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = System.currentTimeMillis())
+    val context = LocalContext.current
+
+    //YearMonthSkeleton = yMMMM (March 2021)
+    //YearAbbrMonthDaySkeleton = "yMMMd (Mar 27, 2021)
+    //YearMonthWeekdayDaySkeleton = yMMMMEEEEd (Saturday, March 27, 2021)
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        OutlinedCard (modifier = modifier.padding(10.dp)){
+            DatePickerView(modifier, datePickerState)
+        }
+
+        OutlinedButton(
+            onClick = { showDatePicker = !showDatePicker },
+            enabled = !showDatePicker) {
+            Text(text = "Open Date Picker Dialog")
+        }
+        if (showDatePicker) {
+            OpenDatePicker(modifier,
+                onConfirm =  {
+                    showDatePicker = false
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                             },
+                onDismiss = { showDatePicker = false },datePickerState)
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OpenDatePicker(
+    modifier: Modifier,
+    onConfirm: (String) -> Unit,
+    onDismiss:() -> Unit,
+    datePickerState: DatePickerState
+    ) {
+
+
+    DatePickerDialog(
+        modifier = modifier,
+        confirmButton = {
+            TextButton(onClick = {
+                onConfirm(
+                    requestDate(
+                        datePickerState.selectedDateMillis
+                    )
+                )
+            }
+        ) {
+                Text(text = "Confirm")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = "Dismiss")
+            }
+        },
+        onDismissRequest = {},
+        shape = CutCornerShape(10.dp),
+        tonalElevation = 10.dp) {
+
+        DatePickerView(modifier = modifier, datePickerState)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePickerView(modifier: Modifier, datePickerState: DatePickerState) {
+
+    DatePicker(
+        state = datePickerState,
+        modifier = modifier.padding(10.dp),
+        dateFormatter = DatePickerDefaults.dateFormatter(
+            yearSelectionSkeleton = DatePickerDefaults.YearMonthSkeleton,
+            selectedDateSkeleton = DatePickerDefaults.YearAbbrMonthDaySkeleton,
+            selectedDateDescriptionSkeleton = DatePickerDefaults.YearMonthSkeleton
+        ),title = {
+            Text(text = "DatePicker Title, (dollerSign){requestDate(datePickerState.selectedDateMillis)}")
+        },
+        headline = {
+            Text(text = "DatePicker Headline")
+        },
+        showModeToggle = true)
+}
+
+fun requestDate(time: Long?) : String {
+    //06 September 2023
+    val simpleDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    return simpleDateFormat.format(time)
+}
+
+
+    `
+},
+
+{
+    id: 2,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_date_range_picker.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val dateRangePickerState = rememberDateRangePickerState()
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        OutlinedCard (modifier = modifier.padding(10.dp)) {
+
+            DateRangePicker(
+                modifier = modifier.padding(6.dp),
+                state = dateRangePickerState,
+                title = { Text(text = "Title") },
+                headline = {
+                    val startDate = dateRangePickerState.selectedStartDateMillis
+                    val endDate = dateRangePickerState.selectedEndDateMillis
+
+                    dateRangePickerState.setSelection(startDate, endDate)
+                    Row (verticalAlignment = Alignment.CenterVertically){
+                        val startDateStr = if (startDate != null) requestDate(startDate) else "Start Date"
+                        Text(text = startDateStr)
+                        Canvas(modifier = modifier.padding(8.dp)) {
+                            drawCircle(color = Color.Black, radius = 6f)
+                        }
+                        val endDateStr = if (endDate != null) requestDate(endDate) else "End Date"
+                        Text(text = endDateStr)
+                    }
+                }
+            )
+        }
+    }
+}
+
+fun requestDate(time: Long?) : String {
+    //06 September 2023
+    val simpleDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    return simpleDateFormat.format(time)
+}
+    `
+},
+
+{
+    id: 3,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_time_picker.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var openTimePicker by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)
+        .padding(10.dp)
+    ) {
+
+        OutlinedCard(modifier = modifier.padding(10.dp)) {
+            TimePickerView(modifier = modifier) {}
+        }
+
+        OutlinedButton(onClick = { openTimePicker = true }) {
+            Text(text = "Open Time Picker Dialog")
+        }
+
+
+        if (openTimePicker) {
+             Dialog(onDismissRequest = {}) {
+                 TimePickerView(
+                     modifier = modifier,
+                     onClicked = { openTimePicker = false })
+             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TimePickerView(modifier: Modifier, onClicked: () -> Unit) {
+
+    val hour by remember { mutableIntStateOf(12) }
+    val minute by remember { mutableIntStateOf(30) }
+    val timePicker = rememberTimePickerState(
+        initialHour = hour, initialMinute = minute,is24Hour = false
+    )
+
+    Column(modifier = modifier
+        .background(
+            color = Color.White,
+            shape = RoundedCornerShape(10.dp)
+        )
+    ) {
+
+        Text(text = "Selected Time: " +
+                "(dollerSign){timePicker.hour} : (dollerSign){timePicker.minute} " +
+                if (timePicker.is24hour) "AM" else "PM"
+        )
+        TimePicker(
+            state = timePicker,
+            modifier = modifier.padding(10.dp),
+            colors = TimePickerDefaults.colors(
+                containerColor = Color.White,
+
+                //Clock Background Color
+                clockDialColor = Color.Gray,
+
+                //Selected Hour/Min Number color
+                clockDialSelectedContentColor = Color.Yellow,
+
+                //Unselected Hour/Min Number color
+                clockDialUnselectedContentColor = Color.Black,
+
+                //Selected Pendulum Color
+                selectorColor = Color.Green,
+
+                //AM-PM Border Color
+                periodSelectorBorderColor = Color.Blue,
+
+                //AM-PM Selected Text Color
+                periodSelectorSelectedContentColor = Color.Yellow,
+
+                //AM-PM Selected Background Color
+                periodSelectorSelectedContainerColor = Color.Blue,
+
+                //AM-PM Unselected Text Color
+                periodSelectorUnselectedContentColor = Color.Gray,
+
+                //AM-PM Unselected Background Color
+                periodSelectorUnselectedContainerColor = Color.LightGray,
+
+                //Hour Time Background Color
+                timeSelectorSelectedContainerColor = Color.Yellow,
+
+                //Hour Time Text Color
+                timeSelectorSelectedContentColor = Color.Red,
+
+                //Minute Time Background Color (Pink)
+                timeSelectorUnselectedContainerColor = Color.Magenta,
+
+                //Minute Time Text Color
+                timeSelectorUnselectedContentColor = Color.Black
+            ),
+            layoutType = TimePickerLayoutType.Vertical
+        )
+
+        Row(modifier = modifier.align(alignment = Alignment.End)) {
+            TextButton(onClick = { onClicked() }) {
+                Text(text = "Dismiss")
+            }
+            TextButton(onClick = { onClicked() }) {
+                Text(text = "Confirm")
+            }
+        }
+    }
+}
+    `
+},
+
+{
+    id: 4,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_slider.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val steps = 10
+    val interactionSource = remember { MutableInteractionSource() }
+    val context = LocalContext.current
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.White)) {
+
+        Column {
+            val progress = remember { mutableFloatStateOf(38f) }
+
+            Text(text = "Slider (can change by value)")
+            Slider(
+                state = SliderState (
+                    value = progress.floatValue,
+                    steps = steps,
+                    onValueChangeFinished = {
+
+                        Toast.makeText(context, "finished", Toast.LENGTH_SHORT).show()
+                    },
+                    valueRange = 1f .. 100f),
+                modifier = modifier,enabled = true,
+                colors = SliderDefaults
+                    .colors(
+                        thumbColor = Color.Black,
+                        activeTrackColor = Color.Red,
+                        activeTickColor = Color.Yellow,
+                        inactiveTrackColor = Color.LightGray,
+                        inactiveTickColor = Color.Black
+                    ),
+                thumb = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_asia),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                },
+            )
+        }
+
+        Column {
+
+            val progress = remember { mutableFloatStateOf(0.0f) }
+
+            Text(text = "Slider with onValue Change")
+            Slider (
+                value = progress.floatValue + 0.2f,
+                onValueChange = { progress.floatValue = it },
+                modifier = modifier,
+                enabled = true,
+                onValueChangeFinished = {},
+                colors = SliderDefaults.colors(
+                    thumbColor = Color.Red,
+                    activeTrackColor = Color.Black,
+                    activeTickColor = Color.White,
+                    inactiveTrackColor = Color.LightGray,
+                    inactiveTickColor = Color.Black
+                ),
+                steps = steps,
+                thumb = {
+                    SliderDefaults.Thumb(
+                        interactionSource = interactionSource,
+                        thumbSize = DpSize(36.dp,36.dp)
+                    )
+                }, track = {
+                    SliderDefaults.Track(sliderState = it)
+                },
+                interactionSource = interactionSource
+            )
+        }
+
+        Column {
+
+            val thumbProgress = remember { mutableFloatStateOf(0f) }
+
+            Text(text = "Slider (Read Current Thumb Value)")
+            Slider(
+                value = thumbProgress.floatValue,
+                onValueChange = {
+                    thumbProgress.floatValue = it
+                },
+                modifier = modifier,
+                enabled = true,
+                onValueChangeFinished = {},
+                colors = SliderDefaults.colors(
+                    thumbColor = Color.Green,
+                    activeTrackColor = Color.Yellow,
+                    activeTickColor = Color.Blue,
+                    inactiveTrackColor = Color.Black,
+                    inactiveTickColor = Color.White
+                ),
+                interactionSource = interactionSource,
+                steps = steps,
+                thumb = {
+                    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                        SliderDefaults.Thumb(interactionSource = interactionSource,
+                            thumbSize = DpSize(36.dp,36.dp)
+                        )
+                        Text(text = "(dollerSign){thumbProgress.floatValue.toInt()}",
+                        fontSize = 20.sp, color = Color.White)
+                    }
+                },
+                track = {
+                    SliderDefaults.Track(sliderState = it)
+                },
+                valueRange = 1f .. 100f
+            )
+        }
+
+        Column {
+            val start = remember { mutableFloatStateOf(30f) }
+            val end = remember { mutableFloatStateOf(80f) }
+            val startInteractionSource = remember { MutableInteractionSource() }
+            val endInteractionSource = remember { MutableInteractionSource() }
+
+            RangeSlider(
+                value = start.floatValue .. end.floatValue,
+                onValueChange = {
+                    start.floatValue = it.start
+                    end.floatValue = it.endInclusive
+                },
+                modifier = modifier,
+                enabled = true,
+                valueRange = 1f .. 100f,
+                colors = SliderColors(
+                    thumbColor = Color.Red,
+                    activeTrackColor = Color.Black,
+                    activeTickColor = Color.White,
+                    inactiveTrackColor = Color.LightGray,
+                    inactiveTickColor = Color.Black,
+                    disabledThumbColor = Color.Gray,
+                    disabledActiveTickColor = Color.Gray,
+                    disabledActiveTrackColor = Color.Gray,
+                    disabledInactiveTickColor = Color.Gray,
+                    disabledInactiveTrackColor = Color.Gray
+                ),
+                onValueChangeFinished = {},
+                startInteractionSource = startInteractionSource,
+                endInteractionSource = endInteractionSource,
+                startThumb = {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null,
+                        modifier = modifier
+                            .clip(CircleShape)
+                            .padding(10.dp)
+                            .border(
+                                width = 1.dp,
+                                color = Color.Black,
+                                shape = CircleShape
+                            )
+                            .padding(6.dp)
+                    )
+                },
+                endThumb = {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = null,
+                        modifier = modifier
+                            .clip(CircleShape)
+                            .padding(10.dp)
+                            .border(
+                                width = 1.dp,
+                                color = Color.Black,
+                                shape = CircleShape
+                            )
+                            .padding(6.dp)
+                    )
+                },
+                //track = {}
+            )
+        }
+    }
+}
+    `
+}
+
+
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>

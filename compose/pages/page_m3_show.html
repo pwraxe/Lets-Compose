@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Layouts in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / To Show</h1>
+    <div>
+        <a class="menu" href="../todo.html" id="todoLink">To-Do</a>
+        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+    <div class="list">
+        <div class="item-container">
+
+            <div class="page-card def-selected" card-id="1">
+                <h2>Dialog</h2>
+                <p>Dialog, Alert, Custom</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>Divider</h2>
+                <p>Horizontal, Vertical</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="3">
+                <h2>List</h2>
+                <p>LazyRow LazyCol, LazyVerGrid, LazyHorGrid,Stagger</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>Progress</h2>
+                <p>Linear, Circular</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="5">
+                <h2>Snackbar</h2>
+                <p>Snackbar, custom</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="6">
+                <h2>Tooltip</h2>
+                <p>OnApp info</p>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+{
+    id: 1,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_dialog.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var dialogId by remember { mutableIntStateOf(-1) }
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.White)) {
+
+        OutlinedButton(
+            onClick = { dialogId = 0 },
+            modifier = modifier.padding(top = 100.dp)) {
+            Text(text = "Open Dialog")
+        }
+
+        OutlinedButton(onClick = { dialogId = 1 }) {
+            Text(text = "Open AlertDialog")
+        }
+
+        OutlinedButton(onClick = {dialogId = 2 }) {
+            Text(text = "Open BasicAlertDialog")
+        }
+
+        when(dialogId) {
+            0 -> OpenDialog(modifier,
+                onPositiveButtonClicked = { dialogId = -1 },
+                onNegativeButtonClicked = { dialogId = -1 })
+            1 -> OpenAlertDialog(modifier,
+                onConfirmClicked = { dialogId = -1 },
+                onDismissClicked = { dialogId = -1 }
+            )
+            2 -> OpenBasicAlertDialog(modifier,
+                onPositiveButtonClicked = { dialogId = -1 },
+                onNegativeButtonClicked = { dialogId = -1 }
+            )
+            else -> {}
+        }
+    }
+}
+
+@Composable
+fun OpenDialog(modifier: Modifier,
+               onPositiveButtonClicked: () -> Unit,
+               onNegativeButtonClicked: () -> Unit ) {
+
+    Dialog(onDismissRequest = {},
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true,
+            usePlatformDefaultWidth = true,
+            decorFitsSystemWindows = true
+        )
+    ) {
+        DialogView(
+            modifier = modifier,
+            onPositiveButtonClicked = { onPositiveButtonClicked() },
+            onNegativeButtonClicked = { onNegativeButtonClicked() }
+        )
+    }
+}
+
+@Composable
+fun OpenAlertDialog(
+    modifier: Modifier,
+    onConfirmClicked: () -> Unit,
+    onDismissClicked: () -> Unit
+    ) {
+    AlertDialog(
+        onDismissRequest = { onDismissClicked() },
+        modifier = modifier,
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirmClicked()
+                }
+            ) {
+                Text(text = "Confirm")
+            }
+        },
+        dismissButton = {
+            OutlinedButton(
+                onClick = {
+                    onDismissClicked()
+                }
+            ) {
+                Text(text = "Dismiss")
+            }
+
+        },
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Lock,
+                contentDescription = null
+            )
+        },
+        title = {
+                Text(text = "This is Title")
+        },
+        text = { Text(text = "This is long message text" ) },
+        shape = RoundedCornerShape(30.dp),
+        containerColor = Color.Yellow,
+        iconContentColor = Color.Blue,
+        titleContentColor = Color.Green,
+        textContentColor = Color.Red,
+        tonalElevation = 8.dp
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OpenBasicAlertDialog(
+    modifier: Modifier,
+    onPositiveButtonClicked: () -> Unit,
+    onNegativeButtonClicked: () -> Unit
+    ) {
+    BasicAlertDialog(
+        onDismissRequest = { onNegativeButtonClicked() }) {
+        DialogView(
+            modifier = modifier,
+            onPositiveButtonClicked = { onPositiveButtonClicked() },
+            onNegativeButtonClicked = { onNegativeButtonClicked() })
+    }
+}
+
+@Composable
+fun DialogView(
+    modifier: Modifier,
+    onPositiveButtonClicked: () -> Unit,
+    onNegativeButtonClicked: () -> Unit
+    ) {
+    OutlinedCard(modifier = modifier.padding(10.dp)) {
+        Column(modifier= modifier.padding(10.dp)) {
+            Text(
+                text = "This is default title",
+                fontFamily = fontMontserratBold,
+                fontWeight = FontWeight.W800
+            )
+            Text(
+                text = "This is actual long message having multiple words " +
+                    "which tells user its use case why thi prompted",
+                fontFamily = fontMontserrat,
+                modifier = modifier.padding(top = 10.dp)
+                )
+
+            Row(modifier.align(alignment = Alignment.End)) {
+                TextButton(onClick = {
+                    onPositiveButtonClicked()
+                }) {
+                    Text(
+                        text = "+Ve Button",
+                        fontFamily = fontMontserrat
+                    )
+                }
+
+                TextButton(onClick = {
+                    onNegativeButtonClicked()
+                }) {
+                    Text(
+                        text = "-Ve Button",
+                        fontFamily = fontMontserrat
+                    )
+                }
+            }
+        }
+    }
+}
+    `
+},
+
+{
+    id: 2,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_divider.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)
+        .padding(10.dp)) {
+
+        Text(
+            text = "This is first V text",
+            fontFamily = fontMontserrat,
+            fontSize = 20.sp
+        )
+        HorizontalDivider()
+        Text(
+            text = "This is second V text",
+            fontFamily = fontMontserrat,
+            fontSize = 20.sp
+            )
+
+
+        HorizontalDivider(
+            modifier = modifier
+                .padding(10.dp),
+            thickness = 2.dp,
+            color = Color.Black,
+        )
+
+        LazyColumn {
+            items(5) {
+                Text(text = "This is row no $it")
+                HorizontalDivider()
+            }
+        }
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        Row {
+            Text(
+                text = "This is first H text",
+                fontFamily = fontMontserrat,
+                fontSize = 20.sp
+            )
+
+            //VerticalDivider()
+            VerticalDivider(
+                modifier = modifier
+                    .padding(
+                            start = 10.dp,
+                            end = 10.dp),
+                thickness = 2.dp, color = Color.Black
+            )
+            Text(
+                text = "This is second H text",
+                fontFamily = fontMontserrat,
+                fontSize = 20.sp
+            )
+        }
+    }
+}
+    `
+},
+
+{
+    id: 3,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_lazy_list.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)) {
+
+        SimpleList(modifier)
+    }
+}
+
+
+@Composable
+fun SimpleList(modifier: Modifier) {
+    Column {
+        Text(text = "LazyRow")
+        LazyRow {
+            items(5){
+                SimpleWord(num = it + 1, modifier = modifier)
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyColumn")
+        LazyColumn {
+            items(3) {
+                SimpleWord(num = it + 1, modifier = modifier)
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyVerticalGrid")
+        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+            items(5) {
+                SimpleWord(num = it + 1, modifier = modifier)
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyHorizontalGrid")
+        Box (modifier = modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .background(color = Color.Yellow)
+        ) {
+            LazyHorizontalGrid(
+                rows = GridCells.Fixed(2)
+            ) {
+                items(10) {
+                    SimpleWord(num = it + 1, modifier = modifier)
+                }
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyHorizontalStaggeredGrid")
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(color = Color.Magenta)
+        ) {
+            LazyHorizontalStaggeredGrid(rows = StaggeredGridCells.Fixed(2)) {
+                items(5) {
+                    SimpleWord(num = it + 1, modifier = modifier)
+                }
+            }
+        }
+
+        HorizontalDivider(color = Color.Black)
+
+        Text(text = "LazyVerticalStaggeredGrid")
+        LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(4)) {
+            items(8) {
+                SimpleWord(num = it + 1, modifier = modifier)
+            }
+        }
+
+    }
+}
+
+@Composable
+fun SimpleWord(num:Int, modifier: Modifier) {
+    OutlinedCard(modifier = modifier.padding(10.dp)) {
+        Text(
+            text = "It's Word $num",
+            fontFamily = fontMontserrat,
+            fontSize = 14.sp,
+            modifier = modifier.padding(6.dp)
+        )
+    }
+}
+    `
+},
+
+{
+    id: 4,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_progress_indicator.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = modifier.padding(top = 60.dp))
+        Text(text = "CircularProgressIndicator :  0.65f Progress")
+        CircularProgressIndicator(
+            progress = { 0.65f },
+            modifier = modifier
+                .align(Alignment.CenterHorizontally)
+                .size(80.dp)
+                .padding(top = 10.dp),
+            color = Color.Blue,
+            strokeWidth = 7.dp,
+            trackColor = Color.Gray,
+            strokeCap = StrokeCap.Round
+        )
+
+
+        HorizontalDivider(
+            color = Color.Blue,
+            modifier = modifier.padding(top = 20.dp))
+
+        Spacer(modifier = modifier.padding(10.dp))
+
+        Text(text = "LinearProgressIndicator : 0.60f Progress")
+        LinearProgressIndicator(
+            progress = { 0.60f },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            color = Color.Black,
+            trackColor = Color.Gray,
+            strokeCap = StrokeCap.Round,
+        )
+
+    }
+}
+    `
+},
+
+{
+    id: 5,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_snack.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    var showSnack by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    Scaffold (
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = modifier
+            )
+        },
+
+        floatingActionButton = {
+
+            ExtendedFloatingActionButton(
+                text = { Text(text = "Show Snack") },
+                icon = { Icon(Icons.Filled.Email, contentDescription = "") },
+                onClick = {
+                    scope.launch {
+                        val result = snackbarHostState.showSnackbar(
+                            message = "This is Snack Message",
+                            actionLabel = "Action Lbl",
+                            duration = SnackbarDuration.Indefinite
+                        )
+                        when(result) {
+                            SnackbarResult.ActionPerformed -> {}
+                            SnackbarResult.Dismissed -> {
+                                showSnack = false
+                            }
+                            else -> {}
+                        }
+                    }
+                }
+            )
+        }
+
+    ) {
+
+        Column(
+            modifier = modifier
+                .padding(it)
+                .fillMaxSize()
+                .background(color = Color.White)) {
+
+            Column {
+                var showSnack by remember { mutableStateOf(false) }
+                OutlinedButton(onClick = { showSnack = true }) {
+                    Text(text = "Show Snack", color = Color.Black)
+                }
+
+                AnimatedVisibility(
+                    visible = showSnack, label = "Animated",
+                    modifier = modifier.align(alignment = Alignment.CenterHorizontally)) {
+
+                    Box (contentAlignment = Alignment.Center){
+                        Snackbar(
+                            action = {},
+                            modifier = modifier.padding(6.dp),
+                            dismissAction = {},
+                            actionOnNewLine = false,
+                            shape = RoundedCornerShape(10.dp)) {
+
+                            Row (verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "Hello, Prompt from Snack,",
+                                    modifier = modifier.weight(1f)
+                                )
+
+                                TextButton(onClick = { showSnack = false }) {
+                                    Text(text = "Close")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+    `
+},
+
+{
+    id: 6,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_tooltip.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        Column {
+            var showRichTooltip by remember { mutableStateOf(false) }
+            OutlinedButton(onClick = { showRichTooltip = true }) {
+                Text(text = "Show Rich Tooltip")
+            }
+
+            if (showRichTooltip) {
+                RichTooltip(modifier = modifier,
+                    title = {
+                        Text(text = "This could be full description of particular content or functionality")
+                    },
+                    action = {
+                        TextButton(onClick = { showRichTooltip = false }) {
+                            Text(text = "Next")
+                        }
+                    },
+                    shape = RoundedCornerShape(20.dp),
+                    colors = RichTooltipColors(containerColor = Color.Yellow, contentColor = Color.Black,
+                        titleContentColor = Color.Red, actionContentColor = Color.Blue
+                    )
+                ) {}
+            }
+
+        }
+
+        Column {
+            val state = rememberTooltipState(
+                initialIsVisible = false,
+                isPersistent = true,
+                mutatorMutex = MutatorMutex()
+            )
+            val pos = TooltipDefaults.rememberPlainTooltipPositionProvider()
+            var showTooltip by remember { mutableStateOf(false) }
+
+            OutlinedButton(onClick = { showTooltip = true }) {
+                Text(text = "Open TooltipBox")
+            }
+
+            if(showTooltip) {
+                TooltipBox(
+                    positionProvider = pos,
+                    tooltip = {},
+                    state = state,
+                    modifier = modifier,
+                    focusable = true,
+                    enableUserInput = true) {
+
+                    ToolTipView(modifier, onClicked = { showTooltip = false })
+                }
+            }
+        }
+
+        Column {
+            var openBasicToolTip by remember { mutableStateOf(false) }
+            val state = rememberBasicTooltipState(
+                initialIsVisible = false,
+                isPersistent = true,
+                mutatorMutex = MutatorMutex()
+            )
+            val pos = TooltipDefaults.rememberPlainTooltipPositionProvider()
+
+            OutlinedButton(onClick = { openBasicToolTip = true }) {
+                Text(text = "Open BasicTooltipBox")
+            }
+
+            if (openBasicToolTip) {
+                BasicTooltipBox(positionProvider = pos,
+                    tooltip = {
+                        ToolTipView(modifier = modifier) {}
+                    }, state = state ) {
+                    ToolTipView(modifier = modifier) { openBasicToolTip = false }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ToolTipView(modifier: Modifier, onClicked: () -> Unit) {
+
+    Column (modifier = modifier
+        .background(
+            color = Color(0xAA000000),
+            shape = RoundedCornerShape(10.dp)
+        )
+        .padding(10.dp)
+
+    ) {
+
+        Text(text = "Hello From Title", color = Color.White)
+        Text(text = "Hello From New Passage or new line can't say anything",
+            color = Color.White)
+        TextButton(onClick = { onClicked() },
+            modifier = modifier.align(alignment = Alignment.End)) {
+            Text(text = "Next", color = Color.White,)
+        }
+    }
+}
+
+    `
+},
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>

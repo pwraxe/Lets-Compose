@@ -53,6 +53,16 @@
                 <p>Menu Screen, Pizza Size and Price Screen, After getting address Bill screen, used navHost, VM</p>
             </div>
 
+            <div class="page-card def-selected" card-id="7">
+                <h2>Recycler Clicked Event</h2>
+                <p>Showing Lazy Column with click event / same as recycler-view</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="8">
+                <h2>listOf(RadioButtons)</h2>
+                <p>Showing Multiple Radio Button in list format</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -1099,7 +1109,194 @@ class PizzaViewModel : ViewModel() {
 }
 
             `
-          }
+          },
+
+          {
+                id: 7, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_recycler_clicked.gif',
+                description:
+                `
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            JetpackComposeTheme(darkTheme = false) {
+                Test()
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Test(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        LazyColumn {
+            items(3) {
+                ListItem(modifier = modifier, item = Item(
+                    title = "Some title",
+                    time = "(dollorSign){it+1} min Ago",
+                    desc = "This is long text having multiple " +
+                            "words and you should take care of " +
+                            "its alignment"
+                ), showButton = false) { item: Item ->
+                    Toast.makeText(
+                        context,
+                        "(dollorSign)_{item.time} | (dollorSign){item.title}",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        Divider(
+            modifier.padding(10.dp),
+            thickness = 2.dp,
+            color = Color.Black)
+
+        LazyColumn {
+            items(3) {
+                ListItem(modifier = modifier, item = Item(
+                    title = "Some title",
+                    time = "(dollorSign){it+1} min Ago",
+                    desc = "This is long text having multiple words and " +
+                            "you should take care of its alignment"
+                ), showButton = true) { item: Item ->
+                    Toast.makeText(
+                        context,
+                        "(dollorSign){item.time} | (dollorSign){item.title}",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+}
+
+data class Item(
+    val title: String,
+    val time: String,
+    val desc: String)
+
+@Composable
+fun ListItem(
+    modifier: Modifier,
+    item: Item,
+    showButton: Boolean,
+    onClicked: (Item) -> Unit) {
+
+    OutlinedCard (
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 10.dp,
+                vertical = 5.dp
+            )
+            .clickable(!showButton) {
+                onClicked(item)
+            }
+    ) {
+
+        Column {
+            Row(modifier = modifier.padding(10.dp)) {
+                Text(text = item.title,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = modifier.weight(1f))
+                Text(
+                    text = item.time,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = fontMedium,
+                    color = Color.Black
+                )
+            }
+
+            Text(
+                text = item.desc,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                fontFamily = fontMedium,
+                color = Color.Black,
+                modifier = modifier
+                    .padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 10.dp
+                    )
+            )
+
+            if (showButton) {
+                OutlinedButton(
+                    onClick = { onClicked(item) },
+                    modifier = modifier.align(
+                        alignment = Alignment.End
+                    ).padding(10.dp)) {
+                    Text(text = "Click Here")
+                }
+            }
+        }
+    }
+}
+                `
+            },
+
+
+            {
+                id: 8, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_list_radio_click.gif',
+                description:
+                `
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            JetpackComposeTheme(darkTheme = false) {
+                Test()
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Test(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    var id by remember { mutableIntStateOf(-1) }
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        LazyColumn {
+            items(6) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = modifier.clickable {
+                        id = it
+                        Toast.makeText(
+                            context,
+                            "RB: (dollorSign)it",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                ) {
+                    RadioButton(
+                        selected = id == it,
+                        onClick = {})
+                    Text(
+                        text = "Radio Button (dollorSign)it",
+                        fontFamily = fontMedium
+                    )
+                }
+            }
+        }
+    }
+}
+`
+            },
 
         ];
 

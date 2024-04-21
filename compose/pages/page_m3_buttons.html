@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Layouts in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / Button</h1>
+    <div>
+        <a class="menu" href="../todo.html" id="todoLink">To-Do</a>
+        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+    <div class="list">
+        <div class="item-container">
+
+            <div class="page-card def-selected" card-id="1">
+                <h2>Elevated Button</h2>
+                <p>Button with default elevation</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>Fill Button</h2>
+                <p>Button with a filled background</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="3">
+                <h2>Outline Button</h2>
+                <p>Button with a background</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>Text Button</h2>
+                <p>Text as a button</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="5">
+                <h2>Icon Button</h2>
+                <p>Icon as a Button</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="6">
+                <h2>Segmented Button</h2>
+                <p>Segmented Button</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="7">
+                <h2>FAB Button</h2>
+                <p>Floating Action Button</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="8">
+                <h2>Radio Button</h2>
+                <p>Radio Button</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="9">
+                <h2>Switch Button</h2>
+                <p>Switch Button</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+{
+    id: 1, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_elevated_button.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray).padding(top = 100.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        ElevatedButton(onClick = {}) {
+            Text(
+                text = "Elevated Button 1",
+                fontFamily = fontMontserratBold,
+                color = Color.Black
+                )
+        }
+
+        ElevatedButton(
+            onClick = {},
+            modifier = modifier,
+            enabled = true,
+            shape = CutCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow,
+                    contentColor = Color.Black),elevation = ButtonDefaults
+                        .buttonElevation(
+                            defaultElevation = 4.dp,
+                            pressedElevation = 8.dp,
+                            focusedElevation = 6.dp,
+                            hoveredElevation = 10.dp
+                        ),
+            border = BorderStroke(
+                width = 2.dp,
+                brush = Brush.linearGradient(
+                    listOf(Color.Black, Color.Green, Color.Red)
+                ))
+            ) {
+            Text(
+                text = "Elevated Button 2",
+                fontFamily = fontMontserrat,)
+        }
+    }
+}
+`
+},
+
+{
+    id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_filled_button.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var selected by remember { mutableStateOf(0) }
+    var checked by remember { mutableStateOf(false) }
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)
+        .padding(top = 100.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            FilledIconButton(onClick = {}) {
+                Icon(imageVector = Icons.Filled.Favorite, contentDescription = null)
+            }
+            Text(text = "Default FilledIconButton", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            FilledIconButton(
+                onClick = {},
+                modifier = modifier
+                    .border(
+                        border = BorderStroke(width = 2.dp, color = Color.White),
+                        shape = RoundedCornerShape(10.dp)
+                    ),
+                enabled = true,
+                shape = CutCornerShape(10.dp), colors = IconButtonDefaults.iconButtonColors(
+                    contentColor = Color.Yellow,
+                    containerColor = Color.Black
+                )
+            ) {
+                Icon(imageVector = Icons.Filled.Favorite, contentDescription = null)
+            }
+            Text(text = "FilledIconButton with style", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+            FilledIconToggleButton(checked = checked , onCheckedChange = { checked = !checked}) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+            Text(text = "Default FilledIconToggleButton", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+            FilledIconToggleButton(
+                checked = checked ,
+                onCheckedChange = { checked = !checked},
+                modifier = modifier,enabled = true, shape = CutCornerShape(16.dp)
+            ) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+            Text(text = "FilledIconToggleButton with style same as FilledIconButton (second)",
+                modifier = modifier.padding(start = 10.dp))
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+            FilledIconToggleButton(
+                checked = checked ,
+                onCheckedChange = { checked = !checked},
+                modifier = modifier,enabled = true, shape = CutCornerShape(16.dp)
+            ) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Text(text = "AP")
+            }
+            Text(text = "FilledIconToggleButton with Text", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+
+            FilledTonalIconButton(onClick = { checked = !checked }) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+
+            Text(text = "FilledTonalIconButton with Icon change only", modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically, modifier = modifier.padding(top = 10.dp)){
+
+            FilledTonalIconToggleButton(checked = checked, onCheckedChange = { checked = !checked }) {
+                val icon = if (checked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+
+            Text(text = "FilledTonalIconToggleButton with Icon change only same as above",
+                modifier = modifier.padding(start = 10.dp))
+        }
+    }
+}
+`
+},
+{
+    id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_outline_button.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var checked by remember { mutableStateOf(false) }
+
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Blue20)
+        .padding(top = 109.dp),
+        horizontalAlignment = Alignment.CenterHorizontally){
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            OutlinedButton(onClick = {}) {
+                Text(
+                    text = "OutlinedButton",
+                    color = Color.Black)
+            }
+
+            Text(
+                text = "Default OutlinedButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            OutlinedButton(
+                onClick = {},
+                modifier = modifier,
+                enabled = true,
+                shape = CutCornerShape(
+                    topStart = 10.dp,
+                    bottomEnd = 10.dp
+                ),
+                border = BorderStroke(
+                    width = 2.dp,
+                    brush = Brush
+                        .linearGradient(
+                            listOf(
+                                Color.Red,
+                                Color.Magenta
+                            )
+                        )
+                )
+            ) {
+                Text(
+                    text = "OutlinedButton with style",
+                    color = Color.Black)
+            }
+
+            Text(
+                text = "OutlinedButton with style",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            OutlinedIconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = null)
+            }
+
+            Text(
+                text = "Default OutlinedIconButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+            OutlinedIconButton(
+                onClick = {},
+                enabled = true,
+                shape = CutCornerShape(
+                    topStart = 10.dp,
+                    bottomEnd = 4.dp),
+                modifier = modifier,
+                border = BorderStroke(
+                    width = 1.dp,
+                    brush = Brush
+                        .horizontalGradient(
+                            colors = listOf(Color.Red, Color.Black),
+                            tileMode = TileMode.Repeated))
+                , colors = IconButtonDefaults.outlinedIconButtonColors(
+                    contentColor = Color.Red,
+                    containerColor = Color.Yellow
+                )) {
+                Icon(
+                    imageVector = Icons.Filled.Edit,
+                    contentDescription = null)
+            }
+
+            Text(text = "OutlinedIconButton with style",
+                modifier = modifier.padding(start = 10.dp))
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically){
+
+            OutlinedIconToggleButton(
+                checked = checked,
+                onCheckedChange = { checked = !checked }) {
+                val icon = if (checked) Icons.Filled.Favorite
+                else Icons.Filled.FavoriteBorder
+                Icon(imageVector = icon, contentDescription = null)
+            }
+            Text(
+                text = "OutlinedIconToggleButton Unselected",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+    }
+}
+`
+},
+
+{
+    id: 4, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_text_button.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Blue20)
+        .padding(top = 109.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            TextButton(onClick = {}) {
+                Text(
+                    text = "Click here",
+                    color = Color.Blue
+                )
+            }
+            Text(
+                text = "--> Default TextButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            TextButton(
+                onClick = {},
+                modifier = modifier,
+                enabled = true,
+                shape = RoundedCornerShape(
+                    topStart = 20.dp,
+                    bottomStart = 20.dp
+                ),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Black,
+                    contentColor = Color.Yellow,
+                    disabledContainerColor = Color.LightGray),
+                elevation = ButtonDefaults
+                    .buttonElevation(defaultElevation = 8.dp)
+            ) {
+                Text(text = "Click here")
+            }
+            Text(
+                text = "--> TextButton with style",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            Text(text = buildAnnotatedString {
+
+                withStyle(style = SpanStyle(
+                    color = Color(0xFFFF0000),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium)
+                ) {
+                    append("RED")
+                }
+
+                append(" ")
+                withStyle(style = SpanStyle(
+                    color = Color(0xFF00FF00),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium)
+                ) {
+                    append("GREEN")
+                }
+
+                append(" ")
+                withStyle(style = SpanStyle(
+                    color = Color(0xFF0000FF),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    background = Color.Yellow)) {
+                    append(" BLUE")
+                }
+            })
+
+            Spacer(modifier = modifier.padding(top = 50.dp))
+            Text(
+                text = "--> AnnotatedString",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+    }
+}
+    `
+},
+
+{
+    id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_icon_button.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val icon = Icons.Outlined.Email
+
+    Column (modifier = modifier
+        .fillMaxSize()
+        .background(color = Blue20)
+        .padding(top = 10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            IconButton(onClick = {}) {
+                Icon(imageVector = icon, contentDescription = null)
+            }
+            Text(
+                text = "--> Default IconButton w/o background",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Column (modifier = modifier
+            .border(width = 1.dp, color = Color.Black)
+            .padding(10.dp)) {
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                IconToggleButton(
+                    checked = true,
+                    onCheckedChange = {}) {
+                    Icon(imageVector = icon,
+                        contentDescription = null)
+                }
+                Text(
+                    text = "--> IconToggleButton (checked)",
+                    modifier = modifier.padding(start = 10.dp)
+                )
+            }
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                IconToggleButton(
+                    checked = false,
+                    onCheckedChange = {}) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null)
+                }
+                Text(
+                    text = "--> IconToggleButton (unchecked)",
+                    modifier = modifier.padding(start = 10.dp)
+                )
+            }
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            FilledTonalIconButton(onClick = {}) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null
+                )
+            }
+
+            Text(
+                text = "--> Default FilledTonalIconButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            FilledIconButton(onClick = {}) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null
+                )
+            }
+            Text(
+                text = "--> Default FilledIconButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            OutlinedIconButton(onClick = {}) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null
+                )
+            }
+
+            Text(
+                text = "--> Default OutlinedIconButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Column (modifier = modifier
+            .border(1.dp, color = Color.Black)
+            .padding(10.dp)) {
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                OutlinedIconToggleButton(
+                    checked = true,
+                    onCheckedChange = {}) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null
+                    )
+                }
+                Text(
+                    text = "--> OutlinedIconToggleButton (checked)",
+                    modifier = modifier.padding(start = 10.dp)
+                )
+            }
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                OutlinedIconToggleButton(
+                    checked = false,
+                    onCheckedChange = {}
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null
+                    )
+                }
+                Text(
+                    text = "--> OutlinedIconToggleButton (unchecked)",
+                    modifier = modifier.padding(start = 10.dp)
+                )
+            }
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            FilledTonalIconButton(onClick = {}) {
+                Icon(imageVector = icon, contentDescription = null)
+            }
+            Text(
+                text = "--> Default FilledTonalIconButton",
+                modifier = modifier.padding(start = 10.dp)
+            )
+        }
+
+        Column (modifier = modifier
+            .border(
+                width = 1.dp,
+                color = Color.Black)
+            .padding(10.dp)){
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                FilledIconToggleButton(
+                    checked = true,
+                    onCheckedChange = {}) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null)
+                }
+
+                Text(
+                    text = "--> FilledIconToggleButton (checked)",
+                    modifier = modifier.padding(start = 10.dp)
+                )
+            }
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                FilledIconToggleButton(
+                    checked = false,
+                    onCheckedChange = {}) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null)
+                }
+
+                Text(
+                    text = "--> FilledIconToggleButton (unchecked)",
+                    modifier = modifier.padding(start = 10.dp)
+                )
+            }
+        }
+
+
+        Column(modifier = modifier
+            .border(width = 1.dp, color = Color.Black)
+            .padding(10.dp)) {
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                FilledTonalIconToggleButton(
+                    checked = true,
+                    onCheckedChange = {}) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null)
+                }
+
+                Text(
+                    text = "--> FilledTonalIconToggleButton (checked)",
+                    modifier = modifier.padding(start = 10.dp)
+                )
+            }
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                FilledTonalIconToggleButton(
+                    checked = false,
+                    onCheckedChange = {}) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null
+                    )
+                }
+
+                Text(
+                    text = "--> FilledTonalIconToggleButton (unchecked)",
+                    modifier = modifier.padding(start = 10.dp)
+                )
+            }
+        }
+    }
+}
+    `
+},
+{
+    id: 6, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_segmented_button.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val list = listOf("List","Set","Map","Graph")
+    var selectedIndex by remember { mutableIntStateOf(0) }
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Blue20).padding(10.dp)) {
+
+        SingleChoiceSegmentedButtonRow (
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp)) {
+
+            list.forEachIndexed { index, str ->
+                SegmentedButton(
+                    selected = selectedIndex == index,
+                    onClick = { selectedIndex = index },
+                    shape = SegmentedButtonDefaults
+                        .itemShape(index = index, count = list.size),
+                    border = BorderStroke(width = 1.dp, color = Blue80),
+                    colors = SegmentedButtonDefaults.colors().copy(
+                        activeBorderColor = Blue80,
+                        activeContainerColor = Blue80,
+                        activeContentColor = Blue80,
+                        inactiveBorderColor = Blue20,
+                        inactiveContainerColor = Blue20,
+                        inactiveContentColor = Blue20
+                    )) {
+
+                    val selectedTextColor = if (selectedIndex == index)
+                            Color.White else Blue80
+
+                    Text(
+                        text = str,
+                        color = selectedTextColor
+                    )
+                }
+            }
+        }
+
+        Text(text = "Under Experiment: \n@OptIn(ExperimentalMaterial3Api::class)\n")
+        Text(text = "Add Dependency:\nimplementation(\"androidx.compose.material3:material3:1.2.1\")")
+    }
+}
+    `
+},
+
+{
+    id: 7, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_fab_button.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)
+        .padding(top = 50.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Column(modifier = modifier
+            .border(1.dp, color = Color.Black)
+            .padding(10.dp)) {
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                FloatingActionButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = null)
+                }
+
+                Text(
+                    text = "FAB Button with Icon",
+                    modifier.padding(start = 10.dp))
+            }
+            Spacer(modifier = modifier.padding(top = 10.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                FloatingActionButton(onClick = {}) {
+                    Text(
+                        text = "FAB with Text",
+                        modifier.padding(
+                            horizontal = 10.dp,
+                            vertical = 10.dp
+                        )
+                    )
+                }
+
+                Text(
+                    text = "FAB Button with Text",
+                    modifier.padding(start = 10.dp))
+            }
+        }
+
+        Column(modifier = modifier
+            .border(1.dp, color = Color.Black)
+            .padding(10.dp)
+        ) {
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+
+                ExtendedFloatingActionButton(onClick = {}) {
+                    Text(text = "Extended FAB")
+                }
+                Text(
+                    text = "Extended FAB with Text",
+                    modifier.padding(start = 10.dp))
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+
+                ExtendedFloatingActionButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Filled.Notifications,
+                        contentDescription = null)
+                    Spacer(modifier = modifier.padding(start = 6.dp))
+                    Text(text = "Extended FAB")
+                }
+                Text(text = "Extended FAB with Text and Icon added",
+                    modifier.padding(start = 10.dp))
+            }
+        }
+
+
+        Column(modifier = modifier
+            .border(1.dp, color = Color.Black)
+            .padding(10.dp)
+        ) {
+            Row {
+                ExtendedFloatingActionButton(
+                    text = { Text(text = "ExtendedFloatingActionButton") },
+                    icon = { Icon(
+                        imageVector = Icons.Filled.Notifications,
+                        contentDescription = null)
+                    },
+
+                    onClick = { })
+
+
+            }
+            Text(text = "Extended FAB with default text, icon alignment")
+        }
+
+
+        Column(modifier = modifier
+            .border(1.dp, color = Color.Black)
+            .padding(10.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                LargeFloatingActionButton(onClick = {}) {
+                    Text(text = "Large FAB")
+                }
+
+                Text(text = "Large FAB with Text")
+            }
+
+            Row (verticalAlignment = Alignment.CenterVertically){
+                LargeFloatingActionButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Filled.Place,
+                        contentDescription = null)
+                }
+
+                Text(text = "Large FAB with Icon")
+            }
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            SmallFloatingActionButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = null
+                )
+            }
+
+            Text(text = "Small FAB with Icon")
+        }
+    }
+}
+`
+},
+
+{
+    id: 8,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_radio_button.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        Row {
+            repeat(3) {
+                Row (verticalAlignment = Alignment.CenterVertically){
+                    RadioButton(
+                        selected = it == 1,
+                        onClick = {})
+                    Text(text = "R-Button (dollerSing){it + 1}")
+                }
+            }
+        }
+
+        HorizontalDivider(
+            modifier = modifier,
+            thickness = 1.dp,
+            color = Color.Black)
+
+        repeat(5) {
+            Row (verticalAlignment = Alignment.CenterVertically){
+                RadioButton(
+                    selected = it == 2,
+                    onClick = {})
+                Text(text = "R-Button (dollerSing){it + 1}")
+            }
+        }
+
+        HorizontalDivider(
+            modifier = modifier,
+            thickness = 1.dp,
+            color = Color.Black)
+
+        Row {
+            repeat(5) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    FilledIconToggleButton(
+                        checked = it == 1,
+                        onCheckedChange = {}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = null)
+                    }
+                    Text(text = "RB-(dollerSign){it + 1}")
+                }
+            }
+        }
+    }
+}
+
+`
+},
+
+{
+    id: 9,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_switch.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(modifier = modifier
+        .background(color = Color.White)
+        .fillMaxSize()
+        .padding(10.dp)
+
+    ) {
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(checked = true, onCheckedChange = {})
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Default Switch - ON")
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(checked = false, onCheckedChange = {})
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Default Switch - OFF")
+        }
+
+        HorizontalDivider(modifier = modifier.padding(top = 10.dp))
+
+        var checked by remember { mutableStateOf(false) }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(
+                checked = checked,
+                onCheckedChange = { checked = it },
+                thumbContent = {
+                    if(checked) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = "switch on")
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription ="switch off")
+                    }
+                }
+            )
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Switch with icon - OFF")
+        }
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(
+                checked = !checked,
+                onCheckedChange = { checked = it },
+                thumbContent = {
+                    if(!checked) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = "switch on")
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription ="switch off")
+                    }
+                }
+            )
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Switch with icon - ON")
+        }
+
+        HorizontalDivider(modifier = modifier.padding(top = 10.dp))
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Switch(
+                checked = checked,
+                onCheckedChange = { checked = it },
+                thumbContent = {
+                    if(checked) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = "switch on")
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription ="switch off")
+                    }
+                },
+                colors = SwitchDefaults.colors(
+                    uncheckedBorderColor = Color.Black,
+                    uncheckedIconColor = Color.Blue,
+                    uncheckedThumbColor = Color.Yellow,
+                    uncheckedTrackColor = Color.Green
+                )
+            )
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Switch with icon and Color - OFF")
+        }
+
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Switch(
+                checked = !checked,
+                onCheckedChange = { checked = it },
+                thumbContent = {
+                    if(checked) {
+                        Icon(
+                            imageVector = Icons.Outlined.Clear,
+                            contentDescription ="switch off")
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = "switch on")
+                    }
+                }, colors = SwitchDefaults.colors(
+                    checkedBorderColor = Color.LightGray,
+                    checkedIconColor = Color.Yellow,
+                    checkedThumbColor = Color.Green,
+                    checkedTrackColor = Color.Blue
+                )
+            )
+
+            Spacer(modifier = modifier.padding(start = 10.dp))
+            Text(text = "Switch with icon and Color - OFF")
+        }
+    }
+}
+
+`
+},
+
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>

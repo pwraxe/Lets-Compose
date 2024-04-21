@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Layouts in Compose</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+</head>
+
+<body>
+<header>
+    <h1 class="header-heading">Jetpack Compose / Other</h1>
+    <div>
+        <a class="menu" href="../todo.html" id="todoLink">To-Do</a>
+        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+<div class="page">
+    <div class="code-container"></div>
+    <div class="list">
+        <div class="item-container">
+
+            <div class="page-card def-selected" card-id="1">
+                <h2>Checkbox</h2>
+                <p>ToggleState, on-off-indetermine</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>Chip</h2>
+                <p>Assist,Elevated, Filter, Input,, Suggestion</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="3">
+                <h2>Search</h2>
+                <p>Search textfield</p>
+            </div>
+
+            <div class="page-card def-selected" card-id="4">
+                <h2>TextField</h2>
+                <p>Input Textfield, Edittext, <a href="page_edit_text.html">Learn More</a></p>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    //---------------------------------------------------------------
+    const cards = document.querySelectorAll('.page-card');
+    const dataContainer = document.querySelector('.code-container');
+    cards.forEach(pcard => {
+        pcard.addEventListener('click', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('selected-card');
+            });
+            pcard.classList.add('selected-card');
+        });
+    });
+
+    const defaultSelectedCard = document.querySelector('.def-selected');
+    if (defaultSelectedCard) {
+        defaultSelectedCard.classList.add('selected-card');
+        const cardId = defaultSelectedCard.getAttribute('card-id');
+        const data = fetchDataById(cardId);
+        displayData(data);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.getAttribute('card-id');
+            const data = fetchDataById(cardId);
+            displayData(data);
+        });
+    });
+
+    function fetchDataById(cardId) {
+        console.log(`Fetching data for card ID: ${cardId}`);
+
+        const data = [
+{
+    id: 1,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_checkbox.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        CheckBox(modifier, 0)
+
+        HorizontalDivider()
+
+        LazyColumn {
+            this.items(5) {
+                CheckBox(label = it, modifier = modifier)
+            }
+        }
+
+        HorizontalDivider()
+
+
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TriStateCheckbox(state = ToggleableState.Off, onClick = { /*TODO*/ })
+            Text(
+                text = "TriStateCheckbox - ToggleableState.Off",
+                fontSize = 16.sp,
+                fontFamily = fontMontserrat
+            )
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TriStateCheckbox(state = ToggleableState.Indeterminate, onClick = { /*TODO*/ })
+            Text(
+                text = "TriStateCheckbox - ToggleableState.Indeterminate",
+                fontSize = 16.sp,
+                fontFamily = fontMontserrat
+            )
+        }
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            TriStateCheckbox(state = ToggleableState.On, onClick = { /*TODO*/ })
+            Text(
+                text = "TriStateCheckbox - ToggleableState.On",
+                fontSize = 16.sp,
+                fontFamily = fontMontserrat
+            )
+        }
+    }
+}
+
+@Composable
+fun CheckBox(modifier: Modifier = Modifier, label: Int = 0) {
+
+    var checked by remember { mutableStateOf(false) }
+
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.padding(top = 20.dp)
+    ){
+        Checkbox(
+            checked = checked,
+            onCheckedChange = { checked  = !checked },
+            modifier = modifier,
+            enabled = true,
+            colors = CheckboxDefaults
+                .colors(
+                    checkedColor = Color.Blue,
+                    uncheckedColor = Color.Gray
+                )
+        )
+
+        val text = if (checked) "Selected $label" else "UnSelected $label"
+        Text(text = text,
+            fontFamily = fontMontserrat,
+            fontSize = 16.sp,
+            color = Color.Black
+        )
+    }
+}
+
+    `
+},
+
+{
+    id: 2,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_chip.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    val mutableInteractionSource = remember { MutableInteractionSource() }
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        Row {
+
+            AssistChip(
+                onClick = {},
+                label = { Text(text = "Assist Chip")},
+                modifier = modifier.padding(8.dp),
+                enabled = true,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(6.dp),
+                colors = ChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconContentColor = Color.Red,
+                    trailingIconContentColor = Color.Red,
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconContentColor = Color.Gray,
+                    disabledTrailingIconContentColor = Color.Gray
+                ),
+                border = BorderStroke(1.dp, color = Color.Blue),
+                elevation = ChipElevation(
+                    elevation = 10.dp,
+                    pressedElevation = 10.dp,
+                    focusedElevation = 10.dp,
+                    hoveredElevation = 100.dp,
+                    draggedElevation = 10.dp,
+                    disabledElevation = 10.dp),
+                interactionSource = mutableInteractionSource
+            )
+
+            AssistChip(
+                onClick = {},
+                label = { Text(text = "Assist Chip")},
+                modifier = modifier.padding(8.dp),
+                enabled = false,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(6.dp),
+                colors = ChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconContentColor = Color.Red,
+                    trailingIconContentColor = Color.Red,
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconContentColor = Color.Gray,
+                    disabledTrailingIconContentColor = Color.Gray
+                ),
+                border = BorderStroke(1.dp, color = Color.Black),
+                elevation = ChipElevation(
+                    elevation = 10.dp,
+                    pressedElevation = 10.dp,
+                    focusedElevation = 10.dp,
+                    hoveredElevation = 100.dp,
+                    draggedElevation = 10.dp,
+                    disabledElevation = 10.dp),
+                interactionSource = mutableInteractionSource
+            )
+        }
+
+        HorizontalDivider()
+
+        ElevatedAssistChip(
+            onClick = {},
+            label = {
+                Text(text = "Elevated Assist Chip")
+            },
+            modifier = modifier,
+            enabled = true,
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.AddCircle,
+                    contentDescription = null)
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = null
+                )
+            },
+            shape = RoundedCornerShape(10.dp),
+            colors = ChipColors(
+                containerColor = Color.Yellow,
+                labelColor = Color.Blue,
+                leadingIconContentColor = Color.Red,
+                trailingIconContentColor = Color.Red,
+                disabledContainerColor = Color.LightGray,
+                disabledLabelColor = Color.Gray,
+                disabledLeadingIconContentColor = Color.Gray,
+                disabledTrailingIconContentColor = Color.Gray
+            ),
+
+            elevation = ChipElevation(
+                elevation = 10.dp,
+                pressedElevation = 10.dp,
+                focusedElevation = 10.dp,
+                hoveredElevation = 100.dp,
+                draggedElevation = 10.dp,
+                disabledElevation = 10.dp),
+
+            border = BorderStroke(1.dp, color = Color.Blue),
+
+            interactionSource = mutableInteractionSource
+        )
+
+        HorizontalDivider()
+
+        Row {
+            ElevatedFilterChip(
+                selected = false,
+                onClick = {},
+                label = {
+                    Text(text = "ElevatedFilterChip-ON")
+                },
+                modifier = modifier,
+                enabled = true,
+                leadingIcon = {
+                      Icon(
+                          imageVector = Icons.Default.Notifications,
+                          contentDescription = null
+                      )
+                },
+                trailingIcon = {
+                       Icon(
+                           imageVector = Icons.Default.Edit,
+                           contentDescription = null
+                       )
+                },
+                shape = CutCornerShape(7.dp),
+                colors = SelectableChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconColor = Color.Blue,
+                    trailingIconColor = Color.Blue,
+
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconColor = Color.Gray,
+                    disabledTrailingIconColor = Color.Gray,
+                    disabledSelectedContainerColor = Color.Gray,
+
+                    selectedContainerColor = Color.Yellow,
+                    selectedLabelColor = Color.Blue,
+                    selectedLeadingIconColor = Color.Blue,
+                    selectedTrailingIconColor = Color.Blue
+                )
+            )
+
+            ElevatedFilterChip(
+                selected = false,
+                onClick = {},
+                label = {
+                    Text(text = "ElevatedFilterChip-OFF")
+                },
+                modifier = modifier,
+                enabled = false,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(7.dp),
+                colors = SelectableChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconColor = Color.Blue,
+                    trailingIconColor = Color.Blue,
+
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconColor = Color.Gray,
+                    disabledTrailingIconColor = Color.Gray,
+                    disabledSelectedContainerColor = Color.Gray,
+
+                    selectedContainerColor = Color.Yellow,
+                    selectedLabelColor = Color.Blue,
+                    selectedLeadingIconColor = Color.Blue,
+                    selectedTrailingIconColor = Color.Blue
+                )
+            )
+        }
+
+        Row {
+            ElevatedFilterChip(
+                selected = true,
+                onClick = {},
+                label = {
+                    Text(text = "ElevatedFilterChip-ON")
+                },
+                modifier = modifier,
+                enabled = true,
+                leadingIcon = {
+                      Icon(
+                          imageVector = Icons.Default.Home,
+                          contentDescription = null
+                      )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(8.dp),
+                colors = SelectableChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconColor = Color.Blue,
+                    trailingIconColor = Color.Blue,
+
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconColor = Color.Gray,
+                    disabledTrailingIconColor = Color.Gray,
+                    disabledSelectedContainerColor = Color.Gray,
+
+                    selectedContainerColor = Color.Yellow,
+                    selectedLabelColor = Color.Blue,
+                    selectedLeadingIconColor = Color.Blue,
+                    selectedTrailingIconColor = Color.Blue
+                ),
+                border = BorderStroke(
+                    width = 1.dp,
+                    brush = Brush
+                        .linearGradient(
+                            listOf(
+                                Color.Black,
+                                Color.Gray
+                            )
+                        )
+                )
+            )
+
+
+            ElevatedFilterChip(
+                selected = false,
+                onClick = {},
+                label = {
+                    Text(text = "ElevatedFilterChip-OFF")
+                },
+                modifier = modifier,
+                enabled = false,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Home,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(8.dp),
+                colors = SelectableChipColors(
+                    containerColor = Color.Yellow,
+                    labelColor = Color.Blue,
+                    leadingIconColor = Color.Blue,
+                    trailingIconColor = Color.Blue,
+
+                    disabledContainerColor = Color.LightGray,
+                    disabledLabelColor = Color.Gray,
+                    disabledLeadingIconColor = Color.Gray,
+                    disabledTrailingIconColor = Color.Gray,
+                    disabledSelectedContainerColor = Color.Gray,
+
+                    selectedContainerColor = Color.Yellow,
+                    selectedLabelColor = Color.Blue,
+                    selectedLeadingIconColor = Color.Blue,
+                    selectedTrailingIconColor = Color.Blue
+                ),
+                border = BorderStroke(1.dp, Brush.linearGradient(listOf(Color.Black, Color.Gray)))
+            )
+
+            HorizontalDivider()
+        }
+
+        ElevatedSuggestionChip(
+            onClick = {},
+            label = {
+                Text(text = "ElevatedSuggestionChip")
+            },
+            modifier = modifier,
+            enabled = true,
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Face,
+                    contentDescription =null
+                )
+            },
+            shape = RoundedCornerShape(30.dp)
+        )
+
+        Row {
+            FilterChip(
+                selected = true,
+                onClick = {},
+                label = {
+                    Text(text = "Filtered Chip")
+                },
+                modifier = modifier,
+                enabled = true,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null
+                    )
+                },
+                shape = CutCornerShape(20.dp),
+                border = BorderStroke(1.dp, color = Color.Black)
+            )
+        }
+
+        InputChip(
+            selected = true,
+            onClick = {},
+            label = {
+                Text(text = "Input Chip")
+            },
+            modifier = modifier,
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.MailOutline,
+                    contentDescription = null
+                )
+            },
+            enabled = true,
+            avatar = {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = null
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.MailOutline,
+                    contentDescription = null
+                )
+            },
+
+            shape = RoundedCornerShape(10.dp),
+//            colors = SelectableChipColors( /*same as above */ ),
+//            elevation = SelectableChipElevation( /*same as above */ ),
+            border = BorderStroke(width = 1.dp,color = Color.Red),
+            interactionSource = mutableInteractionSource
+
+            )
+
+        HorizontalDivider()
+
+        var filterChecked by remember { mutableStateOf(false) }
+        var inputChecked by remember { mutableStateOf(false) }
+
+        AssistChip(onClick = {}, label = { Text(text = "Assist") })
+        SuggestionChip(onClick = {}, label = { Text(text = "Suggestion")})
+        Row {
+
+            FilterChip(
+                selected = true,
+                onClick = {},
+                label = { Text(text = "Filter Checked") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null)
+                }
+            )
+
+            FilterChip(
+                selected = false,
+                onClick = {},
+                label = { Text(text = "Filter Unchecked") })
+        }
+        Row {
+            InputChip(
+                selected = true,
+                onClick = {},
+                label = { Text(text = "Input checked") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null)
+                }
+            )
+
+            InputChip(
+                selected = false,
+                onClick = {},
+                label = { Text(text = "Input unchecked") })
+
+        }
+    }
+}
+
+`
+},
+
+{
+    id: 3,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_search_bar.gif',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+
+    val list = remember {
+        mutableStateListOf(
+            "Kotlin",
+            "Java",
+            "Python"
+        )
+    }
+
+    var searchQuery by remember { mutableStateOf("") }
+    var isActive by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.LightGray)) {
+
+        SearchBar(
+            query = searchQuery,
+            onQueryChange = {
+                searchQuery = it
+            },
+            onSearch = {
+                if(it !in list) list.add(it)
+            },
+            active = isActive,
+            onActiveChange = {
+                isActive = it
+            },
+            modifier = modifier.padding(10.dp),
+            enabled = true,
+            placeholder = { Text(text = "Placeholder") },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null)
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = null,
+                    modifier = modifier
+                        .clickable { searchQuery = "" }
+                    )
+            },
+            shape = RoundedCornerShape(20.dp)
+        ) {
+
+
+            if (isActive) {
+
+                LazyColumn {
+                    items(list) {
+                        Row (
+                            modifier = modifier
+                                .padding(10.dp)
+                                .clip(shape = RoundedCornerShape(10.dp))
+                                .clickable {
+                                    searchQuery = it
+                                }
+                            ,
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Icon(imageVector = Icons.Default.Refresh,
+                                contentDescription = null)
+                            Text(
+                                text = it,
+                                modifier = modifier
+                                    .padding(start = 10.dp))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+    `
+},
+
+{
+    id: 4,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_textfield.jpg',
+    description: `
+@Preview
+@Composable
+fun PlayGroundPreview() {
+    PlayGroundScreen()
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun PlayGroundScreen(modifier: Modifier = Modifier) {
+
+    var text by remember { mutableStateOf("") }
+    Column(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)
+        .padding(10.dp)
+    ) {
+
+        TextField(
+            value = text,
+            onValueChange = { text = it },
+            modifier = modifier.fillMaxWidth(),
+            enabled = true,
+            readOnly = false,
+            //textStyle = LocalTextStyle.current,
+            label = { Text(text = "TextField Label") },
+            placeholder = { Text(text = "TextField Placeholder", color = Color.Gray) },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Email,
+                    contentDescription = "")
+            },
+            trailingIcon = {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "")
+                }
+            },
+            prefix = { Text(text = "Mr-") },
+            suffix = { Text(text = "-Suff") },
+            supportingText = { Text(text = "Support Text") },
+            isError = true,
+            //visualTransformation = VisualTransformation.None,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Characters,autoCorrect = true,
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Text
+            ),
+            keyboardActions = KeyboardActions(onDone = {}, onNext = {}),
+            singleLine = true,
+            maxLines = 1
+        )
+
+        Spacer(modifier = modifier.padding(top = 10.dp))
+
+        OutlinedTextField (
+            value = text,
+            onValueChange = { text = it },
+            modifier = modifier.fillMaxWidth(),
+            enabled = true,
+            readOnly = true,
+            label = { Text(text = "Outline Label") },
+            placeholder = { Text(text = "Placeholder",
+                color = Color.Gray) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = ""
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = ""
+                )
+            },
+            prefix = { Text(text = "Pre") },
+            suffix = { Text(text = "Suf") },
+            supportingText = { Text(text = "Outline Supporting Text") },
+            isError = false,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Characters,autoCorrect = true,
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Text
+            ),
+            keyboardActions = KeyboardActions(onDone = {}, onNext = {}),
+            singleLine = true,
+            maxLines = 1
+        )
+
+        BasicTextField(
+            value = "Sample input Text",
+            onValueChange = { text = it },
+            modifier = modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = Color.Black,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(10.dp),
+            enabled = true,
+            readOnly = false,
+            textStyle = TextStyle.Default,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Characters,autoCorrect = true,
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Text
+            ),
+            keyboardActions = KeyboardActions(onDone = {}, onNext = {}),
+            singleLine = true,
+            maxLines = 1
+        )
+    }
+}
+
+    `
+}
+
+
+
+
+        ];
+
+        return data.find(item => item.id === parseInt(cardId));
+    }
+
+    function displayData(data) {
+        console.log(`Displaying data: ${data}`);
+        if (data) {
+            dataContainer.innerHTML = `
+
+                     <div class="output-image">
+                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">
+                </div>
+
+                <div class="output-code">
+
+                    <pre>
+                        <code class="language-kotlin">${data.description}</code>
+                    </pre>
+                </div>
+            `;
+        } else {
+            dataContainer.innerHTML = 'Data not found';
+        }
+    }
+</script>
+
+</body>
+</html>
