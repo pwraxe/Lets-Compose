@@ -50,6 +50,14 @@
                     </div>
                 </div>
 
+                <div class="item-container">
+                    <div class="page-card def-selected" card-id="5">
+                        <h2>Splash Screen</h2>
+                        <p>Splash Screen from Android 10 to 15</p>
+                        <p><a target="_blank" href="https://github.com/pwraxe/Android-in-Kotlin/tree/master/Jetpack%20Compose/SplashScreen">See GitHub</a></p>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -638,7 +646,88 @@ fun PlayGroundScreen(modifier: Modifier = Modifier) {
 }
 `
 
+},
+{
+    id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_splash_screen.gif',
+    description:`
+Check Github Link for Notes
+https://github.com/pwraxe/Android-in-Kotlin/blob/master/Jetpack%20Compose/SplashScreen/Notes.txt
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        super.onCreate(savedInstanceState)
+
+        setContent {
+            RoomDatabaseStudyTheme {
+                var isSplashVisible by remember { mutableStateOf(true) }
+
+                LaunchedEffect(Unit) {
+                    delay(3000)
+                    isSplashVisible = false
+                }
+
+                if(isSplashVisible) {
+                    SplashScreen()
+                }
+                else {
+                    val navController = rememberNavController()
+                    NextScreen(navController = navController)
+                }
+            }
+        }
+    }
 }
+
+
+@Composable
+fun SplashScreen(modifier: Modifier = Modifier) {
+
+    Box(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_background),
+            contentDescription = null,
+            modifier = modifier.align(alignment = Alignment.Center)
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            contentDescription = null,
+            modifier = modifier.align(alignment = Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun NextScreen(navController: NavHostController,
+               modifier: Modifier = Modifier) {
+
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") {
+            HomeScreen()
+        }
+    }
+}
+@Preview
+@Composable
+fun HomeScreen(modifier: Modifier = Modifier) {
+    Box(modifier = modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
+
+        Text(
+            text = "Welcome to Home Screen",
+            modifier = modifier.align(alignment = Alignment.Center)
+        )
+    }
+}
+    `
+
+    }
 
 
                 ];

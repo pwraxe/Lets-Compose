@@ -49,6 +49,9 @@
             <div class="page-card def-selected" card-id="5">
                 <h2>Room Database</h2>
                 <p>Small Structure of Room database flow</p>
+                <p>
+                    <a href="https://github.com/pwraxe/Android-in-Kotlin/tree/master/Jetpack%20Compose/RoomDatabase">See Full Code on Github</a>
+                </p>
             </div>
 
             <div class="page-card def-selected" card-id="6">
@@ -384,9 +387,54 @@ fun MarsPhotoCard(marsPhoto: MarsPhoto,
 }
         `
         },
-        { id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/image_live_url.png',
+        { id: 5, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_room_db.gif',
             description: `
-Coming soon
+
+============================================================================
+See Here
+https://github.com/pwraxe/Android-in-Kotlin/tree/master/Jetpack%20Compose/RoomDatabase
+============================================================================
+
+build.gradle (Module :app) {
+	plugin {
+		id("com.google.devtools.ksp") version "1.9.20-1.0.14"
+	}
+
+	dependency {
+		//Room
+		implementation("androidx.room:room-runtime:(dollerSign){rootProject.extra["room_version"]}")
+		ksp("androidx.room:room-compiler:(dollerSign){rootProject.extra["room_version"]}")
+		implementation("androidx.room:room-ktx:(dollerSign){rootProject.extra["room_version"]}")
+	}
+}
+
+
+In Jetpack Compose, we can write own ViewModel Provider, with multiple viewModel,
+We can get ViewModel from ViewModelFactory
+
+object ViewModelProvider {
+	val factory = viewModelFactory {
+		initializer {
+			AnyViewModelObject()
+		}
+		initializer {
+			HomeViewModel()
+		}
+		...
+	}
+}
+
+
+fun CreationExtras.applicationSubClass(): ApplicationSubClass =
+	(this[AndroidViewModelFactory.APPLICATION_KEY] as ApplicationSubClass)
+
+Note: ApplicationSubClass mean class which extend Application class
+
+val coroutineScope = rememberCoroutineScope()
+
+Declare ViewModel object inside function parameter
+viewModel: ItemEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+
 
 `},
 
