@@ -67,23 +67,6 @@
 
 <script type="text/javascript">
 
-    const profileLink = document.getElementById("profileLink");
-    const composeLink = document.getElementById("composeLink");
-    const headerHeading = document.querySelector(".header-heading");
-
-    profileLink.addEventListener("click", () => {
-        profileLink.classList.add("selected");
-        composeLink.classList.remove("selected");
-        headerHeading.textContent = "Akshay's Profile";
-    });
-
-    composeLink.addEventListener("click", () => {
-        composeLink.classList.add("selected");
-        profileLink.classList.remove("selected");
-        headerHeading.textContent = "Jetpack Compose";
-    });
-
-    //---------------------------------------------------------------
     const cards = document.querySelectorAll('.page-card');
     const dataContainer = document.querySelector('.code-container');
     cards.forEach(pcard => {
