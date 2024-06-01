@@ -3,27 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
     <link rel="stylesheet" type="text/css" href="../styles/styles.css">
 </head>
 
 <body>
-<header>
-    <h1 class="header-heading">Jetpack Compose</h1>
-    <div>
-        <a class="menu" href="../todo.html" id="todoLink">To-Do</a>
-        <a class="menu" href="../notes.html" id="notesLink">Notes</a>
-        <a class="menu selected" href="../../index.html" id="composeLink">Compose</a>
-        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
 
+<header>
+    <h1 class="header-heading">Jetpack Compose Study</h1>
+    <p>Note: 💻🖥️✅ | 📱❎</p>
+    <div>
+        <a class="menu" href="../download.html" id="downloadLink">Download</a>
+        <a class="menu" href="../ui_pages/todo.html" id="todoLink">To-Do</a>
+        <a class="menu" href="../ui_pages/notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="../index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../../profile/index.html" id="profileLink">Profile</a>
     </div>
 </header>
-
-<div style="text-align: center;">
-    <p>Download <b><a href="https://play.google.com/store/apps/details?id=com.codexdroid.m3compose">M3 Compose</a></b> App</p>
-    <p style="font-size:12px;">From Indus App Store &amp; PlayStore</p>
-</div>
-
 
 <div class="container">
 
@@ -85,19 +80,32 @@
 <script>
     const profileLink = document.getElementById("profileLink");
     const composeLink = document.getElementById("composeLink");
+    const downloadLink = document.getElementById("downloadLink");
+
+<!--    const headerHeading = document.querySelector(".header-heading");-->
     const headerHeading = document.querySelector(".header-heading");
 
     profileLink.addEventListener("click", () => {
         profileLink.classList.add("selected");
         composeLink.classList.remove("selected");
+        downloadLink.classList.remove("selected");
         headerHeading.textContent = "Akshay's Profile";
     });
 
     composeLink.addEventListener("click", () => {
         composeLink.classList.add("selected");
         profileLink.classList.remove("selected");
+        downloadLink.classList.remove("selected");
         headerHeading.textContent = "Jetpack Compose";
     });
+
+    downloadLink.addEventListener("click", () => {
+        downloadLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "App Download";
+    });
 </script>
+
 </body>
 </html>

@@ -1,0 +1,155 @@
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Compose Notes</title>
+
+    <style type="text/css">
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
+
+        th, td {
+          border: 1px solid black;
+          padding: 8px;
+          text-align: center;
+        }
+
+        th {
+          background-color: #f2f2f2;
+        }
+
+        code {
+          background-color: #fff9e6;
+          border: 1px solid #ccc;
+          display: inline-block;
+          border-radius: 6px;
+          padding: 5px; /* Adjust padding as needed */
+          font-family: monospace; /* Use a monospaced font for code */
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="display: inline;">Compose Notes</h1>
+    <p style="display: inline;"> (Ref. https://developer.android.com)</p>
+
+    <hr>
+    <p><b>Documents</b></p>
+    - Compose handles nested layouts efficiently, This is an improvement from Android Views, where you need to avoid nested layouts for performance reasons.<br>
+    - It is a best practice to pass a modifier to every composable and set it to a default value. <br>
+    - In Compose, The only way to update the UI is by changing the state of the app. Hence, you can control only state not ui, UI is Dependent on State <br>
+    - UDF (Unidirectional Data Flow), It is a Design Pattern in which, state flows `down` and event flows `up` <br>
+    - APK = Android Package (Application Package File)
+    - Compose BOM = Compose Bill Of Material <br>
+    - You can change screen withOut NavHost also, just change state of screen it will auto recompose, but this won't maintain backstack, for this you just have to add <code>BackHandler(enabled = true){ onBackPressed() }</code> <br>
+    - Compose transforms <b>Data</b> into <b>UI</b> by 3 Phase <code>Data --> Composition --> Layout --> Drawing --> UI</code>
+    <hr>
+    <p><b>Recycler View Notes</b></p>
+    - In Scrollable List, 1) Define Separate Layout in Separate compose function, 2) Call same layout function from <code>lazyColumn {items() { composeFun(param) } }</code><br>
+    - When Create Model Class For LazyRow || LazyColumn (i.e. RecyclerView) make sure you annotate string with @StringRes val string:Int
+    and drawableImage with @DrawableRes val drawableImage: Int, For Example,
+    <code>data class Affirmation(<b>@StringRes</b> val string:Int,<b>@DrawableRes</b> val image: Int)</code>
+    <hr>
+    <p>
+
+        Color Picker : <a href="https://m3.material.io/theme-builder#/custom">Material Color Picker</a><br>
+        Color: #[ALPHA][<span style="color:red;">RED</span>][<span style="color:green;">GREEN</span>][<span style="color:blue;">BLUE</span>] = #[FF][80][00][88] = #FF800088
+        <br>
+        Alpha from <br>
+        #00(colorCode) = 0 % Opacity = Full Transparent <b>---to---></b> to #FF(colorCode) = 100% Opacity = No Transparent (Solid) <br>
+    </p>
+
+    <hr>
+    <p><b>Adaptive Layout Screen Size (Breakpoint)</b></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Breakpoint Range (dp)</th>
+            <th>Portrait</th>
+            <th>Landscape</th>
+            <th>Window Size class</th>
+            <th>Column</th>
+            <th>Minimum Margin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>0 - 599</td>
+            <td>Handset</td>
+            <td>Phone</td>
+            <td>Compat</td>
+            <td>4</td>
+            <td>8</td>
+        </tr>
+        <tr>
+            <td>600 - 839</td>
+            <td>Foldable Small Tablet</td>
+            <td>Foldable Small Tablet</td>
+            <td>Medium</td>
+            <td>12</td>
+            <td>12</td>
+        </tr>
+        <tr>
+            <td>840+</td>
+            <td>Large Tablet</td>
+            <td>Large Tablet</td>
+            <td>Expanded</td>
+            <td>12</td>
+            <td>32</td>
+        </tr>
+        </tbody>
+    </table>
+    <table>
+        <thead>
+        <tr>
+            <th>Window class (width)</th>
+            <th>Breakpoint (dp)</th>
+            <th>Common devices</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Compact</td>
+                <td>Width < 600</td>
+                <td>Phone in portrait</td>
+            </tr>
+
+            <tr>
+                <td>Medium</td>
+                <td>600 ≤ width  840</td>
+                <td>Tablet in portrait<br>Foldable in portrait (unfolded)</td>
+            </tr>
+
+            <tr>
+                <td>Expanded</td>
+                <td>840 ≤ width < 1200*</td>
+                <td>
+                    Phone in landscape <br>
+                    Tablet in landscape <br>
+                    Foldable in landscape (unfolded) <br>
+                    Desktop
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+        Jetpack Compose already has window size class <code>WindowSizeClass</code> <br>
+        Make sure you have this dependency { <code>implementation("androidx.compose.material3:material3-window-size-class:1.1.2")</code> }
+    </p>
+
+    <p>To call <code>suspend</code> function safely from compose you need to use <code>LaunchedEffect { ... }</code> composable</p>
+    <p>
+        <code>
+            LaunchedEffect(vararg keys: Any?) {...} <br>
+            LaunchedEffect(key1:Any?) {...} <br>
+            LaunchedEffect(key1:Any?, key2: Any?) {...} <br>
+            LaunchedEffect(key1:Any?, key2: Any?, key3: Any?) {...} <br>
+            LaunchedEffect(key1:Any?, key2: Any?, key3: Any?) {...} <br>
+        </code>
+
+    </p>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="styles/styles.css">
+    <title>Layouts in Compose</title>
+    <style>
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .this-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow:hidden;
+            margin-top: -100px; /* Adjust this value based on the header height */
+        }
+
+        .this-page-card {
+            background-color: #f5f1ff;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 300px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .this-page-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+
+<header>
+    <h1 class="header-heading">Jetpack Compose Study</h1>
+    <p>Note: 💻🖥️✅ | 📱❎</p>
+    <div>
+        <a class="menu" href="download.html" id="downloadLink">Download</a>
+        <a class="menu" href="ui_pages/todo.html" id="todoLink">To-Do</a>
+        <a class="menu" href="ui_pages/notes.html" id="notesLink">Notes</a>
+        <a class="menu selected" href="index.html" id="composeLink">Compose</a>
+        <a class="menu" href="../profile/index.html" id="profileLink">Profile</a>
+    </div>
+</header>
+
+
+<div class="this-content">
+    <div class="card-container">
+
+        <div class="this-page-card">
+            <h2>App: M3 Compose</h2>
+            <p style="font-size:10px;">Download App from</p>
+            <p>
+                <b>
+                    <a target="_blank" href="https://play.google.com/store/apps/details?id=com.codexdroid.m3compose">Google Play Store</a>
+                </b>
+            </p>
+            <p>&amp;</p>
+            <p>Indus App Store</p>
+
+        </div>
+
+<!--        <div class="this-page-card">-->
+<!--            <h2>App: M3 Compose</h2>-->
+<!--            <p>Download App from Play Store</p>-->
+<!--        </div>-->
+
+    </div>
+</div>
+
+<script>
+    const profileLink = document.getElementById("profileLink");
+    const composeLink = document.getElementById("composeLink");
+    const downloadLink = document.getElementById("downloadLink");
+
+    const headerHeading = document.querySelector(".header-heading");
+
+    profileLink.addEventListener("click", () => {
+        profileLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        downloadLink.classList.remove("selected");
+        headerHeading.textContent = "Akshay's Profile";
+    });
+
+    composeLink.addEventListener("click", () => {
+        composeLink.classList.add("selected");
+        profileLink.classList.remove("selected");
+        downloadLink.classList.remove("selected");
+        headerHeading.textContent = "Jetpack Compose";
+    });
+
+    downloadLink.addEventListener("click", () => {
+        downloadLink.classList.add("selected");
+        composeLink.classList.remove("selected");
+        profileLink.classList.remove("selected");
+        headerHeading.textContent = "App Download";
+    });
+</script>
+
+
+
+
+<!--<script type="text/javascript">-->
+
+<!--    const profileLink = document.getElementById("profileLink");-->
+<!--    const composeLink = document.getElementById("composeLink");-->
+<!--    const headerHeading = document.querySelector(".header-heading");-->
+
+<!--    profileLink.addEventListener("click", () => {-->
+<!--        profileLink.classList.add("selected");-->
+<!--        composeLink.classList.remove("selected");-->
+<!--        headerHeading.textContent = "Akshay's Profile";-->
+<!--    });-->
+
+<!--    composeLink.addEventListener("click", () => {-->
+<!--        composeLink.classList.add("selected");-->
+<!--        profileLink.classList.remove("selected");-->
+<!--        headerHeading.textContent = "Jetpack Compose";-->
+<!--    });-->
+
+<!--    //-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--    const cards = document.querySelectorAll('.page-card');-->
+<!--    const dataContainer = document.querySelector('.code-container');-->
+<!--    cards.forEach(pcard => {-->
+<!--        pcard.addEventListener('click', () => {-->
+<!--            cards.forEach(otherCard => {-->
+<!--                otherCard.classList.remove('selected-card');-->
+<!--            });-->
+<!--            pcard.classList.add('selected-card');-->
+<!--        });-->
+<!--    });-->
+
+<!--    const defaultSelectedCard = document.querySelector('.def-selected');-->
+<!--    if (defaultSelectedCard) {-->
+<!--        defaultSelectedCard.classList.add('selected-card');-->
+<!--        const cardId = defaultSelectedCard.getAttribute('card-id');-->
+<!--        const data = fetchDataById(cardId);-->
+<!--        displayData(data);-->
+<!--    }-->
+
+<!--    cards.forEach(card => {-->
+<!--        card.addEventListener('click', () => {-->
+<!--            const cardId = card.getAttribute('card-id');-->
+<!--            const data = fetchDataById(cardId);-->
+<!--            displayData(data);-->
+<!--        });-->
+<!--    });-->
+
+<!--    function fetchDataById(cardId) {-->
+<!--        console.log(`Fetching data for card ID: ${cardId}`);-->
+
+<!--        const data = [-->
+<!--            { id: 1, src: 'image_url', description: ``-->
+<!--            }-->
+<!--        ];-->
+
+<!--        return data.find(item => item.id === parseInt(cardId));-->
+<!--    }-->
+
+<!--    function displayData(data) {-->
+<!--        console.log(`Displaying data: ${data}`);-->
+<!--        if (data) {-->
+<!--            dataContainer.innerHTML = `-->
+
+<!--                     <div class="output-image">-->
+<!--                    <img src="${data.src}" alt="Output 1" width="100%" height="100%">-->
+<!--                </div>-->
+
+<!--                <div class="output-code">-->
+
+<!--                    <pre>-->
+<!--                        <code class="language-kotlin">${data.description}</code>-->
+<!--                    </pre>-->
+<!--                </div>-->
+<!--            `;-->
+<!--        } else {-->
+<!--            dataContainer.innerHTML = 'Data not found';-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+
+</body>
+</html>
