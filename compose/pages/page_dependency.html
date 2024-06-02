@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        #todoHeader {
+            margin: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        table {
+            margin: 10px;
+            width: calc(100% - 20px);
+            border-collapse: collapse;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .copy-icon {
+            cursor: pointer;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .copy-icon:hover {
+            color: #4CAF50;
+        }
+
+        .copy-icon:active {
+            color: #357a38;
+        }
+
+        .dependency-text {
+            vertical-align: middle;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Nunito&display=swap" rel="stylesheet">
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+        }
+    </script>
+    <title>Jetpack Compose Dependency</title>
+</head>
+
+<body>
+
+<div id="todoHeader">
+    Few Dependency used in Jetpack Compose
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Dependency Name</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody id="dependencyTable">
+    <tr>
+        <td>
+            <span class="copy-icon" onclick="copyToClipboard('implementation (libs.androidx.material.icons.extended)')">
+                <i class="fa fa-copy" style="font-size:20px"></i>
+            </span>
+            <span class="dependency-text">implementation (libs.androidx.material.icons.extended)</span>
+        </td>
+        <td>Extra Icons for Compose UI</td>
+    </tr>
+
+    <tr>
+        <td>
+            <span class="copy-icon" onclick="copyToClipboard('implementation(libs.material3)'">
+                <i class="fa fa-copy" style="font-size:20px"></i>
+            </span>
+            <span class="dependency-text">implementation(libs.material3)</span>
+        </td>
+        <td>Material 3 Dependency (Tobe Add)</td>
+    </tr>
+
+    <tr>
+        <td>
+            <span class="copy-icon" onclick="copyToClipboard('implementation(libs.androidx.material3)')">
+                <i class="fa fa-copy" style="font-size:20px"></i>
+            </span>
+            <span class="dependency-text">implementation(libs.androidx.material3)</span>
+        </td>
+        <td>Material 3 Dependency (Existing)</td>
+    </tr>
+
+    </tbody>
+</table>
+
+</body>
+</html>

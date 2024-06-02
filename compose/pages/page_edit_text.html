@@ -82,6 +82,11 @@
                 <p>Different ImeActions on Keyboard</p>
             </div>
 
+            <div class="page-card def-selected" card-id="12">
+                <h2>EditText - See Password</h2>
+                <p>Visual Transformation of Password</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -840,10 +845,73 @@ fun EditTexts() {
             modifier = Modifier.fillMaxWidth())
     }
 }
+`
+},
+{
+    id: 12,
+    src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/images/output_password_toggle.gif',
+    description:`
+Download Extra Icons from here
+implementation (libs.androidx.material.icons.extended)
+implementation ("androidx.compose.material:compose-material-icons-extended-android")
 
-             `
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MyApplicationTheme {
+                Show()
             }
-        ];
+        }
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun ShowPreview(modifier: Modifier = Modifier) {
+    Show(modifier)
+}
+
+@Composable
+fun Show(modifier: Modifier = Modifier) {
+    var password by remember { mutableStateOf("") }
+    var showPassword by remember { mutableStateOf(false) }
+    val passwordVisualTransformation = remember { PasswordVisualTransformation() }
+
+    TextField(
+        value = password,
+        onValueChange = { password = it },
+        label = {
+            Text(text = "Enter Password")
+        },
+
+        visualTransformation = if (showPassword)
+            VisualTransformation.None
+        else passwordVisualTransformation,
+
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+
+        modifier = modifier.fillMaxWidth(),
+
+        trailingIcon = {
+            Icon(
+                imageVector = if (showPassword)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff,
+
+                contentDescription = null,
+
+                modifier = modifier.clickable {
+                    showPassword = !showPassword
+                }
+            )
+        }
+    )
+}
+`
+}
+];
 
         return data.find(item => item.id === parseInt(cardId));
     }

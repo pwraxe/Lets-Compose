@@ -27,10 +27,18 @@
     <div class="code-container"></div>
     <div class="list">
         <div class="item-container">
+
+
             <div class="page-card def-selected" card-id="1">
                 <h2>Scroll to Top</h2>
                 <p>Navigate to top of list after scolling</p>
             </div>
+
+            <div class="page-card def-selected" card-id="2">
+                <h2>Multiple view in LazyColumn</h2>
+                <p>Showing multiple view in lazyColumn, Text, Audio, Video, Image</p>
+            </div>
+
         </div>
     </div>
 </div>
@@ -174,8 +182,191 @@ fun ItemsView(str: String, modifier: Modifier = Modifier) {
             `
             },
 
-            { id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/imgName', description: ``
+            {
+                id: 2, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/output_multi_ui.jpg',
+                description: `
+package com.example.myapplication
+
+import ...
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MyApplicationTheme {
+                Show()
             }
+        }
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun ShowPreview(modifier: Modifier = Modifier) {
+    Show(modifier)
+}
+
+data class UserMessage(val type: String, val message: String? = null)
+val list = listOf(
+    UserMessage("Text","Hello there"),
+    UserMessage("Audio"),
+    UserMessage("Video"),
+    UserMessage("Text", "Hey There"),
+    UserMessage("Image","Hey, I got you in Mall"),
+    UserMessage("Audio","Listen this song, much relaxing"),
+    UserMessage("Video","Watch this video, its gone viral")
+)
+@Composable
+fun Show(modifier: Modifier = Modifier) {
+
+    LazyColumn {
+        items(list) {
+            when(it.type) {
+                "Text" -> TextView(message = it.message!!,modifier)
+                "Audio" -> AudioView(modifier, it.message)
+                "Video" -> VideoView(modifier, it.message)
+                "Image" -> ImageView(modifier, it.message)
+            }
+        }
+    }
+}
+
+@Composable
+fun TextView(message: String, modifier: Modifier = Modifier) {
+    Text(text = message, modifier = modifier
+        .padding(vertical = 2.dp, horizontal = 4.dp)
+        .background(color = Color.LightGray, shape = RoundedCornerShape(10.dp))
+        .wrapContentWidth()
+        .padding(10.dp))
+}
+
+@Composable
+fun AudioView(modifier: Modifier = Modifier, message: String? = null) {
+
+    Column(
+        modifier = modifier
+            .padding(horizontal = 2.dp, vertical = 4.dp)
+            .background(color = Color.Gray, shape = RoundedCornerShape(10.dp))
+            .wrapContentWidth(),
+
+        horizontalAlignment = Alignment.Start) {
+
+        Row (verticalAlignment = Alignment.CenterVertically) {
+
+            LazyRow(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier.padding(start = 6.dp, end = 6.dp)) {
+
+                items(30) {
+
+                    val ht = Random.nextInt(5,30)
+                    VerticalDivider(
+                        thickness = 2.dp,
+                        modifier = modifier
+                            .padding(horizontal = 1.dp)
+                            .size(2.dp, ht.dp)
+                    )
+                }
+            }
+
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Filled.PlayCircleFilled,
+                    contentDescription = null
+                )
+            }
+        }
+
+        message?.let {
+            Text(
+                text = it,
+                modifier = modifier.padding(
+                    start = 6.dp,
+                    end = 6.dp,
+                    bottom = 6.dp
+                ),
+                color = Color.White
+            )
+        }
+    }
+}
+
+@Composable
+fun VideoView(modifier: Modifier = Modifier, message: String? = null) {
+
+    Column (modifier = modifier
+        .width(150.dp)
+        .background(
+            color = Color.Gray,
+            shape = RoundedCornerShape(10.dp)
+        )) {
+
+        Box(modifier = modifier, contentAlignment = Alignment.Center) {
+
+            Image(painter = painterResource(id = R.drawable.ic_launcher_background),
+                contentDescription = null,
+
+                modifier = modifier
+                    .width(150.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+                contentScale = ContentScale.Crop
+            )
+
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Default.PlayCircle,
+                    contentDescription = null,
+                    modifier = modifier.size(50.dp)
+                )
+            }
+        }
+
+        message?.let {
+            Text(text = it,
+                modifier = modifier
+                    .padding(horizontal = 6.dp, vertical = 4.dp)
+                ,
+                color = Color.White,
+
+            )
+        }
+    }
+}
+
+@Composable
+fun ImageView(modifier: Modifier = Modifier, message: String? = null) {
+
+    Column (modifier = modifier
+        .width(150.dp)
+        .background(
+            color = Color.Gray,
+            shape = RoundedCornerShape(10.dp))){
+
+        Image(painter = painterResource(id = R.drawable.ic_launcher_background),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+            )
+
+        message?.let {
+            Text(text = it,
+                modifier = modifier
+                    .padding(horizontal = 6.dp, vertical = 4.dp),
+                color = Color.White)
+        }
+    }
+}
+`
+
+            },
+
+            { id: 3, src: 'https://raw.githubusercontent.com/pwraxe/compose/main/compose/app/output/imgName', description: ``
+            },
+
+
+
         ];
 
         return data.find(item => item.id === parseInt(cardId));
